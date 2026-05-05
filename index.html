@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькулятор юнитки штор WB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== ДИЗАЙН-СИСТЕМА ===== */
+  :root {
+    --bg: #faf7f2;          /* кремовый фон */
+    --bg-card: #ffffff;
+    --bg-input: #f5f1ea;
+    --ink: #1a1815;          /* почти черный */
+    --ink-soft: #5c574e;
+    --accent: #c2410c;       /* терракот */
+    --accent-soft: #fed7aa;
+    --good: #166534;         /* темно-зеленый */
+    --good-soft: #d1fae5;
+    --bad: #991b1b;          /* винный */
+    --bad-soft: #fee2e2;
+    --line: #e8e2d6;
+    --shadow: 0 1px 2px rgba(26,24,21,.06), 0 4px 12px rgba(26,24,21,.04);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  
+  /* ===== ЗАГОЛОВОК ===== */
+  header {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 42px);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  h1 em { color: var(--accent); font-style: italic; }
+  .subtitle { color: var(--ink-soft); font-size: 14px; }
+  
+  /* ===== СЕТКА ===== */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  
+  /* ===== КАРТОЧКИ ===== */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .card-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-num {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 50%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .card-desc { color: var(--ink-soft); font-size: 13px; margin-bottom: 16px; }
+  
+  /* ===== ВВОДЫ ===== */
+  .input-row {
+    display: grid;
+    grid-template-columns: 1fr 110px;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .input-row:last-child { border-bottom: none; }
+  .input-row label { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .input-row label small { display: block; color: var(--ink-soft); font-weight: 400; font-size: 11px; margin-top: 1px; }
+  .input-row input {
+    background: var(--bg-input);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--ink);
+    text-align: right;
+    transition: all 0.15s;
+    width: 100%;
+  }
+  .input-row input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--bg-card);
+  }
+  .group-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin: 16px 0 6px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  .group-title:first-child { padding-top: 0; border-top: none; margin-top: 0; }
+  
+  /* ===== РЕЗУЛЬТАТЫ ===== */
+  .result-block {
+    background: var(--bg-input);
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 16px;
+  }
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 6px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+  .result-row.minus { color: var(--bad); }
+  .result-row.plus { color: var(--good); }
+  .result-row.total {
+    border-top: 1.5px solid var(--ink);
+    margin-top: 10px;
+    padding-top: 12px;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .result-row .label { font-family: 'Manrope', sans-serif; }
+  .big-number {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .big-number.good { color: var(--good); }
+  .big-number.bad { color: var(--bad); }
+  .big-number-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  
+  /* ===== ИТОГИ ===== */
+  .summary {
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px;
+  }
+  .summary h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+  .summary-item .big-number-label { color: rgba(250, 247, 242, 0.6); }
+  .summary .big-number { color: var(--bg); }
+  .summary .big-number.good { color: #86efac; }
+  .summary .big-number.bad { color: #fca5a5; }
+  
+  /* ===== СОВЕТЫ ===== */
+  .tip {
+    font-size: 12px;
+    color: var(--ink-soft);
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 10px 12px;
+    border-radius: 4px;
+    margin-top: 12px;
+    line-height: 1.4;
+  }
+  
+  /* ===== ВКЛАДКИ ===== */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    background: var(--bg-input);
+    padding: 4px;
+    border-radius: 10px;
+    width: fit-content;
+  }
+  .tab {
+    background: transparent;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: all 0.15s;
+  }
+  .tab.active {
+    background: var(--bg-card);
+    color: var(--ink);
+    box-shadow: var(--shadow);
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  
+  /* ===== КНОПКИ ===== */
+  .btn {
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--accent); }
+  .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  
+  /* ===== ФОРМУЛА ===== */
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    background: var(--bg-input);
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+  
+  footer {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 12px;
+    padding: 24px 0;
+    margin-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Юнитка <em>штор</em> на Wildberries</h1>
+    <p class="subtitle">МП1 на одну пару · МП2 на пачку SKU · все расходы учтены</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="unit">МП1 — на пару</button>
+    <button class="tab" data-tab="batch">МП2 — на пачку</button>
+    <button class="tab" data-tab="formulas">Формулы</button>
+  </div>
+
+  <!-- ===== ВКЛАДКА 1: МП1 НА ОДНУ ПАРУ ===== -->
+  <div class="tab-content active" id="tab-unit">
+    
+    <!-- ИТОГОВАЯ СВОДКА (наверху чтобы сразу видеть) -->
+    <div class="summary">
+      <h2>Итого по одной паре</h2>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="big-number-label">Выручка с продажи</div>
+          <div class="big-number" id="sum-revenue">—</div>
+        </div>
+        <div class="summary-item">
+          <div class="big-number-label">Все расходы</div>
+          <div class="big-number bad" id="sum-costs">—</div>
+        </div>
+        <div class="summary-item">
+          <div class="big-number-label">МП1 в рублях</div>
+          <div class="big-number good" id="sum-mp1-rub">—</div>
+        </div>
+        <div class="summary-item">
+          <div class="big-number-label">МП1 в %</div>
+          <div class="big-number good" id="sum-mp1-pct">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- КАРТОЧКА 1: ЦЕНА -->
+      <div class="card">
+        <div class="card-title"><span class="card-num">1</span>Цена</div>
+        <p class="card-desc">Какая цена в карточке и сколько остаётся после СПП</p>
+        
+        <div class="input-row">
+          <label>Цена до СПП, ₽<small>цена которую видит WB до скидки постоянного покупателя</small></label>
+          <input type="number" id="price_before_spp" value="2000" step="10">
+        </div>
+        <div class="input-row">
+          <label>СПП, %<small>скидка постоянного покупателя (за счёт WB, не твой расход)</small></label>
+          <input type="number" id="spp_pct" value="3" step="0.5">
+        </div>
+        
+        <div class="result-block" style="margin-top: 12px;">
+          <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0;">
+            <span class="label">Цена после СПП</span>
+            <span id="r_price_after_spp">— ₽</span>
+          </div>
+        </div>
+        
+        <div class="group-title">Выкуп</div>
+        <div class="input-row">
+          <label>Выкуп, %<small>сколько % от заказов реально выкупают</small></label>
+          <input type="number" id="redemption_pct" value="73" step="1">
+        </div>
+      </div>
+
+      <!-- КАРТОЧКА 2: КОМИССИИ WB -->
+      <div class="card">
+        <div class="card-title"><span class="card-num">2</span>Расходы WB</div>
+        <p class="card-desc">Что WB удержит и какие потери на стороне площадки</p>
+        
+        <div class="group-title">Комиссии и сборы</div>
+        <div class="input-row">
+          <label>Комиссия WB, %<small>FBO для шторной категории</small></label>
+          <input type="number" id="commission_pct" value="25" step="0.5">
+        </div>
+        <div class="input-row">
+          <label>Эквайринг, %<small>обработка платежа</small></label>
+          <input type="number" id="acquiring_pct" value="1.8" step="0.1">
+        </div>
+        <div class="input-row">
+          <label>Логистика прямая, ₽<small>доставка единицы покупателю</small></label>
+          <input type="number" id="logistics_forward" value="90" step="5">
+        </div>
+        <div class="input-row">
+          <label>Логистика обратная, ₽<small>возврат единицы (за каждый возврат)</small></label>
+          <input type="number" id="logistics_back" value="50" step="5">
+        </div>
+        <div class="input-row">
+          <label>Приёмка FBO, ₽<small>сбор за приёмку на склад WB</small></label>
+          <input type="number" id="acceptance_fbo" value="25" step="5">
+        </div>
+        <div class="input-row">
+          <label>Хранение, ₽/ед/мес<small>средняя стоимость хранения пары на складе</small></label>
+          <input type="number" id="storage" value="15" step="1">
+        </div>
+        <div class="input-row">
+          <label>Штрафы / прочее, ₽/ед<small>буфер на штрафы упаковка/маркировка/etc</small></label>
+          <input type="number" id="penalties" value="5" step="1">
+        </div>
+        
+        <div class="group-title">Потери на стороне WB</div>
+        <div class="input-row">
+          <label>Брак WB, %<small>повредили в логистике или на складе площадки</small></label>
+          <input type="number" id="defect_wb_pct" value="1.5" step="0.5">
+        </div>
+        <div class="input-row">
+          <label>Потеряшки на WB, %<small>товар "потерялся" на складе или в логистике</small></label>
+          <input type="number" id="lost_pct" value="1" step="0.5">
+        </div>
+      </div>
+
+      <!-- КАРТОЧКА 3: СЕБЕСТОИМОСТЬ -->
+      <div class="card">
+        <div class="card-title"><span class="card-num">3</span>Себестоимость пары</div>
+        <p class="card-desc">Что ты тратишь на производство одной пары</p>
+        
+        <div class="group-title">Ткань</div>
+        <div class="input-row">
+          <label>Метров ткани на пару<small>на размер 150×240 примерно 6 м</small></label>
+          <input type="number" id="fabric_meters" value="6" step="0.1">
+        </div>
+        <div class="input-row">
+          <label>Цена 1 м ткани, ₽<small>оптовая закупочная</small></label>
+          <input type="number" id="fabric_price" value="180" step="5">
+        </div>
+        
+        <div class="group-title">Производство</div>
+        <div class="input-row">
+          <label>Пошив пары, ₽<small>зарплата швеи + раскрой</small></label>
+          <input type="number" id="sewing_cost" value="200" step="10">
+        </div>
+        <div class="input-row">
+          <label>Фурнитура, ₽<small>лента, люверсы, ярлык</small></label>
+          <input type="number" id="hardware_cost" value="80" step="5">
+        </div>
+        <div class="input-row">
+          <label>Упаковка, ₽<small>пакет, наклейка, маркировка</small></label>
+          <input type="number" id="packaging_cost" value="30" step="5">
+        </div>
+        <div class="input-row">
+          <label>Логистика на склад, ₽<small>доставка от производства до склада WB</small></label>
+          <input type="number" id="inbound_logistics" value="20" step="5">
+        </div>
+        
+        <div class="group-title">Производственный брак</div>
+        <div class="input-row">
+          <label>Брак производственный, %<small>швея накосячила, дефект ткани, плохой пошив</small></label>
+          <input type="number" id="defect_prod_pct" value="2" step="0.5">
+        </div>
+      </div>
+
+      <!-- КАРТОЧКА 4: ДЕТАЛЬНЫЙ РАСЧЁТ -->
+      <div class="card">
+        <div class="card-title"><span class="card-num">4</span>Детальный расчёт МП1</div>
+        <p class="card-desc">Как складывается твоя маржа на одну пару</p>
+        
+        <div class="result-block">
+          <div class="result-row plus">
+            <span class="label">+ Цена покупателя (после СПП)</span>
+            <span id="r_price">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Комиссия WB</span>
+            <span id="r_commission">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Эквайринг</span>
+            <span id="r_acquiring">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Логистика прямая</span>
+            <span id="r_log_forward">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Логистика обратная (на выкуп)</span>
+            <span id="r_log_back">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Приёмка FBO</span>
+            <span id="r_acceptance">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Хранение</span>
+            <span id="r_storage">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Штрафы / прочее</span>
+            <span id="r_penalties">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Брак WB + потеряшки</span>
+            <span id="r_defect_wb">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Себестоимость пары</span>
+            <span id="r_cogs">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Брак производственный</span>
+            <span id="r_defect_prod">— ₽</span>
+          </div>
+          <div class="result-row total">
+            <span class="label">МП1 (с учётом выкупа и потерь)</span>
+            <span id="r_mp1">— ₽</span>
+          </div>
+        </div>
+        
+        <div class="tip" id="mp1-tip">
+          МП1 это маржа продукта без учёта рекламы и общих расходов компании.
+        </div>
+        
+        <div class="btn-row">
+          <button class="btn" onclick="resetUnit()">Сбросить</button>
+          <button class="btn" onclick="saveData()">Сохранить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ВКЛАДКА 2: МП2 НА ПАЧКУ ===== -->
+  <div class="tab-content" id="tab-batch">
+    <div class="summary">
+      <h2>МП2 на пачку SKU за месяц</h2>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="big-number-label">Месячная выручка</div>
+          <div class="big-number" id="b_revenue">—</div>
+        </div>
+        <div class="summary-item">
+          <div class="big-number-label">Расходы рекламы</div>
+          <div class="big-number bad" id="b_ad_costs">—</div>
+        </div>
+        <div class="summary-item">
+          <div class="big-number-label">МП2 в рублях</div>
+          <div class="big-number good" id="b_mp2_rub">—</div>
+        </div>
+        <div class="summary-item">
+          <div class="big-number-label">МП2 в %</div>
+          <div class="big-number good" id="b_mp2_pct">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-title"><span class="card-num">1</span>Параметры пачки</div>
+        <p class="card-desc">Возьмём средневзвешенные данные с расчёта МП1 + параметры пачки</p>
+        
+        <div class="input-row">
+          <label>Количество SKU в пачке<small>сколько артикулов запускаешь одной пачкой</small></label>
+          <input type="number" id="batch_skus" value="300" step="10">
+        </div>
+        <div class="input-row">
+          <label>Сред. продаж на 1 SKU, шт/мес<small>сколько в среднем продаёт один артикул</small></label>
+          <input type="number" id="batch_sales_per_sku" value="80" step="5">
+        </div>
+        <div class="input-row">
+          <label>Доля активных SKU, %<small>обычно из пачки 60-80% реально продают</small></label>
+          <input type="number" id="batch_active_pct" value="70" step="5">
+        </div>
+        
+        <div class="group-title">Реклама</div>
+        <div class="input-row">
+          <label>Бюджет рекламы, ₽/арт/день<small>средний по пачке (АРК + АТ)</small></label>
+          <input type="number" id="ad_per_sku_day" value="1200" step="100">
+        </div>
+        <div class="input-row">
+          <label>Дней рекламы в месяце<small>30 если льёшь весь месяц</small></label>
+          <input type="number" id="ad_days" value="30" step="1">
+        </div>
+        <div class="input-row">
+          <label>Доля SKU под рекламой, %<small>реклама обычно идёт не на все, а на топовые</small></label>
+          <input type="number" id="ad_skus_pct" value="40" step="5">
+        </div>
+        
+        <div class="group-title">Прочие переменные расходы</div>
+        <div class="input-row">
+          <label>Зарплата команды, ₽/мес<small>менеджер кабинета, фотограф, дизайнер</small></label>
+          <input type="number" id="team_salary" value="200000" step="10000">
+        </div>
+        <div class="input-row">
+          <label>Сервисы, ₽/мес<small>MPStat, Джем, аналитика, СRM</small></label>
+          <input type="number" id="services" value="30000" step="5000">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="card-num">2</span>Детальный расчёт МП2</div>
+        <p class="card-desc">Что реально остаётся за месяц</p>
+        
+        <div class="result-block">
+          <div class="result-row plus">
+            <span class="label">+ Выручка пачки за месяц</span>
+            <span id="b_r_revenue">— ₽</span>
+          </div>
+          <div class="result-row plus">
+            <span class="label">МП1 со всех продаж</span>
+            <span id="b_r_mp1_total">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Реклама за месяц</span>
+            <span id="b_r_ads">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Зарплата команды</span>
+            <span id="b_r_team">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Сервисы и подписки</span>
+            <span id="b_r_services">— ₽</span>
+          </div>
+          <div class="result-row total">
+            <span class="label">МП2 за месяц</span>
+            <span id="b_r_mp2">— ₽</span>
+          </div>
+          <div class="result-row">
+            <span class="label">Точка безубыточности</span>
+            <span id="b_breakeven">— шт/мес</span>
+          </div>
+        </div>
+        
+        <div class="tip" id="mp2-tip">
+          МП2 — реальная маржа после рекламы и переменных расходов. Из неё ещё надо платить налоги и оставлять на развитие.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ВКЛАДКА 3: ФОРМУЛЫ ===== -->
+  <div class="tab-content" id="tab-formulas">
+    <div class="card">
+      <div class="card-title"><span class="card-num">📐</span>Формулы расчёта</div>
+      <p class="card-desc">Как считается каждая цифра. Можешь править прямо в коде если что-то надо изменить.</p>
+      
+      <h3 style="font-family: 'Fraunces', serif; margin-top: 16px; margin-bottom: 8px;">МП1 на одну пару</h3>
+      <div class="formula">
+ЦенаПокупателя = Цена_до_СПП × (1 − СПП%)<br>
+КомиссияWB    = ЦенаПокупателя × Комиссия%<br>
+Эквайринг     = ЦенаПокупателя × Эквайринг%<br>
+ЛогОбратнаяНаПродажу = ЛогОбратная × (1 − Выкуп%) / Выкуп%<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(возвраты делятся на каждую успешную продажу)<br><br>
+СебестЧистая = МетровТкани × ЦенаМетра + Пошив + Фурнитура +<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Упаковка + ЛогНаСклад<br>
+БракПроизв = СебестЧистая × БракПроизв% / (1 − БракПроизв%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(на каждую годную пару падает доля бракованных)<br><br>
+БракWB+потеряшки = (СебестЧистая + ЛогПрямая) ×<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(БракWB% + Потеряшки%) / (1 − БракWB% − Потеряшки%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(теряются уже отгруженные пары вместе с логистикой)<br><br>
+МП1 = ЦенаПокупателя − КомиссияWB − Эквайринг −<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ЛогПрямая − ЛогОбратнаяНаПродажу − Приёмка −<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Хранение − Штрафы − БракWB+потеряшки −<br>
+&nbsp;&nbsp;&nbsp;&nbsp;СебестЧистая − БракПроизв
+      </div>
+      
+      <h3 style="font-family: 'Fraunces', serif; margin-top: 24px; margin-bottom: 8px;">МП2 на пачку за месяц</h3>
+      <div class="formula">
+ВыручкаПачки = SKU × Активные% × Продаж_на_SKU × ЦенаПокупателя<br>
+МП1Пачки    = SKU × Активные% × Продаж_на_SKU × МП1_на_пару<br>
+РекламаМес  = SKU × Реклама_доля% × Бюджет_арт_день × Дней<br>
+ПостоянныеРасходы = Зарплата + Сервисы<br><br>
+МП2 = МП1Пачки − РекламаМес − ПостоянныеРасходы<br>
+МП2% = МП2 / ВыручкаПачки × 100
+      </div>
+      
+      <div class="tip" style="margin-top: 24px;">
+        <strong>Что НЕ учтено в калькуляторе:</strong> налоги (УСН 6% или 15%, НДС если на ОСНО), 
+        амортизация оборудования, аренда офиса/склада-цеха, банковские расходы, бухгалтерия, 
+        непредвиденные. Это вычитается уже из МП2 для получения чистой прибыли. Учти 25-35% сверху как буфер.
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Калькулятор юнитки штор · версия 1.0 · черновик для проверки формул
+  </footer>
+</div>
+
+<script>
+// ============= ВКЛАДКИ =============
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+  });
+});
+
+// ============= ПОДКЛЮЧАЕМ ВСЕ ИНПУТЫ К ПЕРЕРАСЧЁТУ =============
+const allInputs = document.querySelectorAll('input[type="number"]');
+allInputs.forEach(i => i.addEventListener('input', recalc));
+
+// ============= ЗАГРУЗКА СОХРАНЁННЫХ ДАННЫХ =============
+const STORAGE_KEY = 'curtain_calc_v1';
+
+function loadData() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const data = JSON.parse(saved);
+      Object.entries(data).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      });
+    }
+  } catch (e) {
+    console.error('Не удалось загрузить сохранённые данные:', e);
+  }
+  recalc();
+}
+
+function saveData() {
+  const data = {};
+  allInputs.forEach(i => { data[i.id] = i.value; });
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    
+    // Красивая нотификация вместо alert
+    const notif = document.createElement('div');
+    notif.textContent = '✓ Сохранено';
+    notif.style.cssText = 'position:fixed;top:20px;right:20px;background:#166534;color:white;padding:12px 20px;border-radius:8px;font-family:Manrope,sans-serif;font-weight:500;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.2);animation:slideIn 0.3s ease';
+    document.body.appendChild(notif);
+    setTimeout(() => notif.remove(), 2000);
+  } catch (e) {
+    alert('Не удалось сохранить: ' + e.message);
+  }
+}
+
+function resetUnit() {
+  if (!confirm('Сбросить все поля на дефолты?')) return;
+  const defaults = {
+    price_before_spp: 2000, spp_pct: 3, redemption_pct: 73,
+    commission_pct: 25, acquiring_pct: 1.8, logistics_forward: 90, logistics_back: 50,
+    acceptance_fbo: 25, storage: 15, penalties: 5,
+    defect_wb_pct: 1.5, lost_pct: 1,
+    fabric_meters: 6, fabric_price: 180, sewing_cost: 200, hardware_cost: 80,
+    packaging_cost: 30, inbound_logistics: 20, defect_prod_pct: 2,
+    batch_skus: 300, batch_sales_per_sku: 80, batch_active_pct: 70,
+    ad_per_sku_day: 1200, ad_days: 30, ad_skus_pct: 40,
+    team_salary: 200000, services: 30000
+  };
+  Object.entries(defaults).forEach(([id, v]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = v;
+  });
+  recalc();
+}
+
+// ============= ВСПОМОГАТЕЛЬНЫЕ =============
+const $ = id => parseFloat(document.getElementById(id).value) || 0;
+const fmt = n => Math.round(n).toLocaleString('ru-RU');
+const fmtMln = n => (n/1e6).toFixed(2);
+
+// ============= ГЛАВНАЯ ФУНКЦИЯ ПЕРЕСЧЁТА =============
+function recalc() {
+  // ----- ЦЕНА И ВЫКУП -----
+  const price_spp = $('price_before_spp');
+  const spp_pct = $('spp_pct') / 100;
+  const redemption = $('redemption_pct') / 100;
+  
+  // Цена покупателя = что реально приходит в кабинет WB
+  const price_customer = price_spp * (1 - spp_pct);
+  
+  // ----- РАСХОДЫ WB -----
+  const commission = price_customer * $('commission_pct') / 100;
+  const acquiring = price_customer * $('acquiring_pct') / 100;
+  const log_forward = $('logistics_forward');
+  
+  // Логистика обратная: на каждую УСПЕШНУЮ продажу приходится N невыкупов
+  // Если выкуп 73%, то на 1 продажу = (1-0.73)/0.73 = 0.37 возврата
+  const log_back_per_sale = redemption > 0 
+    ? $('logistics_back') * (1 - redemption) / redemption
+    : 0;
+  
+  const acceptance = $('acceptance_fbo');
+  const storage = $('storage');
+  const penalties = $('penalties');
+  
+  // Брак и потеряшки на стороне WB
+  const defect_wb = $('defect_wb_pct') / 100;
+  const lost = $('lost_pct') / 100;
+  
+  // ----- СЕБЕСТОИМОСТЬ -----
+  const cogs_clean = $('fabric_meters') * $('fabric_price') 
+                   + $('sewing_cost') 
+                   + $('hardware_cost') 
+                   + $('packaging_cost') 
+                   + $('inbound_logistics');
+  
+  // Производственный брак: накидка на себестоимость
+  // Если 2% брака - значит на каждую годную пару пришлось 2% дополнительной себестоимости
+  const defect_prod_pct = $('defect_prod_pct') / 100;
+  const defect_prod_cost = cogs_clean * defect_prod_pct / (1 - defect_prod_pct);
+  
+  // Брак WB: теряется уже отгруженная пара (себестоимость + лог.прямая + комиссии)
+  // На каждую успешную продажу приходится defect_wb единиц убытка
+  const wb_loss_per_unit = cogs_clean + log_forward;
+  const defect_wb_cost = wb_loss_per_unit * (defect_wb + lost) / (1 - defect_wb - lost);
+  
+  // ----- МП1 -----
+  const total_costs = commission + acquiring + log_forward + log_back_per_sale 
+                    + acceptance + storage + penalties + defect_wb_cost
+                    + cogs_clean + defect_prod_cost;
+  const mp1 = price_customer - total_costs;
+  const mp1_pct = price_customer > 0 ? (mp1 / price_customer * 100) : 0;
+  
+  // ----- ВЫВОД В ИНТЕРФЕЙС: ДЕТАЛИ -----
+  document.getElementById('r_price_after_spp').textContent = fmt(price_customer) + ' ₽';
+  document.getElementById('r_price').textContent = fmt(price_customer) + ' ₽';
+  document.getElementById('r_commission').textContent = '−' + fmt(commission) + ' ₽';
+  document.getElementById('r_acquiring').textContent = '−' + fmt(acquiring) + ' ₽';
+  document.getElementById('r_log_forward').textContent = '−' + fmt(log_forward) + ' ₽';
+  document.getElementById('r_log_back').textContent = '−' + fmt(log_back_per_sale) + ' ₽';
+  document.getElementById('r_acceptance').textContent = '−' + fmt(acceptance) + ' ₽';
+  document.getElementById('r_storage').textContent = '−' + fmt(storage) + ' ₽';
+  document.getElementById('r_penalties').textContent = '−' + fmt(penalties) + ' ₽';
+  document.getElementById('r_defect_wb').textContent = '−' + fmt(defect_wb_cost) + ' ₽';
+  document.getElementById('r_cogs').textContent = '−' + fmt(cogs_clean) + ' ₽';
+  document.getElementById('r_defect_prod').textContent = '−' + fmt(defect_prod_cost) + ' ₽';
+  document.getElementById('r_mp1').textContent = fmt(mp1) + ' ₽ (' + mp1_pct.toFixed(1) + '%)';
+  
+  // ----- ВЫВОД В ИНТЕРФЕЙС: СВОДКА -----
+  document.getElementById('sum-revenue').textContent = fmt(price_customer) + ' ₽';
+  document.getElementById('sum-costs').textContent = fmt(total_costs) + ' ₽';
+  document.getElementById('sum-mp1-rub').textContent = fmt(mp1) + ' ₽';
+  document.getElementById('sum-mp1-pct').textContent = mp1_pct.toFixed(1) + '%';
+  
+  // Цвет МП1 в зависимости от значения
+  const mp1Elem = document.getElementById('sum-mp1-rub');
+  const mp1PctElem = document.getElementById('sum-mp1-pct');
+  if (mp1 < 0) {
+    mp1Elem.classList.remove('good'); mp1Elem.classList.add('bad');
+    mp1PctElem.classList.remove('good'); mp1PctElem.classList.add('bad');
+  } else {
+    mp1Elem.classList.remove('bad'); mp1Elem.classList.add('good');
+    mp1PctElem.classList.remove('bad'); mp1PctElem.classList.add('good');
+  }
+  
+  // ----- ПОДСКАЗКА ПО МП1 -----
+  let tip;
+  if (mp1 < 0) tip = '🔴 МП1 отрицательная — товар продаётся в убыток ещё ДО рекламы. Менять цену или себестоимость.';
+  else if (mp1_pct < 15) tip = '🟡 МП1 меньше 15% — после рекламы скорее всего уйдёшь в минус. Обычно нужно 25-35% МП1 чтобы окупить рекламу.';
+  else if (mp1_pct < 25) tip = '🟢 МП1 на грани нормы. Жить можно, но рекламный бюджет надо считать жёстко.';
+  else if (mp1_pct < 35) tip = '🟢 МП1 в хорошем диапазоне для шторного сегмента.';
+  else tip = '🚀 МП1 высокая — есть запас для агрессивной рекламы и масштабирования.';
+  document.getElementById('mp1-tip').innerHTML = tip;
+  
+  // ============= МП2 НА ПАЧКУ =============
+  const skus = $('batch_skus');
+  const sales_per_sku = $('batch_sales_per_sku');
+  const active_pct = $('batch_active_pct') / 100;
+  const ad_per_day = $('ad_per_sku_day');
+  const ad_days = $('ad_days');
+  const ad_skus_pct = $('ad_skus_pct') / 100;
+  
+  const active_skus = skus * active_pct;
+  const monthly_sales = active_skus * sales_per_sku;
+  const monthly_revenue = monthly_sales * price_customer;
+  const mp1_total = monthly_sales * mp1;
+  const ads_monthly = skus * ad_skus_pct * ad_per_day * ad_days;
+  const team = $('team_salary');
+  const services = $('services');
+  
+  const mp2 = mp1_total - ads_monthly - team - services;
+  const mp2_pct = monthly_revenue > 0 ? (mp2 / monthly_revenue * 100) : 0;
+  const breakeven_sales = mp1 > 0 ? Math.ceil((ads_monthly + team + services) / mp1) : 0;
+  
+  // ----- ВЫВОД МП2 -----
+  document.getElementById('b_revenue').textContent = fmtMln(monthly_revenue) + ' млн';
+  document.getElementById('b_ad_costs').textContent = fmtMln(ads_monthly) + ' млн';
+  document.getElementById('b_mp2_rub').textContent = fmtMln(mp2) + ' млн';
+  document.getElementById('b_mp2_pct').textContent = mp2_pct.toFixed(1) + '%';
+  
+  document.getElementById('b_r_revenue').textContent = fmt(monthly_revenue) + ' ₽';
+  document.getElementById('b_r_mp1_total').textContent = fmt(mp1_total) + ' ₽';
+  document.getElementById('b_r_ads').textContent = '−' + fmt(ads_monthly) + ' ₽';
+  document.getElementById('b_r_team').textContent = '−' + fmt(team) + ' ₽';
+  document.getElementById('b_r_services').textContent = '−' + fmt(services) + ' ₽';
+  document.getElementById('b_r_mp2').textContent = fmt(mp2) + ' ₽ (' + mp2_pct.toFixed(1) + '%)';
+  document.getElementById('b_breakeven').textContent = fmt(breakeven_sales) + ' шт/мес';
+  
+  // Цвет МП2
+  const mp2Elem = document.getElementById('b_mp2_rub');
+  const mp2PctElem = document.getElementById('b_mp2_pct');
+  if (mp2 < 0) {
+    mp2Elem.classList.remove('good'); mp2Elem.classList.add('bad');
+    mp2PctElem.classList.remove('good'); mp2PctElem.classList.add('bad');
+  } else {
+    mp2Elem.classList.remove('bad'); mp2Elem.classList.add('good');
+    mp2PctElem.classList.remove('bad'); mp2PctElem.classList.add('good');
+  }
+  
+  // Подсказка МП2
+  let tip2;
+  if (mp2 < 0) tip2 = '🔴 МП2 в минусе — пачка не окупает себя. Либо урезать рекламу, либо повысить выручку, либо пересмотреть юнитку.';
+  else if (mp2_pct < 5) tip2 = '🟡 МП2 < 5% — слишком тонкий запас, любая просадка выкупа или рост рекламы съест прибыль.';
+  else if (mp2_pct < 12) tip2 = '🟢 МП2 в нормальном диапазоне для масштабируемой работы.';
+  else tip2 = '🚀 Сильная МП2 — можно реинвестировать в новые SKU и рост.';
+  document.getElementById('mp2-tip').innerHTML = tip2;
+}
+
+// ============= СТАРТ =============
+loadData();
+</script>
+
+</body>
+</html>
