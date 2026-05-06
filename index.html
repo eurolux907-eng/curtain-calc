@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Калькулятор юнитки штор WB</title>
+<title>ЮНИТКА ПРОГНОЗАТОР</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -131,8 +131,25 @@
     margin: 16px 0 6px;
     padding-top: 12px;
     border-top: 1px solid var(--line);
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.15s;
   }
+  .group-title:hover { opacity: 0.7; }
   .group-title:first-child { padding-top: 0; border-top: none; margin-top: 0; }
+  .group-title::before {
+    content: '▼';
+    font-size: 8px;
+    color: var(--accent);
+    transition: transform 0.2s;
+    display: inline-block;
+    width: 10px;
+  }
+  .group-title.collapsed::before { transform: rotate(-90deg); }
+  .collapsed-content { display: none !important; }
   
   /* ===== РЕЗУЛЬТАТЫ ===== */
   .result-block {
@@ -243,6 +260,56 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
   
+  /* ===== МИНИ-ТАБЫ ВНУТРИ КАРТОЧКИ ===== */
+  .mode-tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 14px;
+    background: var(--bg-input);
+    padding: 3px;
+    border-radius: 7px;
+    width: fit-content;
+  }
+  .mode-tab {
+    background: transparent;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 5px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: all 0.15s;
+  }
+  .mode-tab.active {
+    background: var(--bg-card);
+    color: var(--ink);
+    box-shadow: 0 1px 2px rgba(26,24,21,.06);
+  }
+  .mode-pane { display: none; }
+  .mode-pane.active { display: block; }
+  
+  /* Подсказка-вывод вычисленного % */
+  .out-row {
+    display: grid;
+    grid-template-columns: 1fr 110px;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .out-row:last-child { border-bottom: none; }
+  .out-row label { font-size: 13px; color: var(--ink-soft); font-weight: 500; }
+  .out-row label small { display: block; color: var(--ink-soft); font-weight: 400; font-size: 11px; margin-top: 1px; }
+  .out-row .out-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    text-align: right;
+    font-weight: 600;
+  }
+  
   /* ===== КНОПКИ ===== */
   .btn {
     background: var(--ink);
@@ -285,33 +352,42 @@
 <div class="container">
 
   <header>
-    <h1>Юнитка <em>штор</em> на Wildberries</h1>
-    <p class="subtitle">МП1 на одну пару · МП2 на пачку SKU · все расходы учтены</p>
+    <h1>Юнитка <em>Прогнозатор</em></h1>
+    <p class="subtitle">МП1 — маржа единицы товара · МП2 — маржа партии после рекламы и расходов</p>
   </header>
 
   <div class="tabs">
-    <button class="tab active" data-tab="unit">МП1 — на пару</button>
-    <button class="tab" data-tab="batch">МП2 — на пачку</button>
-    <button class="tab" data-tab="formulas">Формулы</button>
+    <button class="tab active" data-tab="unit">МП1 — единица + партия</button>
+    <button class="tab" data-tab="batch">МП2 — реклама и итог</button>
+    <button class="tab" data-tab="howto">Как пользоваться</button>
+    <button class="tab" data-tab="formulas" style="display:none;">Формулы</button>
   </div>
 
-  <!-- ===== ВКЛАДКА 1: МП1 НА ОДНУ ПАРУ ===== -->
+  <!-- ===== ВКЛАДКА 1: МП1 ===== -->
   <div class="tab-content active" id="tab-unit">
+    
+    <!-- ПАНЕЛЬ КОЛИЧЕСТВА -->
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+      <label style="font-size: 13px; color: var(--ink-soft); font-weight: 500;">Количество единиц:</label>
+      <input type="number" id="batch_units" value="1" step="1" min="1"
+        style="background: var(--bg-input); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--ink); text-align: right; width: 130px;">
+      <span style="font-size: 12px; color: var(--ink-muted);" id="batch_hint">— юнит-экономика по 1 единице. Поставь больше — увидишь партию.</span>
+    </div>
     
     <!-- ИТОГОВАЯ СВОДКА (наверху чтобы сразу видеть) -->
     <div class="summary">
-      <h2>Итого по одной паре</h2>
+      <h2 id="sum_title">Итого по 1 единице</h2>
       <div class="summary-grid">
         <div class="summary-item">
-          <div class="big-number-label">Выручка с продажи</div>
+          <div class="big-number-label" id="sum_revenue_label">Выручка с продажи</div>
           <div class="big-number" id="sum-revenue">—</div>
         </div>
         <div class="summary-item">
-          <div class="big-number-label">Все расходы</div>
+          <div class="big-number-label" id="sum_costs_label">Все расходы</div>
           <div class="big-number bad" id="sum-costs">—</div>
         </div>
         <div class="summary-item">
-          <div class="big-number-label">МП1 в рублях</div>
+          <div class="big-number-label" id="sum_mp1_rub_label">МП1 в рублях</div>
           <div class="big-number good" id="sum-mp1-rub">—</div>
         </div>
         <div class="summary-item">
@@ -325,21 +401,87 @@
       <!-- КАРТОЧКА 1: ЦЕНА -->
       <div class="card">
         <div class="card-title"><span class="card-num">1</span>Цена</div>
-        <p class="card-desc">Какая цена в карточке и сколько остаётся после СПП</p>
+        <p class="card-desc">Цепочка скидок: что в карточке → что получает продавец → что платит покупатель</p>
         
-        <div class="input-row">
-          <label>Цена до СПП, ₽<small>цена которую видит WB до скидки постоянного покупателя</small></label>
-          <input type="number" id="price_before_spp" value="2000" step="10">
-        </div>
-        <div class="input-row">
-          <label>СПП, %<small>скидка постоянного покупателя (за счёт WB, не твой расход)</small></label>
-          <input type="number" id="spp_pct" value="3" step="0.5">
+        <!-- Мини-табы переключения режима ввода -->
+        <div class="mode-tabs">
+          <button class="mode-tab active" data-mode="pct">От процентов</button>
+          <button class="mode-tab" data-mode="prices">От цен WB</button>
         </div>
         
-        <div class="result-block" style="margin-top: 12px;">
-          <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0;">
-            <span class="label">Цена после СПП</span>
-            <span id="r_price_after_spp">— ₽</span>
+        <!-- ===== РЕЖИМ А: От процентов ===== -->
+        <div class="mode-pane active" data-mode-pane="pct">
+          <div class="group-title">Цена и скидки продавца</div>
+          <div class="input-row">
+            <label>Базовая цена, ₽<small>стартовая в карточке до любых скидок</small></label>
+            <input type="number" id="price_base" value="2500" step="10">
+          </div>
+          <div class="input-row">
+            <label>Скидка продавца, %<small>твоя собственная скидка (за твой счёт)</small></label>
+            <input type="number" id="seller_disc_pct" value="20" step="1">
+          </div>
+          <div class="input-row">
+            <label>Акция WB, %<small>обязательная скидка в акции (за твой счёт)</small></label>
+            <input type="number" id="action_pct" value="0" step="1">
+          </div>
+          
+          <div class="result-block" style="margin-top: 12px;">
+            <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0;">
+              <span class="label">Цена продавца</span>
+              <span id="r_price_seller">— ₽</span>
+            </div>
+          </div>
+          
+          <div class="group-title">Скидки за счёт WB</div>
+          <div class="input-row">
+            <label>СПП, %<small>скидка постоянного покупателя (за счёт WB)</small></label>
+            <input type="number" id="spp_pct" value="3" step="0.5">
+          </div>
+          <div class="input-row">
+            <label>WB Кошелёк, %<small>обычно ~2%, за счёт WB</small></label>
+            <input type="number" id="wallet_pct" value="2" step="0.5">
+          </div>
+          
+          <div class="result-block" style="margin-top: 12px;">
+            <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0;">
+              <span class="label">Цена покупателя</span>
+              <span id="r_price_after_spp">— ₽</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- ===== РЕЖИМ Б: От цен WB ===== -->
+        <div class="mode-pane" data-mode-pane="prices">
+          <div class="group-title">Известные цены</div>
+          <div class="input-row">
+            <label>Базовая цена, ₽<small>стартовая в карточке (RRP)</small></label>
+            <input type="number" id="price_base_b" value="2500" step="10">
+          </div>
+          <div class="input-row">
+            <label>Медианная из Джема, ₽<small>цена продавца после скидки и акции</small></label>
+            <input type="number" id="price_jem" value="2000" step="10">
+          </div>
+          <div class="input-row">
+            <label>Цена без кошелька на WB, ₽<small>что покупатель видит до Кошелька</small></label>
+            <input type="number" id="price_no_wallet" value="1940" step="10">
+          </div>
+          <div class="input-row">
+            <label>Цена с кошельком на WB, ₽<small>финальная цена для покупателя</small></label>
+            <input type="number" id="price_with_wallet" value="1900" step="10">
+          </div>
+          
+          <div class="group-title">Вычисленные проценты</div>
+          <div class="out-row">
+            <label>Скидка продавца + акция, %<small>1 − Медиа/Базовая</small></label>
+            <span class="out-value" id="out_seller_disc">— %</span>
+          </div>
+          <div class="out-row">
+            <label>СПП, %<small>1 − БезКошелька/Медиа</small></label>
+            <span class="out-value" id="out_spp">— %</span>
+          </div>
+          <div class="out-row">
+            <label>WB Кошелёк, %<small>1 − СКошельком/БезКошелька</small></label>
+            <span class="out-value" id="out_wallet">— %</span>
           </div>
         </div>
         
@@ -350,39 +492,137 @@
         </div>
       </div>
 
-      <!-- КАРТОЧКА 2: КОМИССИИ WB -->
+      <!-- КАРТОЧКА 2: РАСХОДЫ WB + НАЛОГИ РФ -->
       <div class="card">
-        <div class="card-title"><span class="card-num">2</span>Расходы WB</div>
-        <p class="card-desc">Что WB удержит и какие потери на стороне площадки</p>
+        <div class="card-title"><span class="card-num">2</span>Расходы WB + налоги РФ</div>
+        <p class="card-desc">Что WB удержит, что государство удержит, и потери на стороне площадки</p>
         
-        <div class="group-title">Комиссии и сборы</div>
+        <div class="group-title">Комиссии</div>
         <div class="input-row">
-          <label>Комиссия WB, %<small>FBO для шторной категории</small></label>
+          <label>Комиссия WB, %<small>FBO для шторной категории, считается с цены продавца</small></label>
           <input type="number" id="commission_pct" value="25" step="0.5">
         </div>
         <div class="input-row">
-          <label>Эквайринг, %<small>обработка платежа</small></label>
+          <label>Эквайринг, %<small>обработка платежа, с цены покупателя</small></label>
           <input type="number" id="acquiring_pct" value="1.8" step="0.1">
         </div>
+        
+        <div class="group-title">Габариты пары</div>
         <div class="input-row">
-          <label>Логистика прямая, ₽<small>доставка единицы покупателю</small></label>
-          <input type="number" id="logistics_forward" value="90" step="5">
+          <label>Длина, см<small>самая длинная сторона упаковки</small></label>
+          <input type="number" id="dim_length" value="50" step="1">
         </div>
         <div class="input-row">
-          <label>Логистика обратная, ₽<small>возврат единицы (за каждый возврат)</small></label>
-          <input type="number" id="logistics_back" value="50" step="5">
+          <label>Ширина, см<small></small></label>
+          <input type="number" id="dim_width" value="30" step="1">
         </div>
+        <div class="input-row">
+          <label>Высота, см<small></small></label>
+          <input type="number" id="dim_height" value="6" step="1">
+        </div>
+        <div class="result-block" style="margin-top: 12px;">
+          <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0;">
+            <span class="label">Литраж</span>
+            <span id="r_volume">— л</span>
+          </div>
+        </div>
+        
+        <div class="group-title">Логистика прямая (тарифы из кабинета WB)</div>
+        <div class="input-row">
+          <label>Тариф 1 литра, ₽<small>уже с коэф. склада</small></label>
+          <input type="number" id="log_fwd_first" value="82.8" step="0.1">
+        </div>
+        <div class="input-row">
+          <label>Тариф доп. литра, ₽<small>уже с коэф. склада</small></label>
+          <input type="number" id="log_fwd_extra" value="25.2" step="0.1">
+        </div>
+        <div class="input-row">
+          <label>Индекс локализации (ИЛ)<small>1.00 = базовая стоимость, меньше — скидка</small></label>
+          <input type="number" id="loc_index" value="1.00" step="0.05">
+        </div>
+        <div class="input-row">
+          <label>ИРП, %<small>индекс распределения продаж, при локализации &gt;60% = 0</small></label>
+          <input type="number" id="irp_pct" value="0" step="0.1">
+        </div>
+        <div class="result-block" style="margin-top: 12px;">
+          <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0;">
+            <span class="label">Логистика прямая на ед.</span>
+            <span id="r_log_fwd_calc">— ₽</span>
+          </div>
+        </div>
+        
+        <div class="group-title">Логистика обратная (базовая ставка WB)</div>
+        <div class="input-row">
+          <label>Тариф 1 литра, ₽<small>фикс WB, обычно 46</small></label>
+          <input type="number" id="log_back_first" value="46" step="1">
+        </div>
+        <div class="input-row">
+          <label>Тариф доп. литра, ₽<small>фикс WB, обычно 14</small></label>
+          <input type="number" id="log_back_extra" value="14" step="1">
+        </div>
+        <div class="result-block" style="margin-top: 12px;">
+          <div class="result-row" style="border-top: none; margin-top: 0; padding-top: 0;">
+            <span class="label">За один возврат</span>
+            <span id="r_log_back_calc">— ₽</span>
+          </div>
+          <div class="result-row total" style="border-top: 1px dashed var(--line); margin-top: 6px; padding-top: 8px;">
+            <span class="label" id="r_log_back_per_sale_label">На 1 продажу при выкупе —</span>
+            <span id="r_log_back_per_sale">— ₽</span>
+          </div>
+        </div>
+        
+        <div class="group-title">Хранение (тарифы из кабинета WB)</div>
+        <div class="input-row">
+          <label>Тариф 1 литра в день, ₽<small>с коэф. склада</small></label>
+          <input type="number" id="stor_first" value="0.14" step="0.01">
+        </div>
+        <div class="input-row">
+          <label>Тариф доп. литра в день, ₽<small>с коэф. склада</small></label>
+          <input type="number" id="stor_extra" value="0.14" step="0.01">
+        </div>
+        <div class="input-row">
+          <label>Среднее дней хранения<small>сколько дней пара лежит на складе до продажи</small></label>
+          <input type="number" id="stor_days" value="30" step="1">
+        </div>
+        <div class="result-block" style="margin-top: 12px;">
+          <div class="result-row" style="border-top: none; margin-top: 0; padding-top: 0;">
+            <span class="label">Хранение в день, ₽</span>
+            <span id="r_stor_day">— ₽</span>
+          </div>
+          <div class="result-row total" style="border-top: 1px dashed var(--line); margin-top: 6px; padding-top: 8px;">
+            <span class="label">Хранение за весь срок</span>
+            <span id="r_stor_total">— ₽</span>
+          </div>
+        </div>
+        
+        <div class="group-title">Прочие сборы</div>
         <div class="input-row">
           <label>Приёмка FBO, ₽<small>сбор за приёмку на склад WB</small></label>
-          <input type="number" id="acceptance_fbo" value="25" step="5">
+          <input type="number" id="acceptance_fbo" value="0" step="1">
         </div>
         <div class="input-row">
-          <label>Хранение, ₽/ед/мес<small>средняя стоимость хранения пары на складе</small></label>
-          <input type="number" id="storage" value="15" step="1">
+          <label>Штрафы / прочее, ₽/ед<small>буфер на штрафы маркировка/упаковка</small></label>
+          <input type="number" id="penalties" value="0" step="1">
+        </div>
+        
+        <div class="group-title">Налоги РФ</div>
+        <div class="input-row">
+          <label>УСН "Доходы", %<small>фикс, с 2025 г. = 6%</small></label>
+          <input type="number" id="tax_usn" value="6" step="0.5">
         </div>
         <div class="input-row">
-          <label>Штрафы / прочее, ₽/ед<small>буфер на штрафы упаковка/маркировка/etc</small></label>
-          <input type="number" id="penalties" value="5" step="1">
+          <label>НДС, %<small>0% до 20 млн оборота, 5% до 272.5 млн, 7% до 490.5 млн</small></label>
+          <input type="number" id="tax_vat" value="7" step="0.5">
+        </div>
+        <div class="result-block" style="margin-top: 12px;">
+          <div class="result-row" style="border-top: none; margin-top: 0; padding-top: 0;">
+            <span class="label">Итого ставка налога</span>
+            <span id="r_tax_rate">— %</span>
+          </div>
+          <div class="result-row total" style="border-top: 1px dashed var(--line); margin-top: 6px; padding-top: 8px;">
+            <span class="label">Налоги с ед. (от Цены продавца)</span>
+            <span id="r_tax_amount">— ₽</span>
+          </div>
         </div>
         
         <div class="group-title">Потери на стороне WB</div>
@@ -398,35 +638,135 @@
 
       <!-- КАРТОЧКА 3: СЕБЕСТОИМОСТЬ -->
       <div class="card">
-        <div class="card-title"><span class="card-num">3</span>Себестоимость пары</div>
-        <p class="card-desc">Что ты тратишь на производство одной пары</p>
+        <div class="card-title"><span class="card-num">3</span>Себестоимость товара</div>
+        <p class="card-desc">Что ты тратишь на производство одной единицы</p>
         
-        <div class="group-title">Ткань</div>
+        <!-- Мини-табы переключения режима ввода себестоимости -->
+        <div class="mode-tabs">
+          <button class="mode-tab active" data-mode-cost="detail">Детально</button>
+          <button class="mode-tab" data-mode-cost="simple">Общей суммой</button>
+        </div>
+        
+        <!-- ===== РЕЖИМ "Общей суммой" ===== -->
+        <div class="mode-pane" data-mode-cost-pane="simple">
+          <div class="input-row">
+            <label>Себестоимость товара, ₽<small>полная себестоимость без разбивки</small></label>
+            <input type="number" id="cost_simple" value="800" step="10">
+          </div>
+          <div class="input-row">
+            <label>Брак производственный, %<small>накидка на годную единицу</small></label>
+            <input type="number" id="defect_prod_pct_simple" value="2" step="0.5">
+          </div>
+        </div>
+        
+        <!-- ===== РЕЖИМ "Детально" ===== -->
+        <div class="mode-pane active" data-mode-cost-pane="detail">
+        <div class="group-title">Материалы</div>
         <div class="input-row">
-          <label>Метров ткани на пару<small>на размер 150×240 примерно 6 м</small></label>
-          <input type="number" id="fabric_meters" value="6" step="0.1">
+          <label>Метров ткани на ед.<small>на единицу товара</small></label>
+          <input type="number" id="fabric_meters" value="3.2" step="0.1">
         </div>
         <div class="input-row">
           <label>Цена 1 м ткани, ₽<small>оптовая закупочная</small></label>
           <input type="number" id="fabric_price" value="180" step="5">
         </div>
+        <div class="input-row">
+          <label>Метров ленты на ед.<small>с запасом на загибы</small></label>
+          <input type="number" id="ribbon_meters" value="3.15" step="0.05">
+        </div>
+        <div class="input-row">
+          <label>Цена 1 м ленты, ₽<small></small></label>
+          <input type="number" id="ribbon_price" value="30" step="1">
+        </div>
+        <div class="input-row">
+          <label>Цена бабины ниток, ₽<small>оптовая</small></label>
+          <input type="number" id="thread_bobbin_price" value="1500" step="50">
+        </div>
+        <div class="input-row">
+          <label>Комплектов на бабину, шт<small>на сколько единиц хватает</small></label>
+          <input type="number" id="thread_bobbin_units" value="200" step="10">
+        </div>
+        <div class="input-row">
+          <label>Пакет 1 (липучка), ₽<small></small></label>
+          <input type="number" id="bag1_price" value="8" step="1">
+        </div>
+        <div class="input-row">
+          <label>Пакет 2 (бегунок), ₽<small></small></label>
+          <input type="number" id="bag2_price" value="12" step="1">
+        </div>
+        <div class="input-row">
+          <label>Листовка, ₽<small></small></label>
+          <input type="number" id="leaflet_price" value="3" step="1">
+        </div>
+        <div class="result-block" style="margin-top: 12px;">
+          <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0;">
+            <span class="label">Материалы на ед.</span>
+            <span id="r_cost_materials">— ₽</span>
+          </div>
+        </div>
         
-        <div class="group-title">Производство</div>
+        <div class="group-title">Тара (распределяется на пары)</div>
         <div class="input-row">
-          <label>Пошив пары, ₽<small>зарплата швеи + раскрой</small></label>
-          <input type="number" id="sewing_cost" value="200" step="10">
+          <label>Цена коробки, ₽<small></small></label>
+          <input type="number" id="box_price" value="100" step="5">
         </div>
         <div class="input-row">
-          <label>Фурнитура, ₽<small>лента, люверсы, ярлык</small></label>
-          <input type="number" id="hardware_cost" value="80" step="5">
+          <label>Комплектов в коробке, шт<small>шт в одной коробке</small></label>
+          <input type="number" id="box_units" value="10" step="1">
         </div>
         <div class="input-row">
-          <label>Упаковка, ₽<small>пакет, наклейка, маркировка</small></label>
-          <input type="number" id="packaging_cost" value="30" step="5">
+          <label>Цена поддона, ₽<small></small></label>
+          <input type="number" id="pallet_price" value="600" step="10">
         </div>
         <div class="input-row">
-          <label>Логистика на склад, ₽<small>доставка от производства до склада WB</small></label>
-          <input type="number" id="inbound_logistics" value="20" step="5">
+          <label>Коробок на поддоне, шт<small></small></label>
+          <input type="number" id="pallet_boxes" value="12" step="1">
+        </div>
+        <div class="result-block" style="margin-top: 12px;">
+          <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0;">
+            <span class="label">Тара на ед.</span>
+            <span id="r_cost_packaging">— ₽</span>
+          </div>
+        </div>
+        
+        <div class="group-title">Работы</div>
+        <div class="input-row">
+          <label>Крой, ₽/ед.<small></small></label>
+          <input type="number" id="work_cut" value="30" step="5">
+        </div>
+        <div class="input-row">
+          <label>Отшив, ₽/ед.<small>основная работа</small></label>
+          <input type="number" id="work_sew" value="150" step="10">
+        </div>
+        <div class="input-row">
+          <label>Упаковка, ₽/ед.<small>работа по упаковке</small></label>
+          <input type="number" id="work_pack" value="20" step="5">
+        </div>
+        <div class="input-row">
+          <label>Погрузка, ₽/коробку<small>распределится на единицы в коробке</small></label>
+          <input type="number" id="work_load" value="300" step="10">
+        </div>
+        <div class="result-block" style="margin-top: 12px;">
+          <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0;">
+            <span class="label">Работы на ед.</span>
+            <span id="r_cost_labor">— ₽</span>
+          </div>
+        </div>
+        
+        <div class="group-title">Логистика до склада WB</div>
+        <div class="input-row">
+          <label>Цена поставки, ₽<small>стоимость машины целиком</small></label>
+          <input type="number" id="delivery_price" value="50000" step="1000">
+        </div>
+        <div class="input-row">
+          <label>Комплектов в поставке, шт<small>сколько единиц в одной поставке</small></label>
+          <input type="number" id="delivery_units" value="1000" step="100">
+        </div>
+        <div class="result-block" style="margin-top: 12px;">
+          <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0;">
+            <span class="label">Логистика на ед.</span>
+            <span id="r_cost_delivery">— ₽</span>
+          </div>
         </div>
         
         <div class="group-title">Производственный брак</div>
@@ -434,16 +774,39 @@
           <label>Брак производственный, %<small>швея накосячила, дефект ткани, плохой пошив</small></label>
           <input type="number" id="defect_prod_pct" value="2" step="0.5">
         </div>
+        <div class="result-block" style="margin-top: 12px;">
+          <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0;">
+            <span class="label">Брак на ед.</span>
+            <span id="r_cost_defect">— ₽</span>
+          </div>
+        </div>
+        </div><!-- /mode-pane detail -->
+        
+        <!-- ИТОГ ПО СЕБЕСТОИМОСТИ -->
+        <div class="result-block" style="margin-top: 20px; background: var(--ink); color: var(--bg);">
+          <div class="result-row" style="color: rgba(250,247,242,0.6); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding-bottom: 4px;">
+            <span class="label" style="color: inherit;">Полная себестоимость товара</span>
+            <span></span>
+          </div>
+          <div class="result-row total" style="border-top: none; margin-top: 0; padding-top: 0; font-size: 18px;">
+            <span class="label" style="color: var(--bg);">с учётом брака</span>
+            <span id="r_cost_total" style="color: var(--bg);">— ₽</span>
+          </div>
+          <div class="result-row" style="color: rgba(250,247,242,0.6); border-top: 1px solid rgba(250,247,242,0.2); margin-top: 10px; padding-top: 8px; font-size: 12px;">
+            <span class="label" style="color: inherit;" id="r_cost_batch_label">Себестоимость партии (для закупки)</span>
+            <span id="r_cost_batch" style="color: var(--bg); font-weight: 600;">— ₽</span>
+          </div>
+        </div>
       </div>
 
       <!-- КАРТОЧКА 4: ДЕТАЛЬНЫЙ РАСЧЁТ -->
       <div class="card">
         <div class="card-title"><span class="card-num">4</span>Детальный расчёт МП1</div>
-        <p class="card-desc">Как складывается твоя маржа на одну пару</p>
+        <p class="card-desc" id="card4_desc">Как складывается твоя маржа на одну единицу</p>
         
         <div class="result-block">
           <div class="result-row plus">
-            <span class="label">+ Цена покупателя (после СПП)</span>
+            <span class="label">+ Выручка продавца (с цены продавца)</span>
             <span id="r_price">— ₽</span>
           </div>
           <div class="result-row minus">
@@ -475,11 +838,15 @@
             <span id="r_penalties">— ₽</span>
           </div>
           <div class="result-row minus">
+            <span class="label">− Налоги (УСН + НДС)</span>
+            <span id="r_tax">— ₽</span>
+          </div>
+          <div class="result-row minus">
             <span class="label">− Брак WB + потеряшки</span>
             <span id="r_defect_wb">— ₽</span>
           </div>
           <div class="result-row minus">
-            <span class="label">− Себестоимость пары</span>
+            <span class="label">− Себестоимость товара</span>
             <span id="r_cogs">— ₽</span>
           </div>
           <div class="result-row minus">
@@ -504,15 +871,24 @@
     </div>
   </div>
 
-  <!-- ===== ВКЛАДКА 2: МП2 НА ПАЧКУ ===== -->
+  <!-- ===== ВКЛАДКА 2: МП2 — РЕКЛАМА И ИТОГ ===== -->
   <div class="tab-content" id="tab-batch">
+    
+    <!-- ПЕРЕКЛЮЧАТЕЛЬ РЕЖИМА РАСЧЁТА -->
+    <div style="margin-bottom: 16px;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted); margin-bottom: 8px;">Режим расчёта МП2</div>
+      <div class="mode-tabs" style="margin-bottom: 0;">
+        <button class="mode-tab active" data-mode-mp2="ads-define">Реклама → количество</button>
+        <button class="mode-tab" data-mode-mp2="qty-define">Количество → реклама</button>
+      </div>
+      <div style="font-size: 12px; color: var(--ink-soft); margin-top: 8px;" id="mp2_mode_desc">
+        Бюджет рекламы фиксирован, количество выкупов рассчитывается из воронки. Удобно для "у меня 2.5 млн на рекламу — что получу".
+      </div>
+    </div>
+    
     <div class="summary">
-      <h2>МП2 на пачку SKU за месяц</h2>
+      <h2 id="b_title">МП2 — реальная маржа после рекламы и расходов</h2>
       <div class="summary-grid">
-        <div class="summary-item">
-          <div class="big-number-label">Месячная выручка</div>
-          <div class="big-number" id="b_revenue">—</div>
-        </div>
         <div class="summary-item">
           <div class="big-number-label">Расходы рекламы</div>
           <div class="big-number bad" id="b_ad_costs">—</div>
@@ -522,107 +898,351 @@
           <div class="big-number good" id="b_mp2_rub">—</div>
         </div>
         <div class="summary-item">
-          <div class="big-number-label">МП2 в %</div>
-          <div class="big-number good" id="b_mp2_pct">—</div>
+          <div class="big-number-label">ДРР, %</div>
+          <div class="big-number" id="b_drr">—</div>
+        </div>
+        <div class="summary-item">
+          <div class="big-number-label">ROMI, %</div>
+          <div class="big-number good" id="b_romi">—</div>
         </div>
       </div>
     </div>
 
     <div class="grid">
       <div class="card">
-        <div class="card-title"><span class="card-num">1</span>Параметры пачки</div>
-        <p class="card-desc">Возьмём средневзвешенные данные с расчёта МП1 + параметры пачки</p>
+        <div class="card-title"><span class="card-num">1</span>Воронка рекламы</div>
+        <p class="card-desc">Подкручивай параметры — наблюдай как плывёт МП2</p>
         
-        <div class="input-row">
-          <label>Количество SKU в пачке<small>сколько артикулов запускаешь одной пачкой</small></label>
-          <input type="number" id="batch_skus" value="300" step="10">
+        <div class="group-title">Показы и клики</div>
+        <div class="input-row" id="ad_imp_row">
+          <label id="ad_imp_label">Показы (impressions), шт<small id="ad_imp_hint">сколько раз карточку увидели</small></label>
+          <input type="number" id="ad_impressions" value="10000000" step="100000">
         </div>
         <div class="input-row">
-          <label>Сред. продаж на 1 SKU, шт/мес<small>сколько в среднем продаёт один артикул</small></label>
-          <input type="number" id="batch_sales_per_sku" value="80" step="5">
+          <label>CPM, ₽<small>стоимость 1000 показов (АРК+АТ средний)</small></label>
+          <input type="number" id="ad_cpm" value="250" step="10">
         </div>
         <div class="input-row">
-          <label>Доля активных SKU, %<small>обычно из пачки 60-80% реально продают</small></label>
-          <input type="number" id="batch_active_pct" value="70" step="5">
-        </div>
-        
-        <div class="group-title">Реклама</div>
-        <div class="input-row">
-          <label>Бюджет рекламы, ₽/арт/день<small>средний по пачке (АРК + АТ)</small></label>
-          <input type="number" id="ad_per_sku_day" value="1200" step="100">
-        </div>
-        <div class="input-row">
-          <label>Дней рекламы в месяце<small>30 если льёшь весь месяц</small></label>
-          <input type="number" id="ad_days" value="30" step="1">
-        </div>
-        <div class="input-row">
-          <label>Доля SKU под рекламой, %<small>реклама обычно идёт не на все, а на топовые</small></label>
-          <input type="number" id="ad_skus_pct" value="40" step="5">
+          <label>CTR, %<small>клики/показы — обычно 2-5%</small></label>
+          <input type="number" id="ad_ctr" value="3" step="0.1">
         </div>
         
-        <div class="group-title">Прочие переменные расходы</div>
+        <div class="group-title">Клики и заказы</div>
         <div class="input-row">
-          <label>Зарплата команды, ₽/мес<small>менеджер кабинета, фотограф, дизайнер</small></label>
+          <label>CR (клик→заказ), %<small>конверсия в заказ — обычно 3-7%</small></label>
+          <input type="number" id="ad_cr" value="5" step="0.1">
+        </div>
+        
+        <div class="group-title">Период</div>
+        <div class="input-row">
+          <label>Срок, дней<small>за сколько дней эта реклама и партия</small></label>
+          <input type="number" id="period_days" value="30" step="1">
+        </div>
+        
+        <div class="group-title">Постоянные расходы (в месяц)</div>
+        <div class="input-row">
+          <label>Зарплата команды, ₽/мес<small>менеджер, фотограф, дизайнер</small></label>
           <input type="number" id="team_salary" value="200000" step="10000">
         </div>
         <div class="input-row">
-          <label>Сервисы, ₽/мес<small>MPStat, Джем, аналитика, СRM</small></label>
+          <label>Сервисы, ₽/мес<small>MPStat, Джем, аналитика, CRM</small></label>
           <input type="number" id="services" value="30000" step="5000">
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title"><span class="card-num">2</span>Детальный расчёт МП2</div>
-        <p class="card-desc">Что реально остаётся за месяц</p>
+        <div class="card-title"><span class="card-num">2</span>Что в воронке получается</div>
+        <p class="card-desc">Авторасчёт — клики, заказы, выкупы, доходность</p>
         
         <div class="result-block">
-          <div class="result-row plus">
-            <span class="label">+ Выручка пачки за месяц</span>
-            <span id="b_r_revenue">— ₽</span>
-          </div>
-          <div class="result-row plus">
-            <span class="label">МП1 со всех продаж</span>
-            <span id="b_r_mp1_total">— ₽</span>
-          </div>
-          <div class="result-row minus">
-            <span class="label">− Реклама за месяц</span>
-            <span id="b_r_ads">— ₽</span>
-          </div>
-          <div class="result-row minus">
-            <span class="label">− Зарплата команды</span>
-            <span id="b_r_team">— ₽</span>
-          </div>
-          <div class="result-row minus">
-            <span class="label">− Сервисы и подписки</span>
-            <span id="b_r_services">— ₽</span>
-          </div>
-          <div class="result-row total">
-            <span class="label">МП2 за месяц</span>
-            <span id="b_r_mp2">— ₽</span>
+          <div class="result-row">
+            <span class="label">Показы</span>
+            <span id="r2_imp">—</span>
           </div>
           <div class="result-row">
-            <span class="label">Точка безубыточности</span>
-            <span id="b_breakeven">— шт/мес</span>
+            <span class="label">→ Клики (показы × CTR)</span>
+            <span id="r2_clicks">—</span>
+          </div>
+          <div class="result-row">
+            <span class="label">→ Заказы (клики × CR)</span>
+            <span id="r2_orders">—</span>
+          </div>
+          <div class="result-row">
+            <span class="label">→ Выкупы (заказы × выкуп)</span>
+            <span id="r2_redeems">—</span>
+          </div>
+          <div class="result-row total">
+            <span class="label">Расходы на рекламу</span>
+            <span id="r2_ad_cost">— ₽</span>
+          </div>
+        </div>
+        
+        <div class="group-title" style="margin-top: 24px;">Финальный расчёт МП2</div>
+        <div class="result-block">
+          <div class="result-row plus">
+            <span class="label">+ Выручка от рекламы</span>
+            <span id="r2_revenue">— ₽</span>
+          </div>
+          <div class="result-row plus">
+            <span class="label">МП1 от выкупов</span>
+            <span id="r2_mp1_total">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Расходы на рекламу</span>
+            <span id="r2_minus_ads">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Зарплата команды (за период)</span>
+            <span id="r2_minus_team">— ₽</span>
+          </div>
+          <div class="result-row minus">
+            <span class="label">− Сервисы (за период)</span>
+            <span id="r2_minus_services">— ₽</span>
+          </div>
+          <div class="result-row total">
+            <span class="label">МП2 за период</span>
+            <span id="r2_mp2">— ₽</span>
+          </div>
+        </div>
+        
+        <div class="group-title" style="margin-top: 24px;">Метрики эффективности</div>
+        <div class="result-block">
+          <div class="result-row">
+            <span class="label">ДРР (доля рекл. расходов)</span>
+            <span id="r2_drr">— %</span>
+          </div>
+          <div class="result-row">
+            <span class="label">CAC (цена 1 покупателя)</span>
+            <span id="r2_cac">— ₽</span>
+          </div>
+          <div class="result-row">
+            <span class="label">МП1 на ед. для сравнения</span>
+            <span id="r2_mp1_per_unit">— ₽</span>
+          </div>
+          <div class="result-row">
+            <span class="label">ROMI (возврат на маркетинг)</span>
+            <span id="r2_romi">— %</span>
+          </div>
+          <div class="result-row">
+            <span class="label">Точка окупаемости рекламы</span>
+            <span id="r2_breakeven">— ед.</span>
           </div>
         </div>
         
         <div class="tip" id="mp2-tip">
-          МП2 — реальная маржа после рекламы и переменных расходов. Из неё ещё надо платить налоги и оставлять на развитие.
+          Покрути CPM, CTR, CR — увидишь как меняется МП2 и ROMI.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ===== ВКЛАДКА 3: ФОРМУЛЫ ===== -->
+  <!-- ===== ВКЛАДКА: КАК ПОЛЬЗОВАТЬСЯ ===== -->
+  <div class="tab-content" id="tab-howto">
+    <div class="card">
+      <div class="card-title"><span class="card-num">📖</span>Как пользоваться</div>
+      <p class="card-desc">Краткий гид по калькулятору. Раскрывай разделы по мере надобности — каждый сворачивается отдельно.</p>
+      
+      <div class="group-title">Зачем нужен этот калькулятор</div>
+      <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
+        <p style="margin-bottom: 10px;">Это <strong>прогнозатор юнитки</strong> для маркетплейса WB. Калькулятор отвечает на главные вопросы перед запуском товара:</p>
+        <ul style="margin-left: 18px; margin-bottom: 10px;">
+          <li><strong>МП1</strong> — сколько чистой маржи остаётся <strong>с одной продажи</strong> после всех расходов WB, налогов и себестоимости. Это ответ "стоит ли товар вообще производить".</li>
+          <li><strong>МП2</strong> — сколько остаётся <strong>после рекламы и переменных расходов</strong>. Это ответ "стоит ли вкладывать в продвижение".</li>
+        </ul>
+        <p>Калькулятор универсальный — считает шторы, одежду, мебель, посуду, любой товар на WB. Главное — знать цены, себестоимость, габариты и тарифы своего склада.</p>
+      </div>
+      
+      <div class="group-title">🚀 Быстрый старт за 5 минут</div>
+      <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
+        <p style="margin-bottom: 8px;"><strong>Шаг 1.</strong> Открываешь вкладку <strong>МП1</strong>. Заполняешь Карточку 1 "Цена":</p>
+        <ul style="margin-left: 18px; margin-bottom: 12px;">
+          <li>Если знаешь только проценты — режим "От процентов" (базовая, скидка, СПП, кошелёк)</li>
+          <li>Если у тебя 4 цены (Базовая, Медиа Джем, Без кошелька, С кошельком) — режим "От цен WB", он сам посчитает проценты</li>
+        </ul>
+        <p style="margin-bottom: 8px;"><strong>Шаг 2.</strong> Карточка 2 "Расходы WB + налоги РФ":</p>
+        <ul style="margin-left: 18px; margin-bottom: 12px;">
+          <li>Габариты (ДxШxВ см) → автоматически литраж</li>
+          <li>Тарифы логистики и хранения берёшь из своего кабинета WB (в карточке склада есть готовые цифры с коэффициентом)</li>
+          <li>Налоги: УСН 6% фикс, НДС 7% если оборот свыше 272.5 млн</li>
+        </ul>
+        <p style="margin-bottom: 8px;"><strong>Шаг 3.</strong> Карточка 3 "Себестоимость":</p>
+        <ul style="margin-left: 18px; margin-bottom: 12px;">
+          <li>Если есть только итоговая цифра — режим "Общей суммой"</li>
+          <li>Если хочешь видеть из чего складывается — режим "Детально" (материалы, тара, работы, логистика)</li>
+        </ul>
+        <p style="margin-bottom: 8px;"><strong>Шаг 4.</strong> Смотришь МП1 в шапке. Если меньше 0% — товар убыточный ещё до рекламы.</p>
+        <p style="margin-bottom: 8px;"><strong>Шаг 5.</strong> Переходишь на вкладку <strong>МП2</strong>, заполняешь воронку рекламы (показы, CPM, CTR, CR). Видишь итог: МП2, ДРР, ROMI.</p>
+      </div>
+      
+      <div class="group-title">🎯 Когда какой режим выбирать</div>
+      <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
+        <p style="margin-bottom: 10px;"><strong>Цена — "От процентов" vs "От цен WB":</strong></p>
+        <ul style="margin-left: 18px; margin-bottom: 12px;">
+          <li><strong>"От процентов"</strong> — когда планируешь товар. Знаешь свою скидку, СПП, ставишь параметры — получаешь итоговые цены.</li>
+          <li><strong>"От цен WB"</strong> — когда анализируешь чужой товар или конкурента. Видишь 4 цены в карточке/Джеме — калькулятор обратной арифметикой выдаёт скрытые проценты.</li>
+        </ul>
+        <p style="margin-bottom: 10px;"><strong>Себестоимость — "Детально" vs "Общей суммой":</strong></p>
+        <ul style="margin-left: 18px; margin-bottom: 12px;">
+          <li><strong>"Детально"</strong> — когда сам производишь и торгуешься с цехом. Видишь куда уходит каждый рубль, можешь оптимизировать.</li>
+          <li><strong>"Общей суммой"</strong> — когда товар закупочный или от партнёра. Знаешь только итог — вводишь одной цифрой.</li>
+        </ul>
+        <p style="margin-bottom: 10px;"><strong>МП1 — "За единицу" vs "За партию":</strong></p>
+        <ul style="margin-left: 18px; margin-bottom: 12px;">
+          <li><strong>"За единицу"</strong> — анализируешь юнит-экономику товара (стоит ли вообще делать).</li>
+          <li><strong>"За партию"</strong> — планируешь конкретный объём (сколько денег надо, какая прибыль будет).</li>
+        </ul>
+        <p style="margin-bottom: 10px;"><strong>МП2 — "Реклама → количество" vs "Количество → реклама":</strong></p>
+        <ul style="margin-left: 18px;">
+          <li><strong>"Реклама → количество"</strong> — у тебя бюджет, считаешь что получишь. <em>"Готов влить 2 млн в АРК — какая будет прибыль?"</em></li>
+          <li><strong>"Количество → реклама"</strong> — у тебя партия товара, считаешь сколько надо в рекламу. <em>"Произвёл 1000 единиц — какие показы и сколько денег нужно?"</em></li>
+        </ul>
+      </div>
+      
+      <div class="group-title">📊 Что значат метрики</div>
+      <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
+        <p style="margin-bottom: 10px;"><strong>МП1 (маржинальная прибыль 1)</strong> — что остаётся с одной продажи после всех расходов площадки и себестоимости. <span style="color: var(--bad);">До рекламы.</span></p>
+        <ul style="margin-left: 18px; margin-bottom: 12px; font-size: 13px;">
+          <li><strong>&lt; 0%:</strong> 🔴 продаёшь себе в убыток</li>
+          <li><strong>0-15%:</strong> 🟡 после рекламы скорее всего минус</li>
+          <li><strong>15-25%:</strong> 🟢 на грани, реклама должна быть жёстко контролируемой</li>
+          <li><strong>25-35%:</strong> 🟢 хорошо для шторного/массового сегмента</li>
+          <li><strong>&gt; 35%:</strong> 🚀 премиум-зона, можно агрессивно расти</li>
+        </ul>
+        <p style="margin-bottom: 10px;"><strong>МП2</strong> — то же самое, но <em>после</em> рекламы и постоянных расходов команды. Это твоя реальная прибыль до налога на дивиденды.</p>
+        <p style="margin-bottom: 10px;"><strong>ДРР</strong> (доля рекламных расходов) = реклама / выручка. Стандартная WB-метрика.</p>
+        <ul style="margin-left: 18px; margin-bottom: 12px; font-size: 13px;">
+          <li><strong>&lt; 10%:</strong> 🟢 отлично</li>
+          <li><strong>10-25%:</strong> 🟡 рабочий диапазон</li>
+          <li><strong>&gt; 25%:</strong> 🔴 реклама съедает маржу</li>
+        </ul>
+        <p style="margin-bottom: 10px;"><strong>CAC</strong> (Customer Acquisition Cost) = реклама / выкупы. Стоимость одного купленного товара через рекламу. Если CAC выше МП1 — каждая продажа дороже маржи.</p>
+        <p style="margin-bottom: 10px;"><strong>ROMI</strong> (Return on Marketing Investment) = (МП от рекламы − реклама) / реклама × 100%. Показывает <em>возврат маркетинга через маржу</em>, а не просто оборот.</p>
+        <ul style="margin-left: 18px; margin-bottom: 12px; font-size: 13px;">
+          <li><strong>&lt; 0%:</strong> 🔴 реклама убыточна, маржа меньше затрат на привлечение</li>
+          <li><strong>0-30%:</strong> 🟡 окупается, но слабо</li>
+          <li><strong>30-100%:</strong> 🟢 нормальная эффективность</li>
+          <li><strong>&gt; 100%:</strong> 🚀 каждый рубль рекламы возвращает 2+ ₽ прибыли — масштабируй бюджет</li>
+        </ul>
+        <p><strong>Точка окупаемости рекламы</strong> — сколько единиц нужно продать чтобы реклама вышла в ноль. Если планируешь продать меньше — рекламу не запускай.</p>
+      </div>
+      
+      <div class="group-title">💡 Реальные кейсы</div>
+      <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
+        <p style="margin-bottom: 10px;"><strong>Кейс 1: Массовый блэкаут 150×250 (PearHome territory)</strong></p>
+        <div style="background: var(--bg-input); padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; font-size: 13px;">
+          Цена 2 300 ₽ · Габариты 50×30×6 · Тарифы склада 82.8/25.2 (180% коэф) · Себестоимость 727 ₽<br>
+          → <strong>МП1 = 50 ₽ (2.2%)</strong> 🔴<br>
+          <em>Вывод:</em> сегмент дохлый для новичка. PearHome там сидит на масштабе (1.4 млрд оборота) и накопленных отзывах. Юнитка минусовая, но эффект бренда+скидки на лог за счёт ИЛ выручают.
+        </div>
+        <p style="margin-bottom: 10px;"><strong>Кейс 2: Премиум бархат 150×250</strong></p>
+        <div style="background: var(--bg-input); padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; font-size: 13px;">
+          Цена 4 500 ₽ · Те же габариты и тарифы · Себестоимость 807 ₽<br>
+          → <strong>МП1 = 1 191 ₽ (26.5%)</strong> 🟢<br>
+          <em>Вывод:</em> рабочий сегмент. Себестоимость выросла всего на 11%, а цена на 95%. Доля логистики упала с 17% до 9.6%. Доля налогов та же 13%, но в абсолюте умещается.<br>
+          <strong>Главный инсайт:</strong> премиум выгоднее не из-за цены, а из-за того что постоянные расходы (комиссия, лог, налог) лучше размазываются по большой выручке.
+        </div>
+        <p style="margin-bottom: 10px;"><strong>Кейс 3: Партия 1000 ед. — какая реклама нужна</strong></p>
+        <div style="background: var(--bg-input); padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; font-size: 13px;">
+          Партия 1000 · CTR 3% · CR 5% · Выкуп 73% · CPM 250 ₽<br>
+          → Нужно 913 тыс показов, реклама 228 тыс ₽<br>
+          При премиум-МП1 1191 ₽: <strong>МП2 = 733 тыс ₽, ROMI 422%</strong> 🚀<br>
+          При массовой МП1 50 ₽: <strong>МП2 = −178 тыс ₽, ROMI −78%</strong> 🔴<br>
+          <em>Вывод:</em> та же реклама, тот же объём — два противоположных результата. Низкая МП1 не выживает под рекламой даже на нормальной воронке.
+        </div>
+        <p style="margin-bottom: 10px;"><strong>Кейс 4: Чувствительность к CTR</strong></p>
+        <div style="background: var(--bg-input); padding: 10px 14px; border-radius: 6px; font-size: 13px;">
+          В режиме "Количество → реклама" попробуй для партии 1000:<br>
+          • CTR 5% → нужно 548 тыс показов, реклама 137 тыс ₽<br>
+          • CTR 3% → нужно 913 тыс показов, реклама 228 тыс ₽ (+66%)<br>
+          • CTR 2% → нужно 1.37 млн показов, реклама 342 тыс ₽ (+150%)<br>
+          <em>Вывод:</em> качество креатива (CTR) — рычаг с огромным плечом. Поднял CTR с 2 до 5 — реклама дешевле в 2.5 раза.
+        </div>
+      </div>
+      
+      <div class="group-title">⚠️ Что НЕ учтено в калькуляторе</div>
+      <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
+        <p style="margin-bottom: 10px;">Для полной финансовой картины ниже МП2 нужно ещё учесть:</p>
+        <ul style="margin-left: 18px; margin-bottom: 12px;">
+          <li><strong>Амортизация оборудования</strong> — швейные машины, столы, компьютеры</li>
+          <li><strong>Аренда офиса/склада-цеха</strong> — если есть</li>
+          <li><strong>Бухгалтерия и юристы</strong> — если на аутсорсе</li>
+          <li><strong>Банковские расходы</strong> — обслуживание счёта, переводы</li>
+          <li><strong>Дивиденды и налог на них</strong> — если ИП → 6%, если ООО → 13% при выводе на физ.лицо</li>
+          <li><strong>Непредвиденные расходы</strong> — буфер 5-10% всегда стоит закладывать</li>
+        </ul>
+        <p>Для масштабируемого бизнеса <strong>МП2 должна быть минимум 15-20%</strong>, чтобы после всех этих "хвостов" осталось 5-10% чистыми. На дефолтных параметрах массового сегмента — это невозможно.</p>
+      </div>
+      
+      <div class="group-title">🔮 Что планируется добавить</div>
+      <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
+        <ul style="margin-left: 18px;">
+          <li><strong>Пресеты сценариев</strong> — сохранять "Pear Home блэкаут" / "Премиум бархат" и переключаться</li>
+          <li><strong>Чувствительность к CPM</strong> — мини-график как поплывёт МП2 при CPM 150/250/400/600</li>
+          <li><strong>Загрузка артикулов из Джема</strong> — кидаешь CSV, получаешь готовый расчёт по каждому SKU</li>
+          <li><strong>Несколько складов</strong> — разные тарифы по долям отгрузки, средневзвешенный расчёт</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ВКЛАДКА 3: ФОРМУЛЫ (СКРЫТА) ===== -->
   <div class="tab-content" id="tab-formulas">
     <div class="card">
       <div class="card-title"><span class="card-num">📐</span>Формулы расчёта</div>
       <p class="card-desc">Как считается каждая цифра. Можешь править прямо в коде если что-то надо изменить.</p>
       
-      <h3 style="font-family: 'Fraunces', serif; margin-top: 16px; margin-bottom: 8px;">МП1 на одну пару</h3>
+      <h3 style="font-family: 'Fraunces', serif; margin-top: 16px; margin-bottom: 8px;">Цепочка цены</h3>
       <div class="formula">
-ЦенаПокупателя = Цена_до_СПП × (1 − СПП%)<br>
-КомиссияWB    = ЦенаПокупателя × Комиссия%<br>
+ЦенаПродавца   = Базовая × (1 − СкидкаПродавца%) × (1 − Акция%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;← это твоя цена-нетто, с этого WB берёт комиссию<br><br>
+ЦенаПокупателя = ЦенаПродавца × (1 − СПП%) × (1 − Кошелёк%)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;← это что реально платит покупатель на чек-ауте<br><br>
+СПП и WB Кошелёк — за счёт WB, на твою выручку не влияют.<br>
+СкидкаПродавца и Акция — за твой счёт, режут выручку.
+      </div>
+      
+      <h3 style="font-family: 'Fraunces', serif; margin-top: 24px; margin-bottom: 8px;">Режим Б: обратный расчёт от цен WB</h3>
+      <div class="formula">
+Если на руках только цены (Базовая, Медиа Джем, БезКошелька, СКошельком):<br><br>
+СкидкаПродавца+Акция% = 1 − Медиа / Базовая<br>
+СПП%                  = 1 − БезКошелька / Медиа<br>
+Кошелёк%              = 1 − СКошельком / БезКошелька<br><br>
+В этом режиме скидка продавца и акция WB слиты в одну величину<br>
+(в публичных данных WB они не разделяются).<br>
+На МП1 это не влияет — главное что ЦенаПродавца = Медиа из Джема.
+      </div>
+      
+      <h3 style="font-family: 'Fraunces', serif; margin-top: 24px; margin-bottom: 8px;">Логистика и хранение (тарифы WB)</h3>
+      <div class="formula">
+Литраж = Длина × Ширина × Высота / 1000<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(габариты в см → объём в литрах)<br><br>
+Логистика_прямая = (Тариф_1л + Доп_тариф × (Литраж − 1)) × ИЛ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ ЦенаПродавца × ИРП%<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(тарифы 1л/доп.л в кабинете уже с коэф. склада)<br><br>
+Логистика_обратная_за_возврат = Т1_обр + Доп_обр × (Литраж − 1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(базовая ставка WB, без коэф. склада, без ИЛ)<br>
+Логистика_обратная_на_продажу = Лог_обратная × (1 − Выкуп%) / Выкуп%<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(возвраты делятся на каждую успешную продажу)<br><br>
+Хранение_в_день = Т1_хран + Доп_хран × (Литраж − 1)<br>
+Хранение_всего = Хранение_в_день × Среднее_дней<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(тарифы хранения уже с коэф. склада)
+      </div>
+      
+      <h3 style="font-family: 'Fraunces', serif; margin-top: 24px; margin-bottom: 8px;">Налоги РФ</h3>
+      <div class="formula">
+Налоги = ЦенаПродавца × (УСН% + НДС%) / 100<br><br>
+УСН "Доходы" = 6% (фикс с 2025 г., не зависит от оборота)<br><br>
+НДС зависит от годового оборота:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;до 20 млн ₽   → 0%<br>
+&nbsp;&nbsp;&nbsp;&nbsp;до 272.5 млн ₽ → 5%<br>
+&nbsp;&nbsp;&nbsp;&nbsp;до 490.5 млн ₽ → 7%<br><br>
+По умолчанию заложен максимум 6 + 7 = 13%.<br>
+База — ЦенаПродавца (выручка по документам, до СПП и Кошелька WB).
+      </div>
+      
+      <h3 style="font-family: 'Fraunces', serif; margin-top: 24px; margin-bottom: 8px;">МП1 на одну пару</h3>
+      <div class="formula">
+КомиссияWB    = ЦенаПродавца × Комиссия%<br>
 Эквайринг     = ЦенаПокупателя × Эквайринг%<br>
 ЛогОбратнаяНаПродажу = ЛогОбратная × (1 − Выкуп%) / Выкуп%<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(возвраты делятся на каждую успешную продажу)<br><br>
@@ -633,7 +1253,7 @@
 БракWB+потеряшки = (СебестЧистая + ЛогПрямая) ×<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(БракWB% + Потеряшки%) / (1 − БракWB% − Потеряшки%)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(теряются уже отгруженные пары вместе с логистикой)<br><br>
-МП1 = ЦенаПокупателя − КомиссияWB − Эквайринг −<br>
+МП1 = ЦенаПродавца − КомиссияWB − Эквайринг −<br>
 &nbsp;&nbsp;&nbsp;&nbsp;ЛогПрямая − ЛогОбратнаяНаПродажу − Приёмка −<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Хранение − Штрафы − БракWB+потеряшки −<br>
 &nbsp;&nbsp;&nbsp;&nbsp;СебестЧистая − БракПроизв
@@ -641,7 +1261,7 @@
       
       <h3 style="font-family: 'Fraunces', serif; margin-top: 24px; margin-bottom: 8px;">МП2 на пачку за месяц</h3>
       <div class="formula">
-ВыручкаПачки = SKU × Активные% × Продаж_на_SKU × ЦенаПокупателя<br>
+ВыручкаПачки = SKU × Активные% × Продаж_на_SKU × ЦенаПродавца<br>
 МП1Пачки    = SKU × Активные% × Продаж_на_SKU × МП1_на_пару<br>
 РекламаМес  = SKU × Реклама_доля% × Бюджет_арт_день × Дней<br>
 ПостоянныеРасходы = Зарплата + Сервисы<br><br>
@@ -658,7 +1278,7 @@
   </div>
 
   <footer>
-    Калькулятор юнитки штор · версия 1.0 · черновик для проверки формул
+    Юнитка Прогнозатор · версия 2.5 · универсальный калькулятор маржи WB
   </footer>
 </div>
 
@@ -672,6 +1292,99 @@ document.querySelectorAll('.tab').forEach(t => {
     document.getElementById('tab-' + t.dataset.tab).classList.add('active');
   });
 });
+
+// ============= МИНИ-ТАБЫ РЕЖИМА ВВОДА В КАРТОЧКЕ "ЦЕНА" =============
+document.querySelectorAll('.mode-tab[data-mode]').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.mode-tab[data-mode]').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('[data-mode-pane]').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelector('[data-mode-pane="' + t.dataset.mode + '"]').classList.add('active');
+    recalc();
+  });
+});
+
+// ============= МИНИ-ТАБЫ РЕЖИМА СЕБЕСТОИМОСТИ =============
+document.querySelectorAll('.mode-tab[data-mode-cost]').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.mode-tab[data-mode-cost]').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('[data-mode-cost-pane]').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelector('[data-mode-cost-pane="' + t.dataset.modeCost + '"]').classList.add('active');
+    recalc();
+  });
+});
+
+// ============= МИНИ-ТАБЫ РЕЖИМА РАСЧЁТА МП2 =============
+document.querySelectorAll('.mode-tab[data-mode-mp2]').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.mode-tab[data-mode-mp2]').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    
+    const mode = t.dataset.modeMp2;
+    const impInput = document.getElementById('ad_impressions');
+    const impHint  = document.getElementById('ad_imp_hint');
+    const desc     = document.getElementById('mp2_mode_desc');
+    
+    if (mode === 'qty-define') {
+      // Режим Б: количество диктует, показы вычисляются обратно
+      impInput.disabled = true;
+      impInput.style.background = '#eee';
+      impInput.style.color = 'var(--ink-muted)';
+      impHint.textContent = 'вычисляется автоматически из количества партии';
+      desc.textContent = 'Количество единиц из МП1 фиксировано. Калькулятор подбирает нужные показы и стоимость рекламы. Удобно для "произвёл 1000 ед. — какая реклама нужна".';
+    } else {
+      // Режим А: реклама диктует, выкупы из воронки
+      impInput.disabled = false;
+      impInput.style.background = '';
+      impInput.style.color = '';
+      impHint.textContent = 'сколько раз карточку увидели';
+      desc.textContent = 'Бюджет рекламы фиксирован, количество выкупов рассчитывается из воронки. Удобно для "у меня 2.5 млн на рекламу — что получу".';
+    }
+    recalc();
+  });
+});
+
+// ============= СВОРАЧИВАНИЕ ПОДБЛОКОВ (group-title) =============
+const COLLAPSE_KEY = 'curtain_calc_collapsed_v1';
+
+function toggleGroupContent(titleEl, isCollapsed) {
+  // Скрываем/показываем все элементы после group-title до следующего group-title
+  let next = titleEl.nextElementSibling;
+  while (next && !next.classList.contains('group-title')) {
+    if (isCollapsed) next.classList.add('collapsed-content');
+    else next.classList.remove('collapsed-content');
+    next = next.nextElementSibling;
+  }
+}
+
+function setupCollapsibles() {
+  const titles = document.querySelectorAll('.group-title');
+  let savedState = {};
+  try { savedState = JSON.parse(localStorage.getItem(COLLAPSE_KEY) || '{}'); } catch(e) {}
+  
+  titles.forEach((title, idx) => {
+    // Уникальный ключ — текст заголовка + позиция в DOM
+    const key = title.textContent.trim() + '_' + idx;
+    
+    // Восстанавливаем сохранённое состояние
+    if (savedState[key]) {
+      title.classList.add('collapsed');
+      toggleGroupContent(title, true);
+    }
+    
+    // При клике — переключаем и сохраняем
+    title.addEventListener('click', () => {
+      const isNowCollapsed = title.classList.toggle('collapsed');
+      toggleGroupContent(title, isNowCollapsed);
+      try {
+        const state = JSON.parse(localStorage.getItem(COLLAPSE_KEY) || '{}');
+        state[key] = isNowCollapsed;
+        localStorage.setItem(COLLAPSE_KEY, JSON.stringify(state));
+      } catch(e) {}
+    });
+  });
+}
 
 // ============= ПОДКЛЮЧАЕМ ВСЕ ИНПУТЫ К ПЕРЕРАСЧЁТУ =============
 const allInputs = document.querySelectorAll('input[type="number"]');
@@ -716,14 +1429,30 @@ function saveData() {
 function resetUnit() {
   if (!confirm('Сбросить все поля на дефолты?')) return;
   const defaults = {
-    price_before_spp: 2000, spp_pct: 3, redemption_pct: 73,
-    commission_pct: 25, acquiring_pct: 1.8, logistics_forward: 90, logistics_back: 50,
-    acceptance_fbo: 25, storage: 15, penalties: 5,
+    price_base: 2500, seller_disc_pct: 20, action_pct: 0,
+    spp_pct: 3, wallet_pct: 2, redemption_pct: 73,
+    price_base_b: 2500, price_jem: 2000, price_no_wallet: 1940, price_with_wallet: 1900,
+    commission_pct: 25, acquiring_pct: 1.8,
+    dim_length: 50, dim_width: 30, dim_height: 6,
+    log_fwd_first: 82.8, log_fwd_extra: 25.2, loc_index: 1.00, irp_pct: 0,
+    log_back_first: 46, log_back_extra: 14,
+    stor_first: 0.14, stor_extra: 0.14, stor_days: 30,
+    acceptance_fbo: 0, penalties: 0,
+    tax_usn: 6, tax_vat: 7,
     defect_wb_pct: 1.5, lost_pct: 1,
-    fabric_meters: 6, fabric_price: 180, sewing_cost: 200, hardware_cost: 80,
-    packaging_cost: 30, inbound_logistics: 20, defect_prod_pct: 2,
-    batch_skus: 300, batch_sales_per_sku: 80, batch_active_pct: 70,
-    ad_per_sku_day: 1200, ad_days: 30, ad_skus_pct: 40,
+    cost_simple: 800, defect_prod_pct_simple: 2,
+    fabric_meters: 3.2, fabric_price: 180,
+    ribbon_meters: 3.15, ribbon_price: 30,
+    thread_bobbin_price: 1500, thread_bobbin_units: 200,
+    bag1_price: 8, bag2_price: 12, leaflet_price: 3,
+    box_price: 100, box_units: 10,
+    pallet_price: 600, pallet_boxes: 12,
+    work_cut: 30, work_sew: 150, work_pack: 20, work_load: 300,
+    delivery_price: 50000, delivery_units: 1000,
+    defect_prod_pct: 2,
+    batch_units: 1,
+    ad_impressions: 10000000, ad_cpm: 250, ad_ctr: 3, ad_cr: 5,
+    period_days: 30,
     team_salary: 200000, services: 30000
   };
   Object.entries(defaults).forEach(([id, v]) => {
@@ -741,43 +1470,151 @@ const fmtMln = n => (n/1e6).toFixed(2);
 // ============= ГЛАВНАЯ ФУНКЦИЯ ПЕРЕСЧЁТА =============
 function recalc() {
   // ----- ЦЕНА И ВЫКУП -----
-  const price_spp = $('price_before_spp');
-  const spp_pct = $('spp_pct') / 100;
   const redemption = $('redemption_pct') / 100;
   
-  // Цена покупателя = что реально приходит в кабинет WB
-  const price_customer = price_spp * (1 - spp_pct);
+  // Какой режим ввода активен?
+  const modeBtn = document.querySelector('.mode-tab.active');
+  const mode = modeBtn ? modeBtn.dataset.mode : 'pct';
+  
+  let price_base, price_seller, price_customer;
+  let seller_disc, action, spp_pct, wallet;
+  
+  if (mode === 'prices') {
+    // ===== РЕЖИМ Б: пользователь вводит цены, мы вычисляем проценты =====
+    price_base       = $('price_base_b');
+    price_seller     = $('price_jem');                // = ЦенаПродавца
+    const price_no_wallet = $('price_no_wallet');     // = ЦенаПродавца × (1 − СПП%)
+    price_customer   = $('price_with_wallet');        // = БезКошелька × (1 − Кошелёк%)
+    
+    // Вычисляем проценты обратной арифметикой
+    seller_disc = price_base   > 0 ? 1 - (price_seller     / price_base)        : 0;
+    action      = 0;  // в режиме Б скидка и акция слиты в seller_disc
+    spp_pct     = price_seller > 0 ? 1 - (price_no_wallet  / price_seller)      : 0;
+    wallet      = price_no_wallet > 0 ? 1 - (price_customer / price_no_wallet)  : 0;
+    
+    // Защита от отрицательных значений (если пользователь ввёл цены вразнобой)
+    if (seller_disc < 0) seller_disc = 0;
+    if (spp_pct     < 0) spp_pct     = 0;
+    if (wallet      < 0) wallet      = 0;
+    
+    // Выводим вычисленные проценты на экран
+    document.getElementById('out_seller_disc').textContent = (seller_disc * 100).toFixed(1) + ' %';
+    document.getElementById('out_spp').textContent         = (spp_pct     * 100).toFixed(1) + ' %';
+    document.getElementById('out_wallet').textContent      = (wallet      * 100).toFixed(1) + ' %';
+  } else {
+    // ===== РЕЖИМ А: пользователь вводит проценты, мы вычисляем цены =====
+    price_base   = $('price_base');
+    seller_disc  = $('seller_disc_pct') / 100;
+    action       = $('action_pct') / 100;
+    spp_pct      = $('spp_pct') / 100;
+    wallet       = $('wallet_pct') / 100;
+    
+    // Цена продавца = база минус скидки за твой счёт. С неё WB берёт комиссию.
+    price_seller   = price_base * (1 - seller_disc) * (1 - action);
+    // Цена покупателя = что реально платит покупатель на чек-ауте (СПП и Кошелёк за счёт WB)
+    price_customer = price_seller * (1 - spp_pct) * (1 - wallet);
+    
+    // Выводим расчётные цены в карточку
+    document.getElementById('r_price_seller').textContent      = fmt(price_seller)   + ' ₽';
+    document.getElementById('r_price_after_spp').textContent   = fmt(price_customer) + ' ₽';
+  }
   
   // ----- РАСХОДЫ WB -----
-  const commission = price_customer * $('commission_pct') / 100;
+  // Комиссия WB берётся с цены ПРОДАВЦА (с того что WB видит как твою цену)
+  const commission = price_seller * $('commission_pct') / 100;
+  // Эквайринг — с того что реально провёл покупатель
   const acquiring = price_customer * $('acquiring_pct') / 100;
-  const log_forward = $('logistics_forward');
   
-  // Логистика обратная: на каждую УСПЕШНУЮ продажу приходится N невыкупов
-  // Если выкуп 73%, то на 1 продажу = (1-0.73)/0.73 = 0.37 возврата
+  // ----- ЛИТРАЖ ИЗ ГАБАРИТОВ -----
+  // Объём = Длина × Ширина × Высота (см) / 1000 → литры
+  const volume_l = $('dim_length') * $('dim_width') * $('dim_height') / 1000;
+  
+  // ----- ЛОГИСТИКА ПРЯМАЯ (по формуле WB) -----
+  // (Тариф_1л + Доп_тариф × (Литраж − 1)) × ИЛ + ЦенаПродавца × ИРП%
+  const log_fwd_first = $('log_fwd_first');
+  const log_fwd_extra = $('log_fwd_extra');
+  const loc_index = $('loc_index') || 1;
+  const irp = $('irp_pct') / 100;
+  // Если литраж < 1 — упрощённо считаем по формуле "первый литр + допы" (для штор это редко)
+  const extra_l = Math.max(0, volume_l - 1);
+  const log_forward_base = log_fwd_first + log_fwd_extra * extra_l;
+  const log_forward = log_forward_base * loc_index + price_seller * irp;
+  
+  // ----- ЛОГИСТИКА ОБРАТНАЯ (базовая ставка WB по литражу) -----
+  // На каждый возврат: Тариф_1л_обр + Доп_тариф_обр × (Литраж − 1)
+  const log_back_per_return = $('log_back_first') + $('log_back_extra') * extra_l;
+  // Распределяем на каждую УСПЕШНУЮ продажу: невыкупы × тариф / выкуп
   const log_back_per_sale = redemption > 0 
-    ? $('logistics_back') * (1 - redemption) / redemption
+    ? log_back_per_return * (1 - redemption) / redemption
     : 0;
   
+  // ----- ХРАНЕНИЕ -----
+  // День: Тариф_1л_хран + Доп_тариф_хран × (Литраж − 1)
+  // Всего: × Среднее_дней_хранения
+  const stor_per_day = $('stor_first') + $('stor_extra') * extra_l;
+  const stor_days = $('stor_days');
+  const storage = stor_per_day * stor_days;
+  
   const acceptance = $('acceptance_fbo');
-  const storage = $('storage');
   const penalties = $('penalties');
+  
+  // ----- НАЛОГИ РФ -----
+  // База: ЦенаПродавца (то что у тебя по документам как выручка)
+  // УСН "Доходы" = 6% (фикс с 2025 г.)
+  // НДС = 0/5/7% в зависимости от годового оборота
+  const tax_rate_pct = $('tax_usn') + $('tax_vat');
+  const tax_amount = price_seller * tax_rate_pct / 100;
   
   // Брак и потеряшки на стороне WB
   const defect_wb = $('defect_wb_pct') / 100;
   const lost = $('lost_pct') / 100;
   
   // ----- СЕБЕСТОИМОСТЬ -----
-  const cogs_clean = $('fabric_meters') * $('fabric_price') 
-                   + $('sewing_cost') 
-                   + $('hardware_cost') 
-                   + $('packaging_cost') 
-                   + $('inbound_logistics');
+  // Материалы (всё что в самой паре)
+  const m_fabric  = $('fabric_meters') * $('fabric_price');
+  const m_ribbon  = $('ribbon_meters') * $('ribbon_price');
+  const bobbin_units = $('thread_bobbin_units');
+  const m_thread  = bobbin_units > 0 ? $('thread_bobbin_price') / bobbin_units : 0;
+  const m_bag1    = $('bag1_price');
+  const m_bag2    = $('bag2_price');
+  const m_leaflet = $('leaflet_price');
+  const cost_materials = m_fabric + m_ribbon + m_thread + m_bag1 + m_bag2 + m_leaflet;
   
-  // Производственный брак: накидка на себестоимость
-  // Если 2% брака - значит на каждую годную пару пришлось 2% дополнительной себестоимости
-  const defect_prod_pct = $('defect_prod_pct') / 100;
+  // Тара (распределяется на пары в коробке/поддоне)
+  const box_units    = $('box_units')    || 1;
+  const pallet_boxes = $('pallet_boxes') || 1;
+  const t_box    = $('box_price') / box_units;
+  const t_pallet = $('pallet_price') / (pallet_boxes * box_units);
+  const cost_packaging = t_box + t_pallet;
+  
+  // Работы (на пару + погрузка распределяется на коробку)
+  const cost_labor = $('work_cut') + $('work_sew') + $('work_pack') + ($('work_load') / box_units);
+  
+  // Логистика до склада WB (цена поставки / комплектов в поставке)
+  const delivery_units = $('delivery_units') || 1;
+  const cost_delivery = $('delivery_price') / delivery_units;
+  
+  // Сырая себестоимость (без брака) — зависит от режима
+  const costModeBtn = document.querySelector('.mode-tab[data-mode-cost].active');
+  const costMode = costModeBtn ? costModeBtn.dataset.modeCost : 'detail';
+  
+  let cogs_clean, defect_prod_pct;
+  if (costMode === 'simple') {
+    // Режим "Общей суммой" — одно число
+    cogs_clean = $('cost_simple');
+    defect_prod_pct = $('defect_prod_pct_simple') / 100;
+  } else {
+    // Режим "Детально" — сумма всех подгрупп
+    cogs_clean = cost_materials + cost_packaging + cost_labor + cost_delivery;
+    defect_prod_pct = $('defect_prod_pct') / 100;
+  }
+  
+  // Производственный брак: накидка на годную единицу
+  // Если 2% брака - на каждую годную пришлось 2% дополнительной себестоимости
   const defect_prod_cost = cogs_clean * defect_prod_pct / (1 - defect_prod_pct);
+  
+  // Полная себестоимость единицы (с браком)
+  const cogs_total = cogs_clean + defect_prod_cost;
   
   // Брак WB: теряется уже отгруженная пара (себестоимость + лог.прямая + комиссии)
   // На каждую успешную продажу приходится defect_wb единиц убытка
@@ -785,31 +1622,84 @@ function recalc() {
   const defect_wb_cost = wb_loss_per_unit * (defect_wb + lost) / (1 - defect_wb - lost);
   
   // ----- МП1 -----
+  // База МП1 — цена продавца (выручка-нетто с одной успешной продажи)
   const total_costs = commission + acquiring + log_forward + log_back_per_sale 
-                    + acceptance + storage + penalties + defect_wb_cost
+                    + acceptance + storage + penalties + tax_amount + defect_wb_cost
                     + cogs_clean + defect_prod_cost;
-  const mp1 = price_customer - total_costs;
-  const mp1_pct = price_customer > 0 ? (mp1 / price_customer * 100) : 0;
+  const mp1 = price_seller - total_costs;
+  const mp1_pct = price_seller > 0 ? (mp1 / price_seller * 100) : 0;
   
   // ----- ВЫВОД В ИНТЕРФЕЙС: ДЕТАЛИ -----
-  document.getElementById('r_price_after_spp').textContent = fmt(price_customer) + ' ₽';
-  document.getElementById('r_price').textContent = fmt(price_customer) + ' ₽';
-  document.getElementById('r_commission').textContent = '−' + fmt(commission) + ' ₽';
-  document.getElementById('r_acquiring').textContent = '−' + fmt(acquiring) + ' ₽';
-  document.getElementById('r_log_forward').textContent = '−' + fmt(log_forward) + ' ₽';
-  document.getElementById('r_log_back').textContent = '−' + fmt(log_back_per_sale) + ' ₽';
-  document.getElementById('r_acceptance').textContent = '−' + fmt(acceptance) + ' ₽';
-  document.getElementById('r_storage').textContent = '−' + fmt(storage) + ' ₽';
-  document.getElementById('r_penalties').textContent = '−' + fmt(penalties) + ' ₽';
-  document.getElementById('r_defect_wb').textContent = '−' + fmt(defect_wb_cost) + ' ₽';
-  document.getElementById('r_cogs').textContent = '−' + fmt(cogs_clean) + ' ₽';
-  document.getElementById('r_defect_prod').textContent = '−' + fmt(defect_prod_cost) + ' ₽';
-  document.getElementById('r_mp1').textContent = fmt(mp1) + ' ₽ (' + mp1_pct.toFixed(1) + '%)';
+  // Карточка 2: вычисленные значения
+  document.getElementById('r_volume').textContent       = volume_l.toFixed(2).replace('.', ',') + ' л';
+  document.getElementById('r_log_fwd_calc').textContent = fmt(log_forward) + ' ₽';
+  document.getElementById('r_log_back_calc').textContent = fmt(log_back_per_return) + ' ₽';
+  document.getElementById('r_log_back_per_sale').textContent = fmt(log_back_per_sale) + ' ₽';
+  document.getElementById('r_log_back_per_sale_label').textContent = 
+    'На 1 продажу при выкупе ' + ($('redemption_pct')).toFixed(0) + ' %';
+  document.getElementById('r_stor_day').textContent     = stor_per_day.toFixed(2).replace('.', ',') + ' ₽';
+  document.getElementById('r_stor_total').textContent   = fmt(storage) + ' ₽';
+  document.getElementById('r_tax_rate').textContent     = tax_rate_pct.toFixed(1).replace('.', ',') + ' %';
+  document.getElementById('r_tax_amount').textContent   = fmt(tax_amount) + ' ₽';
+  
+  // Карточка 3: итоги подгрупп себестоимости
+  document.getElementById('r_cost_materials').textContent = fmt(cost_materials) + ' ₽';
+  document.getElementById('r_cost_packaging').textContent = fmt(cost_packaging) + ' ₽';
+  document.getElementById('r_cost_labor').textContent     = fmt(cost_labor)     + ' ₽';
+  document.getElementById('r_cost_delivery').textContent  = fmt(cost_delivery)  + ' ₽';
+  document.getElementById('r_cost_defect').textContent    = fmt(defect_prod_cost) + ' ₽';
+  document.getElementById('r_cost_total').textContent     = fmt(cogs_total)     + ' ₽';
+  
+  // Множитель = количество единиц. При 1 — юнит-экономика, при N — партия.
+  const batch_units = $('batch_units') || 1;
+  const mult = batch_units;
+  const isBatch = batch_units > 1;
+  
+  // Себестоимость партии — сырая × количество (без брака, для бюджета закупки)
+  document.getElementById('r_cost_batch').textContent     = fmt(cogs_clean * batch_units) + ' ₽';
+  document.getElementById('r_cost_batch_label').textContent = isBatch
+    ? 'Себестоимость партии (' + fmt(batch_units) + ' ед., для закупки)'
+    : 'Себестоимость партии (для закупки)';
+  
+  // Карточка 4: цепочка МП1
+  
+  // Обновляем заголовок и подписи в шапке
+  document.getElementById('sum_title').textContent = isBatch
+    ? 'Итого по партии (' + fmt(batch_units) + ' ед.)'
+    : 'Итого по 1 единице';
+  document.getElementById('sum_revenue_label').textContent = isBatch ? 'Выручка партии' : 'Выручка с продажи';
+  document.getElementById('sum_costs_label').textContent   = isBatch ? 'Все расходы партии' : 'Все расходы';
+  document.getElementById('sum_mp1_rub_label').textContent = isBatch ? 'МП1 партии в ₽' : 'МП1 в рублях';
+  document.getElementById('card4_desc').textContent = isBatch
+    ? 'Цепочка расходов на партию из ' + fmt(batch_units) + ' единиц'
+    : 'Как складывается твоя маржа на одну единицу';
+  
+  // Подсказка под полем количества
+  const batchHint = document.getElementById('batch_hint');
+  if (batchHint) {
+    batchHint.textContent = isBatch
+      ? '— расчёт на партию из ' + fmt(batch_units) + ' единиц. Поставь 1 — юнит-экономика.'
+      : '— юнит-экономика по 1 единице. Поставь больше — увидишь партию.';
+  }
+  
+  document.getElementById('r_price').textContent = fmt(price_seller * mult) + ' ₽';
+  document.getElementById('r_commission').textContent = '−' + fmt(commission * mult) + ' ₽';
+  document.getElementById('r_acquiring').textContent = '−' + fmt(acquiring * mult) + ' ₽';
+  document.getElementById('r_log_forward').textContent = '−' + fmt(log_forward * mult) + ' ₽';
+  document.getElementById('r_log_back').textContent = '−' + fmt(log_back_per_sale * mult) + ' ₽';
+  document.getElementById('r_acceptance').textContent = '−' + fmt(acceptance * mult) + ' ₽';
+  document.getElementById('r_storage').textContent = '−' + fmt(storage * mult) + ' ₽';
+  document.getElementById('r_penalties').textContent = '−' + fmt(penalties * mult) + ' ₽';
+  document.getElementById('r_tax').textContent = '−' + fmt(tax_amount * mult) + ' ₽';
+  document.getElementById('r_defect_wb').textContent = '−' + fmt(defect_wb_cost * mult) + ' ₽';
+  document.getElementById('r_cogs').textContent = '−' + fmt(cogs_clean * mult) + ' ₽';
+  document.getElementById('r_defect_prod').textContent = '−' + fmt(defect_prod_cost * mult) + ' ₽';
+  document.getElementById('r_mp1').textContent = fmt(mp1 * mult) + ' ₽ (' + mp1_pct.toFixed(1) + '%)';
   
   // ----- ВЫВОД В ИНТЕРФЕЙС: СВОДКА -----
-  document.getElementById('sum-revenue').textContent = fmt(price_customer) + ' ₽';
-  document.getElementById('sum-costs').textContent = fmt(total_costs) + ' ₽';
-  document.getElementById('sum-mp1-rub').textContent = fmt(mp1) + ' ₽';
+  document.getElementById('sum-revenue').textContent = fmt(price_seller * mult) + ' ₽';
+  document.getElementById('sum-costs').textContent = fmt(total_costs * mult) + ' ₽';
+  document.getElementById('sum-mp1-rub').textContent = fmt(mp1 * mult) + ' ₽';
   document.getElementById('sum-mp1-pct').textContent = mp1_pct.toFixed(1) + '%';
   
   // Цвет МП1 в зависимости от значения
@@ -832,61 +1722,120 @@ function recalc() {
   else tip = '🚀 МП1 высокая — есть запас для агрессивной рекламы и масштабирования.';
   document.getElementById('mp1-tip').innerHTML = tip;
   
-  // ============= МП2 НА ПАЧКУ =============
-  const skus = $('batch_skus');
-  const sales_per_sku = $('batch_sales_per_sku');
-  const active_pct = $('batch_active_pct') / 100;
-  const ad_per_day = $('ad_per_sku_day');
-  const ad_days = $('ad_days');
-  const ad_skus_pct = $('ad_skus_pct') / 100;
+  // ============= МП2 — ВОРОНКА РЕКЛАМЫ И ИТОГ =============
+  // Режим расчёта: ads-define (реклама → количество) или qty-define (количество → реклама)
+  const mp2ModeBtn = document.querySelector('.mode-tab[data-mode-mp2].active');
+  const mp2Mode = mp2ModeBtn ? mp2ModeBtn.dataset.modeMp2 : 'ads-define';
   
-  const active_skus = skus * active_pct;
-  const monthly_sales = active_skus * sales_per_sku;
-  const monthly_revenue = monthly_sales * price_customer;
-  const mp1_total = monthly_sales * mp1;
-  const ads_monthly = skus * ad_skus_pct * ad_per_day * ad_days;
+  const cpm = $('ad_cpm');
+  const ctr = $('ad_ctr') / 100;
+  const cr  = $('ad_cr')  / 100;
+  
+  let imp, clicks, orders, redeems, ad_cost;
+  
+  if (mp2Mode === 'qty-define') {
+    // ===== РЕЖИМ Б: количество партии диктует, показы вычисляются обратно =====
+    // Идём от выкупов вверх по воронке к показам
+    redeems = batch_units;                              // нужно столько выкупов
+    orders  = redemption > 0 ? redeems / redemption : 0; // делим на выкуп % чтобы найти заказы
+    clicks  = cr > 0 ? orders / cr : 0;                  // делим на CR чтобы найти клики
+    imp     = ctr > 0 ? clicks / ctr : 0;                // делим на CTR чтобы найти показы
+    ad_cost = imp / 1000 * cpm;
+    
+    // Записываем вычисленные показы обратно в поле (без триггера события чтобы не зациклить)
+    document.getElementById('ad_impressions').value = Math.round(imp);
+  } else {
+    // ===== РЕЖИМ А: реклама диктует, выкупы вычисляются прямой воронкой =====
+    imp     = $('ad_impressions');
+    clicks  = imp * ctr;
+    orders  = clicks * cr;
+    redeems = orders * redemption;
+    ad_cost = imp / 1000 * cpm;
+  }
+  
+  // Выручка от рекламы (по выкупленным заказам, по цене продавца)
+  const ad_revenue = redeems * price_seller;
+  // МП1 от выкупленных
+  const mp1_total = redeems * mp1;
+  
+  // Период и постоянные расходы
+  const period_days = $('period_days') || 30;
   const team = $('team_salary');
   const services = $('services');
+  const team_period = team * period_days / 30;
+  const services_period = services * period_days / 30;
   
-  const mp2 = mp1_total - ads_monthly - team - services;
-  const mp2_pct = monthly_revenue > 0 ? (mp2 / monthly_revenue * 100) : 0;
-  const breakeven_sales = mp1 > 0 ? Math.ceil((ads_monthly + team + services) / mp1) : 0;
+  // МП2 = МП1 от выкупов − реклама − постоянные за период
+  const mp2 = mp1_total - ad_cost - team_period - services_period;
   
-  // ----- ВЫВОД МП2 -----
-  document.getElementById('b_revenue').textContent = fmtMln(monthly_revenue) + ' млн';
-  document.getElementById('b_ad_costs').textContent = fmtMln(ads_monthly) + ' млн';
+  // Метрики эффективности
+  const drr = ad_revenue > 0 ? (ad_cost / ad_revenue * 100) : 0;
+  const cac = redeems > 0 ? (ad_cost / redeems) : 0;
+  const romi = ad_cost > 0 ? ((mp1_total - ad_cost) / ad_cost * 100) : 0;
+  const breakeven_units = mp1 > 0 ? Math.ceil(ad_cost / mp1) : Infinity;
+  
+  // Заголовок шапки МП2 — динамический
+  document.getElementById('b_title').textContent = (mp2Mode === 'qty-define')
+    ? 'МП2 для партии из ' + fmt(batch_units) + ' ед. — нужная реклама'
+    : 'МП2 — реальная маржа после рекламы и расходов';
+  
+  // ----- ВЫВОД В ШАПКУ МП2 -----
+  document.getElementById('b_ad_costs').textContent = fmtMln(ad_cost) + ' млн';
   document.getElementById('b_mp2_rub').textContent = fmtMln(mp2) + ' млн';
-  document.getElementById('b_mp2_pct').textContent = mp2_pct.toFixed(1) + '%';
+  document.getElementById('b_drr').textContent = drr.toFixed(1).replace('.', ',') + ' %';
+  document.getElementById('b_romi').textContent = isFinite(romi) ? romi.toFixed(0) + ' %' : '—';
   
-  document.getElementById('b_r_revenue').textContent = fmt(monthly_revenue) + ' ₽';
-  document.getElementById('b_r_mp1_total').textContent = fmt(mp1_total) + ' ₽';
-  document.getElementById('b_r_ads').textContent = '−' + fmt(ads_monthly) + ' ₽';
-  document.getElementById('b_r_team').textContent = '−' + fmt(team) + ' ₽';
-  document.getElementById('b_r_services').textContent = '−' + fmt(services) + ' ₽';
-  document.getElementById('b_r_mp2').textContent = fmt(mp2) + ' ₽ (' + mp2_pct.toFixed(1) + '%)';
-  document.getElementById('b_breakeven').textContent = fmt(breakeven_sales) + ' шт/мес';
+  // Цвета шапки
+  const mp2El = document.getElementById('b_mp2_rub');
+  if (mp2 < 0) { mp2El.classList.remove('good'); mp2El.classList.add('bad'); }
+  else         { mp2El.classList.remove('bad'); mp2El.classList.add('good'); }
   
-  // Цвет МП2
-  const mp2Elem = document.getElementById('b_mp2_rub');
-  const mp2PctElem = document.getElementById('b_mp2_pct');
-  if (mp2 < 0) {
-    mp2Elem.classList.remove('good'); mp2Elem.classList.add('bad');
-    mp2PctElem.classList.remove('good'); mp2PctElem.classList.add('bad');
-  } else {
-    mp2Elem.classList.remove('bad'); mp2Elem.classList.add('good');
-    mp2PctElem.classList.remove('bad'); mp2PctElem.classList.add('good');
-  }
+  const drrEl = document.getElementById('b_drr');
+  drrEl.classList.remove('good','bad');
+  if (drr < 10)      drrEl.classList.add('good');
+  else if (drr < 25) drrEl.style.color = ''; // нейтральный — жёлтый делаем подсказкой
+  else               drrEl.classList.add('bad');
+  
+  const romiEl = document.getElementById('b_romi');
+  if (romi < 0)  { romiEl.classList.remove('good'); romiEl.classList.add('bad'); }
+  else           { romiEl.classList.remove('bad'); romiEl.classList.add('good'); }
+  
+  // ----- ВЫВОД В ВОРОНКУ -----
+  document.getElementById('r2_imp').textContent     = fmt(imp);
+  document.getElementById('r2_clicks').textContent  = fmt(clicks);
+  document.getElementById('r2_orders').textContent  = fmt(orders);
+  document.getElementById('r2_redeems').textContent = fmt(redeems);
+  document.getElementById('r2_ad_cost').textContent = fmt(ad_cost) + ' ₽';
+  
+  // ----- ВЫВОД ФИНАЛЬНОГО РАСЧЁТА -----
+  document.getElementById('r2_revenue').textContent     = '+' + fmt(ad_revenue) + ' ₽';
+  document.getElementById('r2_mp1_total').textContent   = fmt(mp1_total) + ' ₽';
+  document.getElementById('r2_minus_ads').textContent   = '−' + fmt(ad_cost) + ' ₽';
+  document.getElementById('r2_minus_team').textContent  = '−' + fmt(team_period) + ' ₽';
+  document.getElementById('r2_minus_services').textContent = '−' + fmt(services_period) + ' ₽';
+  document.getElementById('r2_mp2').textContent         = fmt(mp2) + ' ₽';
+  
+  // ----- ВЫВОД МЕТРИК -----
+  document.getElementById('r2_drr').textContent = drr.toFixed(1).replace('.', ',') + ' %';
+  document.getElementById('r2_cac').textContent = fmt(cac) + ' ₽';
+  document.getElementById('r2_mp1_per_unit').textContent = fmt(mp1) + ' ₽';
+  document.getElementById('r2_romi').textContent = isFinite(romi) ? romi.toFixed(0).replace('.', ',') + ' %' : '—';
+  document.getElementById('r2_breakeven').textContent = isFinite(breakeven_units) 
+    ? fmt(breakeven_units) + ' ед.' 
+    : '— (МП1 ≤ 0)';
   
   // Подсказка МП2
   let tip2;
-  if (mp2 < 0) tip2 = '🔴 МП2 в минусе — пачка не окупает себя. Либо урезать рекламу, либо повысить выручку, либо пересмотреть юнитку.';
-  else if (mp2_pct < 5) tip2 = '🟡 МП2 < 5% — слишком тонкий запас, любая просадка выкупа или рост рекламы съест прибыль.';
-  else if (mp2_pct < 12) tip2 = '🟢 МП2 в нормальном диапазоне для масштабируемой работы.';
-  else tip2 = '🚀 Сильная МП2 — можно реинвестировать в новые SKU и рост.';
+  if (mp2 < 0) tip2 = '🔴 МП2 в минусе — реклама съедает всю маржу. Снижай CPM, повышай CTR/CR или повышай МП1.';
+  else if (romi < 30) tip2 = '🟡 ROMI ниже 30% — реклама работает на грани. Проверь CTR и CR, возможно цена/креативы.';
+  else if (drr > 25)  tip2 = '🟡 ДРР выше 25% — слишком много на рекламу. Можно жить но опасно.';
+  else if (drr < 10 && romi > 100) tip2 = '🚀 Отличные метрики — масштабируй бюджет, реклама приносит больше чем стоит.';
+  else tip2 = '🟢 Метрики в норме. ДРР ' + drr.toFixed(1) + '%, ROMI ' + romi.toFixed(0) + '%.';
   document.getElementById('mp2-tip').innerHTML = tip2;
 }
 
 // ============= СТАРТ =============
+setupCollapsibles();
 loadData();
 </script>
 
