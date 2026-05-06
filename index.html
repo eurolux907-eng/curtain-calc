@@ -8,30 +8,143 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* ===== ДИЗАЙН-СИСТЕМА ===== */
+  /* ===== ДИЗАЙН-СИСТЕМА · ATELIER NUMBERS ===== */
   :root {
-    --bg: #faf7f2;          /* кремовый фон */
-    --bg-card: #ffffff;
-    --bg-input: #f5f1ea;
-    --ink: #1a1815;          /* почти черный */
-    --ink-soft: #5c574e;
-    --accent: #c2410c;       /* терракот */
-    --accent-soft: #fed7aa;
-    --good: #166534;         /* темно-зеленый */
-    --good-soft: #d1fae5;
-    --bad: #991b1b;          /* винный */
-    --bad-soft: #fee2e2;
-    --line: #e8e2d6;
-    --shadow: 0 1px 2px rgba(26,24,21,.06), 0 4px 12px rgba(26,24,21,.04);
+    /* Основа */
+    --bg:           #faf7f2;            /* кремовый фон */
+    --bg-card:      #ffffff;            /* карточки */
+    --bg-input:     #f3eee5;            /* поля ввода чуть глубже */
+    --bg-row:       #faf6ee;            /* строки таблицы */
+    
+    /* Текст */
+    --ink:          #2d2825;            /* графит вместо чёрного */
+    --ink-soft:     #6b6358;
+    --ink-muted:    #968d7e;
+    
+    /* Акценты */
+    --accent:       #c2410c;            /* терракот, фирменный */
+    --accent-deep:  #9a3309;            /* терракот глубже */
+    --accent-soft:  #fed7aa;
+    --brass:        #a87f3d;            /* латунь — второй акцент */
+    --brass-soft:   #e8d5a8;
+    
+    /* Состояния */
+    --good:         #4a7c59;            /* приглушённый зелёный */
+    --good-soft:    #d8e8d2;
+    --bad:          #b04a2e;            /* тревога — мягче винного */
+    --bad-soft:     #f5d9cc;
+    --warn:         #a16207;
+    --warn-soft:    #fef3c7;
+    
+    /* Линии и тени */
+    --line:         #e8e2d6;
+    --line-soft:    #f0ebe0;
+    
+    /* Многослойные тени */
+    --shadow-sm:    0 1px 2px rgba(45,40,37,.04);
+    --shadow:       0 1px 2px rgba(45,40,37,.05),
+                    0 2px 6px rgba(45,40,37,.04),
+                    0 8px 20px rgba(45,40,37,.03);
+    --shadow-lg:    0 2px 4px rgba(45,40,37,.06),
+                    0 8px 16px rgba(45,40,37,.05),
+                    0 24px 48px rgba(45,40,37,.04);
+    --shadow-inset: inset 0 1px 2px rgba(45,40,37,.04);
+    
+    /* Анимации */
+    --ease:         cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  /* ===== ТЁМНАЯ ТЕМА ===== */
+  body[data-theme="dark"] {
+    --bg:           #1a1614;            /* глубокий графит */
+    --bg-card:      #252220;            /* чуть светлее карточка */
+    --bg-input:     #2e2a27;            /* поля ввода */
+    --bg-row:       #221f1c;
+    
+    --ink:          #e8e2d6;            /* кремовый текст */
+    --ink-soft:     #b4ada0;
+    --ink-muted:    #756e62;
+    
+    --accent:       #e8723b;            /* терракот ярче для тёмной */
+    --accent-deep:  #c2410c;
+    --accent-soft:  #4a2818;
+    --brass:        #d4a85f;            /* латунь ярче */
+    --brass-soft:   #5a4a2c;
+    
+    --good:         #7eb88f;
+    --good-soft:    #2a3d31;
+    --bad:          #d4795c;
+    --bad-soft:     #3d2820;
+    --warn:         #d4a85f;
+    --warn-soft:    #3d3520;
+    
+    --line:         #3a342f;
+    --line-soft:    #2e2a27;
+    
+    --shadow-sm:    0 1px 2px rgba(0,0,0,.3);
+    --shadow:       0 1px 2px rgba(0,0,0,.3),
+                    0 2px 6px rgba(0,0,0,.25),
+                    0 8px 20px rgba(0,0,0,.2);
+    --shadow-lg:    0 2px 4px rgba(0,0,0,.35),
+                    0 8px 16px rgba(0,0,0,.3),
+                    0 24px 48px rgba(0,0,0,.25);
+    --shadow-inset: inset 0 1px 2px rgba(0,0,0,.2);
+  }
+  
+  body[data-theme="dark"] .summary {
+    background:
+      radial-gradient(ellipse at top right, rgba(212, 168, 95, 0.15) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(232, 114, 59, 0.1) 0%, transparent 50%),
+      linear-gradient(135deg, #0f0d0c 0%, #1a1614 100%);
+  }
+  body[data-theme="dark"] .card-num {
+    background: linear-gradient(135deg, #0f0d0c 0%, #2e2a27 100%);
+    color: var(--brass);
+  }
+  body[data-theme="dark"] .btn {
+    background: linear-gradient(135deg, #0f0d0c 0%, #1a1614 100%);
+    color: var(--brass);
+  }
+  body[data-theme="dark"] #theme-toggle {
+    background: var(--bg-card);
+  }
+  /* Подсказка .tip в тёмной теме — спокойный тёплый намёк */
+  body[data-theme="dark"] .tip {
+    background: linear-gradient(135deg, rgba(232, 114, 59, 0.12) 0%, rgba(212, 168, 95, 0.06) 100%);
+    color: var(--ink);
+  }
+  /* Итоговый блок «Полная себестоимость» — карбоновая подложка вместо светлого пятна */
+  body[data-theme="dark"] .result-block[style*="var(--ink)"] {
+    background: #0f0d0c !important;
+    border: 1px solid #3a342f;
+  }
+  /* Перебиваем inline-стили текста — делаем светлый кремовый поверх карбона */
+  body[data-theme="dark"] .result-block[style*="var(--ink)"] [style*="var(--bg)"] {
+    color: var(--ink) !important;
+  }
+  /* Цифры в шапке-сводке: var(--bg) делал бы их тёмными в тёмной теме — фиксим */
+  body[data-theme="dark"] .summary .big-number {
+    color: #f0e9da;
+  }
+  /* Hover на строки полей в тёмной теме — мягкое осветление вместо светлой полосы */
+  body[data-theme="dark"] .input-row:hover {
+    background: rgba(255, 255, 255, 0.04);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Manrope', sans-serif;
-    background: var(--bg);
+    background:
+      radial-gradient(ellipse at 5% 0%, rgba(168, 127, 61, 0.05) 0%, transparent 40%),
+      radial-gradient(ellipse at 95% 100%, rgba(194, 65, 12, 0.04) 0%, transparent 45%),
+      var(--bg);
+    background-attachment: fixed;
     color: var(--ink);
     line-height: 1.5;
-    padding: 24px 16px;
+    padding: 28px 16px 40px;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   .container { max-width: 1200px; margin: 0 auto; }
   
@@ -39,18 +152,41 @@
   header {
     margin-bottom: 32px;
     padding-bottom: 24px;
+    position: relative;
     border-bottom: 1px solid var(--line);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0;
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--brass));
+    border-radius: 2px;
   }
   h1 {
     font-family: 'Fraunces', serif;
-    font-weight: 600;
-    font-size: clamp(28px, 4vw, 42px);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 6px;
+    font-weight: 500;
+    font-size: clamp(28px, 4.2vw, 44px);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin-bottom: 8px;
   }
-  h1 em { color: var(--accent); font-style: italic; }
-  .subtitle { color: var(--ink-soft); font-size: 14px; }
+  h1 em {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 600;
+    position: relative;
+  }
+  .subtitle {
+    color: var(--ink-soft);
+    font-size: 14px;
+    letter-spacing: 0.005em;
+  }
+  .subtitle::before {
+    content: '— ';
+    color: var(--brass);
+    font-weight: 600;
+  }
   
   /* ===== СЕТКА ===== */
   .grid {
@@ -65,97 +201,175 @@
   .card {
     background: var(--bg-card);
     border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 24px;
+    border-radius: 14px;
+    padding: 28px 24px 24px;
     box-shadow: var(--shadow);
+    position: relative;
+    transition: box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
   }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 24px;
+    width: 32px; height: 3px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--brass) 100%);
+    border-radius: 0 0 3px 3px;
+    opacity: 0.65;
+  }
+  .card:hover { box-shadow: var(--shadow-lg); }
+  
   .card-title {
     font-family: 'Fraunces', serif;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 21px;
+    letter-spacing: -0.01em;
     margin-bottom: 4px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
   .card-num {
-    display: inline-block;
-    width: 28px;
-    height: 28px;
-    line-height: 28px;
-    text-align: center;
-    background: var(--ink);
-    color: var(--bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, var(--ink) 0%, #1d1916 100%);
+    color: var(--brass-soft);
     border-radius: 50%;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
+    box-shadow: 0 2px 4px rgba(45,40,37,.15), inset 0 1px 0 rgba(255,255,255,0.08);
   }
-  .card-desc { color: var(--ink-soft); font-size: 13px; margin-bottom: 16px; }
-  
+  .card-desc {
+    color: var(--ink-soft);
+    font-size: 13px;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  /* ===== ИНЛАЙН-ИКОНКИ (SVG, латунь) ===== */
+  .ico {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    stroke-width: 1.8;
+    color: var(--brass);
+  }
+  .ico-sm {
+    width: 14px;
+    height: 14px;
+    vertical-align: -2px;
+    stroke-width: 1.8;
+    color: var(--brass);
+    display: inline-block;
+    margin-right: 2px;
+  }
+  .card-num .ico {
+    width: 16px;
+    height: 16px;
+    color: var(--brass-soft);
+  }
+
   /* ===== ВВОДЫ ===== */
   .input-row {
     display: grid;
-    grid-template-columns: 1fr 110px;
-    gap: 12px;
+    grid-template-columns: 1fr 120px;
+    gap: 14px;
     align-items: center;
-    padding: 8px 0;
+    padding: 9px 0;
     border-bottom: 1px dashed var(--line);
+    transition: background 0.2s var(--ease);
   }
   .input-row:last-child { border-bottom: none; }
-  .input-row label { font-size: 13px; color: var(--ink); font-weight: 500; }
-  .input-row label small { display: block; color: var(--ink-soft); font-weight: 400; font-size: 11px; margin-top: 1px; }
+  .input-row:hover { background: rgba(243, 238, 229, 0.3); }
+  .input-row label {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+  .input-row label small {
+    display: block;
+    color: var(--ink-muted);
+    font-weight: 400;
+    font-size: 11px;
+    margin-top: 2px;
+    letter-spacing: 0.005em;
+  }
   .input-row input {
     background: var(--bg-input);
-    border: 1px solid transparent;
-    border-radius: 6px;
-    padding: 8px 10px;
+    border: 1.5px solid transparent;
+    border-radius: 8px;
+    padding: 9px 12px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 14px;
+    font-weight: 500;
     color: var(--ink);
     text-align: right;
-    transition: all 0.15s;
+    transition: all 0.2s var(--ease);
     width: 100%;
+    box-shadow: var(--shadow-inset);
+  }
+  .input-row input:hover {
+    background: var(--bg-card);
+    border-color: var(--line);
   }
   .input-row input:focus {
     outline: none;
     border-color: var(--accent);
     background: var(--bg-card);
+    box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.08), var(--shadow-inset);
+  }
+  .input-row input:disabled {
+    background: var(--bg-row);
+    color: var(--ink-muted);
+    cursor: not-allowed;
   }
   .group-title {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     color: var(--accent);
-    margin: 16px 0 6px;
-    padding-top: 12px;
+    margin: 18px 0 8px;
+    padding-top: 14px;
     border-top: 1px solid var(--line);
     cursor: pointer;
     user-select: none;
     display: flex;
     align-items: center;
-    gap: 6px;
-    transition: opacity 0.15s;
+    gap: 8px;
+    transition: color 0.2s var(--ease);
   }
-  .group-title:hover { opacity: 0.7; }
+  .group-title:hover {
+    color: var(--accent-deep);
+  }
   .group-title:first-child { padding-top: 0; border-top: none; margin-top: 0; }
   .group-title::before {
-    content: '▼';
-    font-size: 8px;
-    color: var(--accent);
-    transition: transform 0.2s;
-    display: inline-block;
-    width: 10px;
+    content: '';
+    width: 0; height: 0;
+    border-left: 5px solid var(--accent);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    transform: rotate(90deg);
+    transition: transform 0.25s var(--ease);
+    flex-shrink: 0;
   }
-  .group-title.collapsed::before { transform: rotate(-90deg); }
+  .group-title.collapsed::before {
+    transform: rotate(0deg);
+    border-left-color: var(--brass);
+  }
+  .group-title.collapsed { color: var(--ink-soft); }
   .collapsed-content { display: none !important; }
   
   /* ===== РЕЗУЛЬТАТЫ ===== */
   .result-block {
-    background: var(--bg-input);
-    border-radius: 10px;
-    padding: 16px;
+    background: linear-gradient(180deg, var(--bg-input) 0%, var(--bg-row) 100%);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    padding: 18px;
     margin-top: 16px;
   }
   .result-row {
@@ -165,97 +379,156 @@
     padding: 6px 0;
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.25s var(--ease);
   }
   .result-row.minus { color: var(--bad); }
   .result-row.plus { color: var(--good); }
   .result-row.total {
     border-top: 1.5px solid var(--ink);
-    margin-top: 10px;
-    padding-top: 12px;
+    margin-top: 12px;
+    padding-top: 14px;
     font-weight: 600;
     font-size: 15px;
   }
   .result-row .label { font-family: 'Manrope', sans-serif; }
   .big-number {
     font-family: 'Fraunces', serif;
-    font-size: 36px;
+    font-size: clamp(30px, 3.6vw, 38px);
     font-weight: 600;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     line-height: 1;
+    transition: color 0.4s var(--ease), transform 0.3s var(--ease);
+    font-variant-numeric: tabular-nums;
   }
   .big-number.good { color: var(--good); }
   .big-number.bad { color: var(--bad); }
   .big-number-label {
-    font-size: 11px;
+    font-size: 10.5px;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     color: var(--ink-soft);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    font-weight: 500;
   }
   
-  /* ===== ИТОГИ ===== */
+  /* ===== ИТОГИ (тёмный блок-сводка) ===== */
   .summary {
-    background: var(--ink);
+    background:
+      radial-gradient(ellipse at top right, rgba(168, 127, 61, 0.20) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, rgba(194, 65, 12, 0.10) 0%, transparent 50%),
+      linear-gradient(135deg, #3d342c 0%, #50443a 100%);
     color: var(--bg);
-    border-radius: 12px;
-    padding: 28px;
+    border-radius: 16px;
+    padding: 32px 30px;
     margin-bottom: 24px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
   }
+  .summary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 30px;
+    width: 48px; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--brass));
+    border-radius: 0 0 3px 3px;
+  }
+  .summary::after {
+    /* Тонкая текстура крафт-бумаги */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(168, 127, 61, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(194, 65, 12, 0.03) 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .summary > * { position: relative; z-index: 1; }
+  
   .summary-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 24px;
+    gap: 28px;
   }
   .summary h2 {
     font-family: 'Fraunces', serif;
     font-weight: 500;
     font-size: 22px;
-    letter-spacing: -0.01em;
-    margin-bottom: 20px;
+    letter-spacing: -0.015em;
+    margin-bottom: 24px;
+    color: rgba(250, 247, 242, 0.95);
   }
-  .summary-item .big-number-label { color: rgba(250, 247, 242, 0.6); }
-  .summary .big-number { color: var(--bg); }
-  .summary .big-number.good { color: #86efac; }
-  .summary .big-number.bad { color: #fca5a5; }
+  .summary-item .big-number-label {
+    color: var(--brass-soft);
+    opacity: 0.75;
+    font-weight: 500;
+  }
+  .summary .big-number { color: var(--bg); transition: color 0.4s var(--ease); }
+  .summary .big-number.good { color: #a8d4af; }
+  .summary .big-number.bad { color: #f0b4a0; }
+  
+  /* Пульсация при обновлении значений */
+  @keyframes valueUpdate {
+    0%   { transform: scale(1);    opacity: 1; }
+    50%  { transform: scale(1.03); opacity: 0.85; }
+    100% { transform: scale(1);    opacity: 1; }
+  }
+  .big-number.updating {
+    animation: valueUpdate 0.35s var(--ease);
+  }
   
   /* ===== СОВЕТЫ ===== */
   .tip {
-    font-size: 12px;
-    color: var(--ink-soft);
-    background: var(--accent-soft);
+    font-size: 12.5px;
+    color: var(--ink);
+    background: linear-gradient(135deg, var(--accent-soft) 0%, #fde6c8 100%);
     border-left: 3px solid var(--accent);
-    padding: 10px 12px;
-    border-radius: 4px;
-    margin-top: 12px;
-    line-height: 1.4;
+    padding: 12px 14px;
+    border-radius: 6px;
+    margin-top: 14px;
+    line-height: 1.5;
   }
   
-  /* ===== ВКЛАДКИ ===== */
+  /* ===== ВКЛАДКИ (главные) ===== */
   .tabs {
     display: flex;
     gap: 4px;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
     background: var(--bg-input);
     padding: 4px;
-    border-radius: 10px;
+    border-radius: 12px;
     width: fit-content;
+    box-shadow: var(--shadow-inset);
   }
   .tab {
     background: transparent;
     border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
+    padding: 11px 22px;
+    border-radius: 8px;
     font-family: 'Manrope', sans-serif;
     font-weight: 500;
     font-size: 13px;
     cursor: pointer;
     color: var(--ink-soft);
-    transition: all 0.15s;
+    transition: all 0.25s var(--ease);
+    position: relative;
   }
+  .tab:hover { color: var(--ink); }
   .tab.active {
     background: var(--bg-card);
     color: var(--ink);
-    box-shadow: var(--shadow);
+    box-shadow: 0 1px 2px rgba(45,40,37,.06), 0 4px 8px rgba(45,40,37,.04);
+    font-weight: 600;
+  }
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 4px; left: 50%;
+    transform: translateX(-50%);
+    width: 14px; height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
   }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
@@ -264,28 +537,31 @@
   .mode-tabs {
     display: flex;
     gap: 2px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     background: var(--bg-input);
     padding: 3px;
-    border-radius: 7px;
+    border-radius: 8px;
     width: fit-content;
+    box-shadow: var(--shadow-inset);
   }
   .mode-tab {
     background: transparent;
     border: none;
-    padding: 6px 14px;
-    border-radius: 5px;
+    padding: 7px 16px;
+    border-radius: 6px;
     font-family: 'Manrope', sans-serif;
     font-weight: 500;
     font-size: 12px;
     cursor: pointer;
     color: var(--ink-soft);
-    transition: all 0.15s;
+    transition: all 0.2s var(--ease);
   }
+  .mode-tab:hover { color: var(--ink); }
   .mode-tab.active {
     background: var(--bg-card);
-    color: var(--ink);
-    box-shadow: 0 1px 2px rgba(26,24,21,.06);
+    color: var(--accent);
+    box-shadow: 0 1px 2px rgba(45,40,37,.08);
+    font-weight: 600;
   }
   .mode-pane { display: none; }
   .mode-pane.active { display: block; }
@@ -312,19 +588,26 @@
   
   /* ===== КНОПКИ ===== */
   .btn {
-    background: var(--ink);
+    background: linear-gradient(135deg, #2d2825 0%, #1f1b18 100%);
     color: var(--bg);
     border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
+    padding: 11px 20px;
+    border-radius: 9px;
     font-family: 'Manrope', sans-serif;
     font-weight: 500;
     font-size: 13px;
+    letter-spacing: 0.01em;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.25s var(--ease);
+    box-shadow: 0 1px 2px rgba(45,40,37,.1), inset 0 1px 0 rgba(255,255,255,0.06);
   }
-  .btn:hover { background: var(--accent); }
-  .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  .btn:hover {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(194,65,12,.18), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .btn:active { transform: translateY(0); }
+  .btn-row { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
   
   /* ===== ФОРМУЛА ===== */
   .formula {
@@ -340,20 +623,72 @@
   
   footer {
     text-align: center;
-    color: var(--ink-soft);
+    color: var(--ink-muted);
     font-size: 12px;
-    padding: 24px 0;
-    margin-top: 24px;
+    padding: 28px 0 8px;
+    margin-top: 32px;
     border-top: 1px solid var(--line);
+    letter-spacing: 0.01em;
+    position: relative;
   }
+  footer::before {
+    content: '';
+    position: absolute;
+    top: -4px; left: 50%;
+    transform: translateX(-50%);
+    width: 8px; height: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--brass));
+    border-radius: 50%;
+  }
+  
+  /* ===== ПРИЯТНЫЕ МЕЛОЧИ ===== */
+  /* Скроллбар */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 5px;
+    border: 2px solid var(--bg);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
+  
+  /* Выделение текста */
+  ::selection { background: var(--accent-soft); color: var(--ink); }
 </style>
 </head>
 <body>
+
+<!-- Переключатель темы -->
+<button id="theme-toggle" aria-label="Переключить тему" style="
+  position: fixed; top: 20px; right: 20px; z-index: 100;
+  width: 42px; height: 42px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s var(--ease);
+">
+  <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--ink); transition: color 0.25s var(--ease);">
+    <!-- Иконка солнца (дефолт - светлая тема) -->
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+  </svg>
+</button>
+
 <div class="container">
 
   <header>
-    <h1>Юнитка <em>Прогнозатор</em></h1>
-    <p class="subtitle">МП1 — маржа единицы товара · МП2 — маржа партии после рекламы и расходов</p>
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+      <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+        <circle cx="16" cy="16" r="15" fill="#2d2825" stroke="#a87f3d" stroke-width="0.5"/>
+        <path d="M 9 22 L 9 11 L 13 11 L 13 19 L 16 19 L 16 11 L 20 11 L 20 22 Z" fill="#c2410c"/>
+        <circle cx="22.5" cy="13" r="1.5" fill="#a87f3d"/>
+      </svg>
+      <h1 style="margin: 0;">Юнитка <em>Прогнозатор</em></h1>
+    </div>
+    <p class="subtitle">МП1 — маржа без учёта рекламы · МП2 — маржа после рекламы</p>
   </header>
 
   <div class="tabs">
@@ -507,7 +842,7 @@
           <input type="number" id="acquiring_pct" value="1.8" step="0.1">
         </div>
         
-        <div class="group-title">Габариты пары</div>
+        <div class="group-title">Габариты товара</div>
         <div class="input-row">
           <label>Длина, см<small>самая длинная сторона упаковки</small></label>
           <input type="number" id="dim_length" value="50" step="1">
@@ -581,7 +916,7 @@
           <input type="number" id="stor_extra" value="0.14" step="0.01">
         </div>
         <div class="input-row">
-          <label>Среднее дней хранения<small>сколько дней пара лежит на складе до продажи</small></label>
+          <label>Среднее дней хранения<small>сколько дней товар лежит на складе до продажи</small></label>
           <input type="number" id="stor_days" value="30" step="1">
         </div>
         <div class="result-block" style="margin-top: 12px;">
@@ -705,7 +1040,7 @@
           </div>
         </div>
         
-        <div class="group-title">Тара (распределяется на пары)</div>
+        <div class="group-title">Тара (распределяется на единицы)</div>
         <div class="input-row">
           <label>Цена коробки, ₽<small></small></label>
           <input type="number" id="box_price" value="100" step="5">
@@ -887,7 +1222,7 @@
     </div>
     
     <div class="summary">
-      <h2 id="b_title">МП2 — реальная маржа после рекламы и расходов</h2>
+      <h2 id="b_title">МП2 — маржа после рекламы</h2>
       <div class="summary-grid">
         <div class="summary-item">
           <div class="big-number-label">Расходы рекламы</div>
@@ -1039,7 +1374,7 @@
   <!-- ===== ВКЛАДКА: КАК ПОЛЬЗОВАТЬСЯ ===== -->
   <div class="tab-content" id="tab-howto">
     <div class="card">
-      <div class="card-title"><span class="card-num">📖</span>Как пользоваться</div>
+      <div class="card-title"><span class="card-num"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H11v16H5.5A2.5 2.5 0 0 1 3 16.5v-11Z"/><path d="M21 5.5A2.5 2.5 0 0 0 18.5 3H13v16h5.5a2.5 2.5 0 0 0 2.5-2.5v-11Z"/></svg></span>Как пользоваться</div>
       <p class="card-desc">Краткий гид по калькулятору. Раскрывай разделы по мере надобности — каждый сворачивается отдельно.</p>
       
       <div class="group-title">Зачем нужен этот калькулятор</div>
@@ -1052,7 +1387,7 @@
         <p>Калькулятор универсальный — считает шторы, одежду, мебель, посуду, любой товар на WB. Главное — знать цены, себестоимость, габариты и тарифы своего склада.</p>
       </div>
       
-      <div class="group-title">🚀 Быстрый старт за 5 минут</div>
+      <div class="group-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6c4-2 7-2 7-2s0 3-2 7l-3 3-5-5 3-3Z"/><path d="M9 11l-3 1-2 4 3 1 1 3 4-2 1-3"/><path d="M9 15l-3 3"/></svg>Быстрый старт за 5 минут</div>
       <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
         <p style="margin-bottom: 8px;"><strong>Шаг 1.</strong> Открываешь вкладку <strong>МП1</strong>. Заполняешь Карточку 1 "Цена":</p>
         <ul style="margin-left: 18px; margin-bottom: 12px;">
@@ -1074,7 +1409,7 @@
         <p style="margin-bottom: 8px;"><strong>Шаг 5.</strong> Переходишь на вкладку <strong>МП2</strong>, заполняешь воронку рекламы (показы, CPM, CTR, CR). Видишь итог: МП2, ДРР, ROMI.</p>
       </div>
       
-      <div class="group-title">🎯 Когда какой режим выбирать</div>
+      <div class="group-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>Когда какой режим выбирать</div>
       <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
         <p style="margin-bottom: 10px;"><strong>Цена — "От процентов" vs "От цен WB":</strong></p>
         <ul style="margin-left: 18px; margin-bottom: 12px;">
@@ -1098,7 +1433,7 @@
         </ul>
       </div>
       
-      <div class="group-title">📊 Что значат метрики</div>
+      <div class="group-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><rect x="5" y="13" width="3" height="6"/><rect x="10.5" y="9" width="3" height="10"/><rect x="16" y="5" width="3" height="14"/></svg>Что значат метрики</div>
       <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
         <p style="margin-bottom: 10px;"><strong>МП1 (маржинальная прибыль 1)</strong> — что остаётся с одной продажи после всех расходов площадки и себестоимости. <span style="color: var(--bad);">До рекламы.</span></p>
         <ul style="margin-left: 18px; margin-bottom: 12px; font-size: 13px;">
@@ -1106,7 +1441,7 @@
           <li><strong>0-15%:</strong> 🟡 после рекламы скорее всего минус</li>
           <li><strong>15-25%:</strong> 🟢 на грани, реклама должна быть жёстко контролируемой</li>
           <li><strong>25-35%:</strong> 🟢 хорошо для шторного/массового сегмента</li>
-          <li><strong>&gt; 35%:</strong> 🚀 премиум-зона, можно агрессивно расти</li>
+          <li><strong>&gt; 35%:</strong> <svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6c4-2 7-2 7-2s0 3-2 7l-3 3-5-5 3-3Z"/><path d="M9 11l-3 1-2 4 3 1 1 3 4-2 1-3"/><path d="M9 15l-3 3"/></svg>премиум-зона, можно агрессивно расти</li>
         </ul>
         <p style="margin-bottom: 10px;"><strong>МП2</strong> — то же самое, но <em>после</em> рекламы и постоянных расходов команды. Это твоя реальная прибыль до налога на дивиденды.</p>
         <p style="margin-bottom: 10px;"><strong>ДРР</strong> (доля рекламных расходов) = реклама / выручка. Стандартная WB-метрика.</p>
@@ -1121,12 +1456,12 @@
           <li><strong>&lt; 0%:</strong> 🔴 реклама убыточна, маржа меньше затрат на привлечение</li>
           <li><strong>0-30%:</strong> 🟡 окупается, но слабо</li>
           <li><strong>30-100%:</strong> 🟢 нормальная эффективность</li>
-          <li><strong>&gt; 100%:</strong> 🚀 каждый рубль рекламы возвращает 2+ ₽ прибыли — масштабируй бюджет</li>
+          <li><strong>&gt; 100%:</strong> <svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6c4-2 7-2 7-2s0 3-2 7l-3 3-5-5 3-3Z"/><path d="M9 11l-3 1-2 4 3 1 1 3 4-2 1-3"/><path d="M9 15l-3 3"/></svg>каждый рубль рекламы возвращает 2+ ₽ прибыли — масштабируй бюджет</li>
         </ul>
         <p><strong>Точка окупаемости рекламы</strong> — сколько единиц нужно продать чтобы реклама вышла в ноль. Если планируешь продать меньше — рекламу не запускай.</p>
       </div>
       
-      <div class="group-title">💡 Реальные кейсы</div>
+      <div class="group-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c1 1 1.5 2 1.5 3.5h5c0-1.5.5-2.5 1.5-3.5A6 6 0 0 0 12 3Z"/></svg>Реальные кейсы</div>
       <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
         <p style="margin-bottom: 10px;"><strong>Кейс 1: Массовый блэкаут 150×250 (PearHome territory)</strong></p>
         <div style="background: var(--bg-input); padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; font-size: 13px;">
@@ -1145,7 +1480,7 @@
         <div style="background: var(--bg-input); padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; font-size: 13px;">
           Партия 1000 · CTR 3% · CR 5% · Выкуп 73% · CPM 250 ₽<br>
           → Нужно 913 тыс показов, реклама 228 тыс ₽<br>
-          При премиум-МП1 1191 ₽: <strong>МП2 = 733 тыс ₽, ROMI 422%</strong> 🚀<br>
+          При премиум-МП1 1191 ₽: <strong>МП2 = 733 тыс ₽, ROMI 422%</strong> <svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6c4-2 7-2 7-2s0 3-2 7l-3 3-5-5 3-3Z"/><path d="M9 11l-3 1-2 4 3 1 1 3 4-2 1-3"/><path d="M9 15l-3 3"/></svg><br>
           При массовой МП1 50 ₽: <strong>МП2 = −178 тыс ₽, ROMI −78%</strong> 🔴<br>
           <em>Вывод:</em> та же реклама, тот же объём — два противоположных результата. Низкая МП1 не выживает под рекламой даже на нормальной воронке.
         </div>
@@ -1159,7 +1494,7 @@
         </div>
       </div>
       
-      <div class="group-title">⚠️ Что НЕ учтено в калькуляторе</div>
+      <div class="group-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 2.5 20h19L12 4Z"/><path d="M12 10v5"/><circle cx="12" cy="17.5" r="0.6" fill="currentColor"/></svg>Что НЕ учтено в калькуляторе</div>
       <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
         <p style="margin-bottom: 10px;">Для полной финансовой картины ниже МП2 нужно ещё учесть:</p>
         <ul style="margin-left: 18px; margin-bottom: 12px;">
@@ -1173,7 +1508,7 @@
         <p>Для масштабируемого бизнеса <strong>МП2 должна быть минимум 15-20%</strong>, чтобы после всех этих "хвостов" осталось 5-10% чистыми. На дефолтных параметрах массового сегмента — это невозможно.</p>
       </div>
       
-      <div class="group-title">🔮 Что планируется добавить</div>
+      <div class="group-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="10" r="6.5"/><path d="M8 9.5a4 4 0 0 1 4-3"/><path d="M6 19h12"/><path d="M9 16.3 7.5 19"/><path d="M15 16.3 16.5 19"/></svg>Что планируется добавить</div>
       <div style="font-size: 14px; color: var(--ink); line-height: 1.6; padding: 4px 0 12px;">
         <ul style="margin-left: 18px;">
           <li><strong>Пресеты сценариев</strong> — сохранять "Pear Home блэкаут" / "Премиум бархат" и переключаться</li>
@@ -1240,7 +1575,7 @@
 База — ЦенаПродавца (выручка по документам, до СПП и Кошелька WB).
       </div>
       
-      <h3 style="font-family: 'Fraunces', serif; margin-top: 24px; margin-bottom: 8px;">МП1 на одну пару</h3>
+      <h3 style="font-family: 'Fraunces', serif; margin-top: 24px; margin-bottom: 8px;">МП1 на одну единицу</h3>
       <div class="formula">
 КомиссияWB    = ЦенаПродавца × Комиссия%<br>
 Эквайринг     = ЦенаПокупателя × Эквайринг%<br>
@@ -1249,10 +1584,10 @@
 СебестЧистая = МетровТкани × ЦенаМетра + Пошив + Фурнитура +<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Упаковка + ЛогНаСклад<br>
 БракПроизв = СебестЧистая × БракПроизв% / (1 − БракПроизв%)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(на каждую годную пару падает доля бракованных)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(на каждую годную единицу падает доля бракованных)<br><br>
 БракWB+потеряшки = (СебестЧистая + ЛогПрямая) ×<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(БракWB% + Потеряшки%) / (1 − БракWB% − Потеряшки%)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(теряются уже отгруженные пары вместе с логистикой)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(теряются уже отгруженные единицы вместе с логистикой)<br><br>
 МП1 = ЦенаПродавца − КомиссияWB − Эквайринг −<br>
 &nbsp;&nbsp;&nbsp;&nbsp;ЛогПрямая − ЛогОбратнаяНаПродажу − Приёмка −<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Хранение − Штрафы − БракWB+потеряшки −<br>
@@ -1262,7 +1597,7 @@
       <h3 style="font-family: 'Fraunces', serif; margin-top: 24px; margin-bottom: 8px;">МП2 на пачку за месяц</h3>
       <div class="formula">
 ВыручкаПачки = SKU × Активные% × Продаж_на_SKU × ЦенаПродавца<br>
-МП1Пачки    = SKU × Активные% × Продаж_на_SKU × МП1_на_пару<br>
+МП1Пачки    = SKU × Активные% × Продаж_на_SKU × МП1_на_единицу<br>
 РекламаМес  = SKU × Реклама_доля% × Бюджет_арт_день × Дней<br>
 ПостоянныеРасходы = Зарплата + Сервисы<br><br>
 МП2 = МП1Пачки − РекламаМес − ПостоянныеРасходы<br>
@@ -1278,11 +1613,41 @@
   </div>
 
   <footer>
-    Юнитка Прогнозатор · версия 2.5 · универсальный калькулятор маржи WB
+    Юнитка Прогнозатор · версия 3.2 · ATELIER NUMBERS · универсальная
   </footer>
 </div>
 
 <script>
+// ============= ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ =============
+const THEME_KEY = 'tinavina_theme';
+const themeToggle = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
+
+const sunIcon = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.body.setAttribute('data-theme', 'dark');
+    themeIcon.innerHTML = moonIcon;
+  } else {
+    document.body.removeAttribute('data-theme');
+    themeIcon.innerHTML = sunIcon;
+  }
+  try { localStorage.setItem(THEME_KEY, theme); } catch(e) {}
+}
+
+// Загружаем сохранённую тему
+try {
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved === 'dark') applyTheme('dark');
+} catch(e) {}
+
+themeToggle.addEventListener('click', () => {
+  const current = document.body.getAttribute('data-theme');
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+});
+
 // ============= ВКЛАДКИ =============
 document.querySelectorAll('.tab').forEach(t => {
   t.addEventListener('click', () => {
@@ -1570,7 +1935,7 @@ function recalc() {
   const lost = $('lost_pct') / 100;
   
   // ----- СЕБЕСТОИМОСТЬ -----
-  // Материалы (всё что в самой паре)
+  // Материалы (всё что в самой единице)
   const m_fabric  = $('fabric_meters') * $('fabric_price');
   const m_ribbon  = $('ribbon_meters') * $('ribbon_price');
   const bobbin_units = $('thread_bobbin_units');
@@ -1580,14 +1945,14 @@ function recalc() {
   const m_leaflet = $('leaflet_price');
   const cost_materials = m_fabric + m_ribbon + m_thread + m_bag1 + m_bag2 + m_leaflet;
   
-  // Тара (распределяется на пары в коробке/поддоне)
+  // Тара (распределяется на единицы в коробке/поддоне)
   const box_units    = $('box_units')    || 1;
   const pallet_boxes = $('pallet_boxes') || 1;
   const t_box    = $('box_price') / box_units;
   const t_pallet = $('pallet_price') / (pallet_boxes * box_units);
   const cost_packaging = t_box + t_pallet;
   
-  // Работы (на пару + погрузка распределяется на коробку)
+  // Работы (на единицу + погрузка распределяется на коробку)
   const cost_labor = $('work_cut') + $('work_sew') + $('work_pack') + ($('work_load') / box_units);
   
   // Логистика до склада WB (цена поставки / комплектов в поставке)
@@ -1616,7 +1981,7 @@ function recalc() {
   // Полная себестоимость единицы (с браком)
   const cogs_total = cogs_clean + defect_prod_cost;
   
-  // Брак WB: теряется уже отгруженная пара (себестоимость + лог.прямая + комиссии)
+  // Брак WB: теряется уже отгруженная единица (себестоимость + лог.прямая + комиссии)
   // На каждую успешную продажу приходится defect_wb единиц убытка
   const wb_loss_per_unit = cogs_clean + log_forward;
   const defect_wb_cost = wb_loss_per_unit * (defect_wb + lost) / (1 - defect_wb - lost);
@@ -1777,7 +2142,7 @@ function recalc() {
   // Заголовок шапки МП2 — динамический
   document.getElementById('b_title').textContent = (mp2Mode === 'qty-define')
     ? 'МП2 для партии из ' + fmt(batch_units) + ' ед. — нужная реклама'
-    : 'МП2 — реальная маржа после рекламы и расходов';
+    : 'МП2 — маржа после рекламы';
   
   // ----- ВЫВОД В ШАПКУ МП2 -----
   document.getElementById('b_ad_costs').textContent = fmtMln(ad_cost) + ' млн';
