@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-<title>TINAVINA · Прототип v4.8.4</title>
+<title>TINAVINA · Прототип v4.8.5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -71,6 +71,44 @@
   .tab-status.green { background: var(--good); }
   .tab-status.red { background: var(--bad); }
   .tab-status.gray { background: var(--ink-muted); opacity: 0.4; }
+  .tab.tab-info { border-left: 1px dashed var(--line); margin-left: 4px; padding-left: 16px; }
+  .tab.tab-info:first-of-type { margin-left: 0; border-left: none; }
+  .tab .tab-icon { font-size: 14px; }
+  .tab.tab-info.active { color: var(--accent); }
+
+  /* ===== ГАЙД И ПОЛЬЗА ===== */
+  .info-pane { max-width: 920px; margin: 0 auto; }
+  .info-pane h2 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 28px; margin: 0 0 8px; letter-spacing: -0.02em; color: var(--ink); }
+  .info-pane .info-lead { color: var(--ink-soft); font-size: 15px; line-height: 1.6; margin: 0 0 24px; }
+  .info-section { background: var(--bg-card); border-radius: 14px; padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow-sm); }
+  .info-section h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 20px; margin: 0 0 16px; color: var(--ink); display: flex; align-items: center; gap: 10px; }
+  .info-section h3 .step-badge { font-family: 'JetBrains Mono', monospace; background: var(--accent); color: white; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 100px; }
+  .info-section h3 .step-icon { font-size: 22px; }
+  .info-section p { color: var(--ink-soft); line-height: 1.7; margin: 0 0 12px; }
+  .info-section ul { list-style: none; padding: 0; margin: 12px 0; }
+  .info-section ul li { padding: 10px 14px; background: var(--bg-input); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; margin-bottom: 8px; color: var(--ink); line-height: 1.55; font-size: 14px; }
+  .info-section ul li strong { color: var(--accent); font-weight: 600; }
+  .info-section ul li code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--bg-card); padding: 2px 6px; border-radius: 4px; }
+  .info-tip { background: var(--good-soft); border-left: 3px solid var(--good); padding: 12px 16px; border-radius: 0 8px 8px 0; color: var(--ink); font-size: 14px; line-height: 1.55; margin: 12px 0; }
+  .info-tip strong { color: var(--good); }
+  .info-warn { background: var(--bad-soft); border-left: 3px solid var(--bad); padding: 12px 16px; border-radius: 0 8px 8px 0; color: var(--ink); font-size: 14px; line-height: 1.55; margin: 12px 0; }
+  .info-warn strong { color: var(--bad); }
+
+  /* ПОЛЬЗА — карточки ошибок */
+  .value-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin: 16px 0; }
+  .value-card { background: var(--bg-input); border-radius: 12px; padding: 18px; border: 1px solid var(--line); transition: all 0.2s var(--ease); }
+  .value-card:hover { border-color: var(--accent); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+  .value-card .err-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+  .value-card .err-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 16px; margin-bottom: 8px; color: var(--bad); }
+  .value-card .err-desc { font-size: 13px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 12px; }
+  .value-card .fix { background: var(--good-soft); padding: 10px 12px; border-radius: 8px; font-size: 13px; line-height: 1.5; color: var(--ink); border-left: 3px solid var(--good); }
+  .value-card .fix strong { color: var(--good); }
+
+  .feature-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 14px 0; }
+  .feature-item { display: flex; align-items: start; gap: 10px; padding: 12px 14px; background: var(--bg-input); border-radius: 10px; }
+  .feature-item .f-icon { font-size: 18px; flex-shrink: 0; }
+  .feature-item .f-text { font-size: 14px; line-height: 1.5; color: var(--ink); }
+  .feature-item .f-text strong { color: var(--accent); }
 
   .pane { display: none; animation: fadeIn 0.3s var(--ease); }
   .pane.active { display: block; }
@@ -470,7 +508,7 @@
 <div class="container">
 
   <div class="topbar">
-    <h1>TINAVINA <span class="accent">Прогнозатор</span> <span class="badge-concept">v4.8.4 детектор налоговой ловушки</span></h1>
+    <h1>TINAVINA <span class="accent">Прогнозатор</span> <span class="badge-concept">v4.8.5 гайд и польза</span></h1>
     <div style="display: flex; gap: 8px; align-items: center;">
       <button class="theme-toggle" onclick="saveData(true)" id="save-btn" title="Сохранить все вводные данные">💾 Сохранить</button>
       <button class="theme-toggle" onclick="resetData()" id="reset-btn" title="Очистить сохранение и сбросить к дефолтам">↺ Сбросить</button>
@@ -492,6 +530,8 @@
     <button class="tab" onclick="switchTab('mp2')" data-tab="mp2"><span class="tab-num">2</span>МП2<span class="tab-status gray" id="status-mp2"></span></button>
     <button class="tab" onclick="switchTab('mp3')" data-tab="mp3"><span class="tab-num">3</span>МП3<span class="tab-status gray" id="status-mp3"></span></button>
     <button class="tab" onclick="switchTab('mp4')" data-tab="mp4"><span class="tab-num">4</span>МП4<span class="tab-status gray" id="status-mp4"></span></button>
+    <button class="tab tab-info" onclick="switchTab('guide')" data-tab="guide"><span class="tab-icon">📖</span>Гайд</button>
+    <button class="tab tab-info" onclick="switchTab('value')" data-tab="value"><span class="tab-icon">💎</span>Польза</button>
   </div>
 
   <!-- ============================== ВВОДНЫЕ ============================== -->
@@ -1934,6 +1974,195 @@
 
   </div>
 
+  <!-- ============================== ГАЙД ============================== -->
+  <div class="pane info-pane" id="pane-guide">
+    <button class="back-to-input" onclick="switchTab('vd')">← К вводным</button>
+
+    <h2>📖 Как пользоваться прогнозатором</h2>
+    <p class="info-lead">Пошаговая инструкция от запуска расчёта до интерпретации результата. Прохождение этапов по порядку — каждый следующий блокируется, пока не пройден предыдущий.</p>
+
+    <div class="info-section">
+      <h3><span class="step-icon">📋</span>Подготовка — что собрать до расчёта</h3>
+      <p>Прогнозатор посчитает точно только при честных вводных. Минимум, который нужен «на руках»:</p>
+      <ul>
+        <li><strong>Цены конкурентов на WB</strong> — медиана и P25/P75 по твоей категории (из МПСтат или ручного обхода топ-20 карточек).</li>
+        <li><strong>Себестоимость 1 единицы</strong> — если контракт, то цена за штуку «под ключ» от подрядчика. Если своё производство — материалы + работа + раскрой.</li>
+        <li><strong>Габариты и вес товара</strong> — для расчёта логистики WB. Литры и кг можно прикинуть по карточкам конкурентов или Джему.</li>
+        <li><strong>Стартовый капитал</strong> — сколько готов вложить. У тебя сейчас 20 млн ₽.</li>
+        <li><strong>Срок прогноза</strong> — обычно 12 мес для оценки годового результата.</li>
+      </ul>
+      <div class="info-tip"><strong>Совет:</strong> если данных нет — начни с дефолтных значений в калькуляторе, они откалиброваны под категорию «Шторы», но дадут адекватный порядок цифр.</div>
+    </div>
+
+    <div class="info-section">
+      <h3><span class="step-badge">0</span>Стратегия запуска</h3>
+      <p>Сверху на вкладке «Вводные» выбираешь одну из трёх:</p>
+      <ul>
+        <li><strong>🤝 Контракт</strong> — берёшь товар у подрядчика «под ключ» за фиксированную цену. Подходит для старта без своего производства. <code>Себестоимость = одна цифра</code>.</li>
+        <li><strong>🏭 Своё производство</strong> — сам шьёшь/собираешь. Раскладываешь себестоимость на материалы + швеи + цех. <code>Сложнее, но дешевле в перспективе</code>.</li>
+        <li><strong>⚖️ Гибрид</strong> — часть моделей контракт, часть своё. Активирует оба блока.</li>
+      </ul>
+      <div class="info-warn"><strong>Внимание:</strong> при «Контракте» блок «Производство» в МП4 неактивен. При «Своё» — обязательно заполни параметры швей и цеха в Карточке 9.</div>
+    </div>
+
+    <div class="info-section">
+      <h3><span class="step-badge">1</span>Юнит-экономика (МП1)</h3>
+      <p>4 карточки в порядке расчёта:</p>
+      <ul>
+        <li><strong>К1. Цена</strong> — два режима: «От процентов» (задаёшь маржу, цена считается) или «От цен ВБ» (задаёшь цену, маржа считается). На старте проще «От цен ВБ» — берёшь медиану рынка и смотришь что получается.</li>
+        <li><strong>К2. Расходы WB</strong> — комиссия категории, логистика прямая/обратная, эквайринг, налог продаж WB. <code>Комиссия для штор 29,5%, для тренчей 24,5%</code>. Логистика — 46 ₽ за 1 литр + 14 ₽ за каждый доп.литр (с учётом коэффициента склада).</li>
+        <li><strong>К3. Себестоимость</strong> — единственная цифра при «Контракте», или раскладка при «Своё».</li>
+        <li><strong>К4. Простой налог</strong> — для предварительной проверки. <code>Это НЕ финальный налог!</code> Финальный считается в Этапе 3.</li>
+      </ul>
+      <div class="info-tip">Если МП1 в минусе — этап получает красный значок ✗, дальнейшие этапы блокируются. <strong>Нет смысла идти дальше с убыточным товаром.</strong></div>
+    </div>
+
+    <div class="info-section">
+      <h3><span class="step-badge">2</span>Реклама и воронка (МП2)</h3>
+      <ul>
+        <li><strong>К5. Воронка</strong> — 4 параметра: CPM (стоимость 1000 показов), CTR (% переходов из показов), CR в корзину, CR корзина→заказ. <code>Дефолты под массовый сегмент</code>.</li>
+        <li><strong>К6. Объём в месяц</strong> — стартовый таргет на месяц. Это база для расчёта рекламы и налогов в МП4.</li>
+      </ul>
+      <p>В шапке МП2 показывает: <code>выручка/мес, ROMI, ДРР, CAC (стоимость 1 заказа), окупаемость капитала</code>. Внизу — 2 таблицы чувствительности по CPM и выкупу.</p>
+      <div class="info-tip"><strong>Что смотреть:</strong> если ДРР {'>'} 25% — реклама съедает прибыль, нужно либо снижать CPM (улучшать карточку), либо поднимать чек.</div>
+    </div>
+
+    <div class="info-section">
+      <h3><span class="step-badge">3</span>Налоги и операционка (МП3)</h3>
+      <ul>
+        <li><strong>К7. Профессиональный налоговый блок</strong> — выбираешь форму (ИП/ООО) и систему налогообложения (УСН 6%, УСН Д−Р, АУСН, ОСНО). Прогнозатор учтёт страховые ИП за себя, НДФЛ дивидендов ООО, НДС-пороги.</li>
+        <li><strong>К8. Опекс</strong> — 9 полей операционных расходов: команда, склад, упаковка, маркетинг помимо WB, бухгалтерия и т.д.</li>
+      </ul>
+      <div class="info-warn"><strong>Подвох:</strong> до 20 млн выручки — НДС нет. От 20 до 272,5 млн — НДС 5% без зачёта. От 272,5 до 490,5 — НДС 7%. От 490,5 — автопереход на ОСНО (НДС 22% с зачётом + налог на прибыль 25%). Прогнозатор сам переключает режим при превышении порога.</div>
+    </div>
+
+    <div class="info-section">
+      <h3><span class="step-badge">4</span>Прогноз (МП4)</h3>
+      <p>Главная вкладка результата. Что смотреть в порядке важности:</p>
+      <ul>
+        <li><strong>5 метрик в шапке</strong> — ROS года, ROS периода, кумулятивная прибыль, окупаемость капитала, ROI. Это итог.</li>
+        <li><strong>Регуляторы</strong> (11 штук) — крутишь и смотришь как меняется результат. Группированы: тарифы, поведение, реклама, цена, динамика.</li>
+        <li><strong>🚀 Симулятор старта</strong> — посчитает минимум денег для запуска при текущих параметрах. Учтёт лаг WB, циклы закупки, опекс-резерв.</li>
+        <li><strong>💼 «Что я могу с бюджетом»</strong> — обратная задача. Задаёшь бюджет → калькулятор бинарным поиском находит максимальный qty/мес, который ты потянешь.</li>
+        <li><strong>📈 Максимум на бюджете + детектор налоговой ловушки</strong> — если максимум пересекает порог 490,5 млн → выручка растёт, прибыль не растёт. Прогнозатор покажет «безопасный оптимум» за 5% до порога.</li>
+        <li><strong>📊 Таблица бюджетов</strong> — что получаешь на 5, 10, 20, 50, 100 млн.</li>
+        <li><strong>💵 Cashflow прогноз</strong> — деньги на счёте помесячно. Учитывает лаг WB (14 дней до выплаты), цикл закупки.</li>
+        <li><strong>💰 Сравнение ИП ↔ ООО</strong> — деньги в кармане после налогов. Точка перелома форм по 7 уровням оборота.</li>
+        <li><strong>📊 Месяц за месяцем</strong> — детальная таблица помесячного результата.</li>
+      </ul>
+    </div>
+
+    <div class="info-section">
+      <h3><span class="step-icon">🎯</span>Как интерпретировать результат</h3>
+      <ul>
+        <li><strong>ROS года {'<'} 10%</strong> — товар на грани. Любой негатив (рост CPM, падение выкупа) уведёт в минус. <code>Не запускать.</code></li>
+        <li><strong>ROS года 10–20%</strong> — рабочая зона. Есть запас прочности.</li>
+        <li><strong>ROS года {'>'} 25%</strong> — отличный товар, можно масштабировать.</li>
+        <li><strong>Окупаемость капитала {'>'} 12 мес</strong> — деньги работают медленно, нужно либо снижать запас, либо ускорять оборот.</li>
+        <li><strong>Кассовый разрыв в Cashflow</strong> — баланс на счёте уходит в минус. Нужен резерв либо кредитная линия.</li>
+        <li><strong>Налоговая ловушка</strong> — если макс. бюджет пересекает 490 млн, держи план в зоне 466 млн (за 5% до порога).</li>
+      </ul>
+      <div class="info-tip"><strong>Главные рычаги ROI</strong> (от сильного к слабому): снижение себестоимости (1× cogs = 5–8% к ROS) → повышение цены → снижение CPM (через лучшую карточку) → рост выкупа (фото/описания/отзывы).</div>
+    </div>
+
+  </div>
+
+  <!-- ============================== ПОЛЬЗА ============================== -->
+  <div class="pane info-pane" id="pane-value">
+    <button class="back-to-input" onclick="switchTab('vd')">← К вводным</button>
+
+    <h2>💎 Зачем нужен этот прогнозатор</h2>
+    <p class="info-lead">Один расчёт перед запуском товара экономит миллионы. Прогнозатор моделирует юнит-экономику, рекламу, налоги и cashflow в связке — так, как они работают в реальности. Это не Excel-табличка с «маржинальностью», а двойник твоего будущего юнит-кабинета WB.</p>
+
+    <div class="info-section">
+      <h3><span class="step-icon">🛡</span>От 7 ключевых ошибок убережёт</h3>
+      <div class="value-grid">
+
+        <div class="value-card">
+          <span class="err-icon">📉</span>
+          <div class="err-title">1. Запуск с отрицательной юнит-экономикой</div>
+          <div class="err-desc">Селлер видит «маржа 30%» и думает что в плюсе. По факту: после комиссии 29,5%, логистики, обратной логистики на возвраты, эквайринга, налога WB — прибыль с единицы −500 ₽.</div>
+          <div class="fix"><strong>Защита:</strong> МП1 показывает прибыль/убыток с одной продажи с учётом ВСЕХ расходов WB. Красный значок ✗ блокирует дальнейшие этапы.</div>
+        </div>
+
+        <div class="value-card">
+          <span class="err-icon">🔄</span>
+          <div class="err-title">2. Игнорирование выкупа</div>
+          <div class="err-desc">Для одежды выкуп 50–60%. Это значит на каждые 10 заказов возвращается 4–5. Обратная логистика стоит столько же, сколько прямая. Без учёта — реальная прибыль минус 30–40%.</div>
+          <div class="fix"><strong>Защита:</strong> поле «Выкуп» в МП2 + таблица чувствительности показывает что будет при 50%, 55%, 60%, 65%, 70%, 75%, 80%.</div>
+        </div>
+
+        <div class="value-card">
+          <span class="err-icon">🏛</span>
+          <div class="err-title">3. Налоговая ловушка ОСНО</div>
+          <div class="err-desc">Достигаешь оборота 490,5 млн → автопереход на ОСНО. НДС 22% + налог на прибыль 25%. В районе 490–550 млн выручка растёт, а прибыль НЕ растёт — всё съедает налог.</div>
+          <div class="fix"><strong>Защита:</strong> детектор налоговой ловушки в МП4 показывает плашку и рассчитывает «безопасный оптимум» — за 5% до порога.</div>
+        </div>
+
+        <div class="value-card">
+          <span class="err-icon">💸</span>
+          <div class="err-title">4. Кассовый разрыв на старте</div>
+          <div class="err-desc">WB выплачивает деньги с задержкой ~14 дней. Закупка следующей партии — раньше. Селлер закупил товар → отправил → продал → но денег ещё нет. Если бюджета впритык, упирается в ноль.</div>
+          <div class="fix"><strong>Защита:</strong> Cashflow помесячно с лагом WB. Видно когда баланс уходит в минус. Симулятор стартового капитала считает реальный минимум для запуска.</div>
+        </div>
+
+        <div class="value-card">
+          <span class="err-icon">🏢</span>
+          <div class="err-title">5. Не та форма бизнеса (ИП vs ООО)</div>
+          <div class="err-desc">«Открою ООО — солиднее». На обороте до 5+ млрд ИП почти всегда выгоднее: льгота страховых на УСН 6%, нет НДФЛ дивидендов 13–15%, проще учёт.</div>
+          <div class="fix"><strong>Защита:</strong> матрица 8 систем (ИП/ООО × УСН6/УСН Д−Р/АУСН/ОСНО) + таблица точек перелома по 7 уровням оборота. Сравнение «деньги в кармане».</div>
+        </div>
+
+        <div class="value-card">
+          <span class="err-icon">📈</span>
+          <div class="err-title">6. Переоценка темпа роста</div>
+          <div class="err-desc">«Буду расти 30% в месяц» — звучит хорошо. По факту массовый сегмент растёт 5–15%/мес после раскрутки. Завышенный план = переоценка прибыли в 2–3 раза.</div>
+          <div class="fix"><strong>Защита:</strong> регулятор «темп роста» в МП4 — крути и смотри как меняется итог. Реальный план: 8–12%/мес с пересмотром каждые 3 месяца.</div>
+        </div>
+
+        <div class="value-card">
+          <span class="err-icon">📦</span>
+          <div class="err-title">7. Неучёт логистики WB</div>
+          <div class="err-desc">Логистика на крупном товаре (шторы, верхняя одежда) — 100–300 ₽ с одной отгрузки. Плюс обратная при возврате. На объёме это десятки миллионов в год. Часто игнорируют или считают «оптом».</div>
+          <div class="fix"><strong>Защита:</strong> точный расчёт логистики по литражу с учётом коэффициента склада. Базовая ставка 46 ₽ за 1 л + 14 ₽ за каждый доп. литр.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h3><span class="step-icon">🧰</span>Что даёт инструмент</h3>
+      <div class="feature-list">
+        <div class="feature-item"><span class="f-icon">🎯</span><span class="f-text"><strong>Точная юнит-экономика 1:1 с кабинетом WB</strong> — все комиссии, тарифы, эквайринг по актуальным ставкам 2026.</span></div>
+        <div class="feature-item"><span class="f-icon">📢</span><span class="f-text"><strong>Воронка рекламы с CAC, ROMI, ДРР</strong> — увидишь когда реклама убыточна ещё до запуска.</span></div>
+        <div class="feature-item"><span class="f-icon">🏛</span><span class="f-text"><strong>Налоговая модель РФ 2026</strong> — все 8 комбинаций форм и систем, НДС-пороги, прогрессивный НДФЛ ИП на ОСНО.</span></div>
+        <div class="feature-item"><span class="f-icon">📈</span><span class="f-text"><strong>Помесячная симуляция 12 мес</strong> — с учётом темпа роста, сезонности, переходов между налоговыми режимами.</span></div>
+        <div class="feature-item"><span class="f-icon">💵</span><span class="f-text"><strong>Cashflow с лагом WB</strong> — баланс на счёте по месяцам, поиск кассовых разрывов.</span></div>
+        <div class="feature-item"><span class="f-icon">🚀</span><span class="f-text"><strong>Симулятор стартового капитала</strong> — рассчитает минимум денег под твои параметры.</span></div>
+        <div class="feature-item"><span class="f-icon">💼</span><span class="f-text"><strong>«Что я могу с бюджетом»</strong> — обратная задача: бюджет → максимальный qty/мес.</span></div>
+        <div class="feature-item"><span class="f-icon">⚠️</span><span class="f-text"><strong>Детектор налоговой ловушки</strong> — предупредит про порог ОСНО, посчитает «безопасный оптимум».</span></div>
+        <div class="feature-item"><span class="f-icon">📊</span><span class="f-text"><strong>Таблица бюджетов</strong> — 8 уровней капитала, видно что даёт каждый уровень вложений.</span></div>
+        <div class="feature-item"><span class="f-icon">🔁</span><span class="f-text"><strong>Сравнение ИП ↔ ООО на твоих числах</strong> — точка перелома по 7 уровням оборота, деньги в кармане.</span></div>
+        <div class="feature-item"><span class="f-icon">💾</span><span class="f-text"><strong>Автосохранение в браузере</strong> — данные не теряются при перезагрузке страницы.</span></div>
+        <div class="feature-item"><span class="f-icon">⚡</span><span class="f-text"><strong>11 регуляторов в МП4</strong> — крути в реальном времени и смотри как меняется итог.</span></div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h3><span class="step-icon">💡</span>Кому нужен прогнозатор</h3>
+      <ul>
+        <li><strong>Перед запуском нового товара</strong> — посчитать выйдет ли в плюс при реалистичной воронке.</li>
+        <li><strong>Перед закупкой партии</strong> — узнать сколько денег нужно с учётом лага WB и цикла закупки.</li>
+        <li><strong>При выборе формы бизнеса</strong> — открывать ИП или ООО, какую систему налогообложения выбрать.</li>
+        <li><strong>При масштабировании</strong> — когда нужно остановиться, чтобы не влететь в налоговую ловушку ОСНО.</li>
+        <li><strong>Для переговоров с подрядчиком</strong> — какую максимальную себестоимость можно платить, чтобы товар оставался рентабельным.</li>
+        <li><strong>При плановой ревизии раз в квартал</strong> — обновить вводные и посмотреть скорректированный план.</li>
+      </ul>
+      <div class="info-tip"><strong>Кратко:</strong> один грамотный расчёт за 30 минут до запуска экономит больше, чем месяц работы маркетолога после запуска.</div>
+    </div>
+
+  </div>
+
 </div>
 
 <script>
@@ -1969,7 +2198,8 @@
     document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
     document.getElementById(`pane-${tab}`).classList.add('active');
     document.querySelectorAll('.funnel-step').forEach(s => s.classList.remove('current'));
-    document.getElementById(`step-${tab}`).classList.add('current');
+    const stepEl = document.getElementById(`step-${tab}`);
+    if (stepEl) stepEl.classList.add('current');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
