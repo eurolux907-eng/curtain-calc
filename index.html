@@ -1800,6 +1800,40 @@
       </div>
     </div>
 
+    <!-- ============== РЕИНВЕСТ-РЕЖИМ ============== -->
+    <div class="card">
+      <div class="card-title"><span class="card-num">🚀</span>Реинвест-режим — потенциал роста за 1–5 лет</div>
+      <p class="card-desc">
+        Что будет, если прибыль <strong>не копить, а каждый месяц возвращать в оборот</strong> (закупку и рекламу пропорционально). Доля реинвеста = <strong><span id="rinv_pct_label">—</span>%</strong> (=&nbsp;100% −&nbsp;<span id="rinv_payout_label">—</span>%&nbsp;вывода из Карточки 10). Чем меньше выводишь — тем быстрее растёт оборот.
+      </p>
+      
+      <div class="input-row" style="max-width: 420px;">
+        <label>Эффективность реинвеста, %<small>учёт насыщения рекламы и физических ограничений. 70% — реалистично, 100% — теоретический потолок</small></label>
+        <input type="number" id="rinv_efficiency" value="70" step="5" min="30" max="100">
+      </div>
+      
+      <div style="overflow-x: auto; margin-top: 14px;">
+        <table style="width:100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 12px;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--line); background: var(--bg-row);">
+              <th style="text-align:left; padding:10px 12px; font-weight:600; color: var(--ink-soft);">Период</th>
+              <th style="text-align:right; padding:10px 12px; font-weight:600; color: var(--ink-soft);">qty/мес на конец</th>
+              <th style="text-align:right; padding:10px 12px; font-weight:600; color: var(--ink-soft);">Выручка/мес на конец</th>
+              <th style="text-align:right; padding:10px 12px; font-weight:600; color: var(--accent);">Кум. выручка</th>
+              <th style="text-align:right; padding:10px 12px; font-weight:600; color: var(--good);">В карман за период</th>
+              <th style="text-align:right; padding:10px 12px; font-weight:600; color: var(--brass);">ROI на капитал</th>
+            </tr>
+          </thead>
+          <tbody id="reinvest_tbody"></tbody>
+        </table>
+      </div>
+      
+      <div id="reinvest_warning" class="tip" style="margin-top: 14px; display: none;"></div>
+      <div style="margin-top: 10px; padding: 10px 12px; background: var(--bg-row); border-radius: 6px; font-size: 12px; color: var(--ink-soft);">
+        <strong>Что НЕ учтено:</strong> сезонность товара (для верхней одежды пики весна/осень), насыщение конкретного товара на рынке, рост CPM при увеличении бюджета рекламы (упрощённо компенсируется коэффициентом эффективности). Это <strong>оптимистичная оценка потолка роста</strong> — реальность обычно на 20–40% ниже за счёт сезонных провалов и роста стоимости привлечения.
+      </div>
+    </div>
+
     <!-- ============== СИМУЛЯТОР СТАРТА ============== -->
     <div class="card">
       <div class="card-title"><span class="card-num">🚀</span>Симулятор старта — сколько денег нужно</div>
@@ -3838,6 +3872,117 @@
                ip_pct: profit_pre > 0 ? ip_th/annual_rev*100 : 0, ooo_pct: profit_pre > 0 ? ooo_th/annual_rev*100 : 0 };
     }
 
+    // ============ РЕИНВЕСТ-РЕЖИМ: ПОТЕНЦИАЛ РОСТА ПРИ РЕИНВЕСТЕ ПРИБЫЛИ ============
+    // Симулирует помесячно: прибыль не копится, а возвращается в оборот (закупка + реклама).
+    // Каждая реинвестированная единица стоит cogs_per_unit + ad_per_unit_const (опекс — фикс, не масштабируется).
+    // efficiency (0..1) — поправка на насыщение рекламы и физические ограничения масштабирования.
+    function simulateReinvest(months_to_sim, efficiency) {
+      const reinvest_share = (1 - payout_pct) * efficiency; // реальная доля прибыли что идёт в рост
+      // Стоимость роста на 1 ед/мес: COGS + реклама/ед (брак уже в cogs_per_unit нет — он в defect_prod_pu)
+      const cost_per_unit_to_grow = (cogs_per_unit + defect_prod_pu) + ad_per_unit_const;
+      
+      let q = qty; // стартовый объём из Карточки 6
+      let cum_rev_r = 0;
+      let cum_takehome_r = 0;
+      let cum_year_rev_r = 0;
+      let cum_year_ndfl_base_r = 0;
+      let cum_year_ndfl_paid_r = 0;
+      let osno_hit_month = null;
+      const snapshots = {};
+      const checkpoints = [12, 24, 36, 60];
+      
+      for (let m = 1; m <= months_to_sim; m++) {
+        // Новый год — обнуляем кумулятивы НДС-порогов и НДФЛ-прогрессии
+        if ((m - 1) % 12 === 0) {
+          cum_year_rev_r = 0;
+          cum_year_ndfl_base_r = 0;
+          cum_year_ndfl_paid_r = 0;
+        }
+        
+        const rev_m = price_seller * q;
+        cum_year_rev_r += rev_m;
+        
+        // НДС-ставка по кум.выручке текущего года
+        let vat_rate_m = 0;
+        if (cum_year_rev_r > 490_500_000) vat_rate_m = 0.22;
+        else if (cum_year_rev_r > 272_500_000) vat_rate_m = 0.07;
+        else if (cum_year_rev_r > 20_000_000) vat_rate_m = 0.05;
+        
+        if (vat_rate_m === 0.22 && osno_hit_month === null) osno_hit_month = m;
+        
+        const onOSNO_m = (taxSystem === 'osno') || (vat_rate_m === 0.22);
+        
+        // Месячные суммы (per-unit × q)
+        const wb_m = wb_per_unit * q;
+        const cogs_m = cogs_per_unit * q;
+        const ad_m = ad_per_unit_const * q;
+        const tax_simple_m = tax_simple_per_unit * q;
+        const opex_m = opex_total;
+        
+        const mp1_m = mp1 * q;
+        const mp2_m = mp1_m - ad_m;
+        const profit_pre_tax_m = mp2_m + tax_simple_m;
+        
+        // НДС за месяц
+        const vat_in_pool_m = wb_m + cogs_m * matVatPct;
+        let vat_pay_m = 0;
+        if (vat_rate_m === 0.22) {
+          const vat_out_m = rev_m * vat_rate_m / (1 + vat_rate_m);
+          const vat_in_m = vat_in_pool_m * vat_rate_m / (1 + vat_rate_m);
+          vat_pay_m = Math.max(0, vat_out_m - vat_in_m);
+        } else if (vat_rate_m > 0) {
+          vat_pay_m = rev_m * vat_rate_m / (1 + vat_rate_m);
+        }
+        
+        // Основной налог по системе
+        let main_tax_m = 0;
+        if (onOSNO_m) {
+          const profit_for_tax = Math.max(0, profit_pre_tax_m - vat_pay_m);
+          if (taxFormName === 'ИП') {
+            cum_year_ndfl_base_r += profit_for_tax;
+            const total_ndfl_year = ndfl_progressive(cum_year_ndfl_base_r);
+            main_tax_m = Math.max(0, total_ndfl_year - cum_year_ndfl_paid_r);
+            cum_year_ndfl_paid_r = total_ndfl_year;
+          } else {
+            main_tax_m = profit_for_tax * profitTaxRate;
+          }
+        } else if (taxSystem === 'usn6') {
+          main_tax_m = rev_m * 0.06;
+        } else if (taxSystem === 'usnDR') {
+          const tax_dr = profit_pre_tax_m > 0 ? profit_pre_tax_m * usnDR_rate_m : 0;
+          const tax_min = rev_m * 0.01;
+          main_tax_m = Math.max(tax_dr, tax_min);
+        } else if (taxSystem === 'ausn') {
+          main_tax_m = rev_m * 0.08;
+        }
+        
+        const prof_tax_m = main_tax_m + (vat_rate_m > 0 ? vat_pay_m : 0);
+        const tax_adj_m = prof_tax_m - tax_simple_m;
+        const mp3_pre_m = mp2_m - opex_m;
+        const mp3_net_m = mp3_pre_m - tax_adj_m; // чистая прибыль месяца после ВСЕХ налогов
+        
+        cum_rev_r += rev_m;
+        
+        // Делим прибыль: в карман / в реинвест
+        const profit = Math.max(0, mp3_net_m);
+        const to_pocket = profit * payout_pct;
+        const to_reinvest = profit * reinvest_share;
+        cum_takehome_r += to_pocket;
+        
+        // Реинвест → прирост объёма следующего месяца
+        if (cost_per_unit_to_grow > 0 && to_reinvest > 0) {
+          q += to_reinvest / cost_per_unit_to_grow;
+        }
+        
+        // Снимки в ключевых точках
+        if (checkpoints.includes(m)) {
+          snapshots[m] = { q_end: q, rev_m, cum_rev: cum_rev_r, cum_takehome: cum_takehome_r };
+        }
+      }
+      
+      return { snapshots, osno_hit_month };
+    }
+
     // Метрики на шапку МП4
     // ROS за первые 12 мес (или за весь горизонт если короче)
     const yearWindow = Math.min(12, horizon);
@@ -4076,6 +4221,52 @@
       </tr>`;
     });
     beTbody.innerHTML = beHtml;
+    
+    // ========== ЗАПОЛНЕНИЕ ТАБЛИЦЫ РЕИНВЕСТ-РЕЖИМА ==========
+    const rinv_efficiency = (parseFloat(($$('rinv_efficiency') || {value:70}).value) || 70) / 100;
+    const rinv_clamped = Math.max(0.3, Math.min(1.0, rinv_efficiency));
+    $$('rinv_pct_label').textContent = ((1 - payout_pct) * 100).toFixed(0);
+    $$('rinv_payout_label').textContent = (payout_pct * 100).toFixed(0);
+    
+    const rinv_sim = simulateReinvest(60, rinv_clamped);
+    const rinvTbody = $$('reinvest_tbody');
+    const periodLabels = {12: '1 год', 24: '2 года', 36: '3 года', 60: '5 лет'};
+    let rinvHtml = '';
+    [12, 24, 36, 60].forEach(p => {
+      const snap = rinv_sim.snapshots[p];
+      if (!snap) return;
+      const q_mult = qty > 0 ? (snap.q_end / qty) : 0;
+      const roi = startup_capital > 0 ? (snap.cum_takehome / startup_capital * 100) : 0;
+      const roiColor = roi >= 100 ? 'var(--good)' : (roi >= 30 ? 'var(--brass)' : 'var(--ink-soft)');
+      rinvHtml += `<tr style="border-bottom: 1px solid var(--line-soft);">
+        <td style="padding:8px 12px; color: var(--ink);">${periodLabels[p]}</td>
+        <td style="padding:8px 12px; text-align:right;">${fmtNum(snap.q_end)} <span style="color:var(--ink-muted); font-size:11px;">(×${q_mult.toFixed(1).replace('.', ',')})</span></td>
+        <td style="padding:8px 12px; text-align:right;">${fmt(snap.rev_m)}</td>
+        <td style="padding:8px 12px; text-align:right; color: var(--accent);">${fmt(snap.cum_rev)}</td>
+        <td style="padding:8px 12px; text-align:right; color: var(--good); font-weight: 600;">${fmt(snap.cum_takehome)}</td>
+        <td style="padding:8px 12px; text-align:right; color: ${roiColor}; font-weight: 600;">${fmtPct(roi)}</td>
+      </tr>`;
+    });
+    rinvTbody.innerHTML = rinvHtml;
+    
+    // Плашка-предупреждение
+    const rinvWarn = $$('reinvest_warning');
+    if (payout_pct >= 0.99) {
+      rinvWarn.className = 'tip bad';
+      rinvWarn.innerHTML = `<strong>🔴 Реинвест выключен.</strong> % вывода в Карточке 10 = 100% → вся прибыль уходит в карман, оборот не растёт. Снизь % вывода чтобы увидеть потенциал роста через реинвест.`;
+      rinvWarn.style.display = 'block';
+    } else if (mp1 <= 0) {
+      rinvWarn.className = 'tip bad';
+      rinvWarn.innerHTML = `<strong>🔴 МП1 в минусе — реинвестировать нечего.</strong> Сначала почини юнит-экономику.`;
+      rinvWarn.style.display = 'block';
+    } else if (rinv_sim.osno_hit_month !== null) {
+      rinvWarn.className = 'tip';
+      rinvWarn.innerHTML = `<strong>⚠ Автопереход на ОСНО на месяце ${rinv_sim.osno_hit_month}</strong> — после этого рост замедляется (НДС 22% + налог на прибыль / НДФЛ-прогрессия). Цифры в таблице уже учитывают это. Чтобы остаться на УСН с минимальными налогами — держи годовую выручку ≤ 490 млн ₽.`;
+      rinvWarn.style.display = 'block';
+    } else {
+      rinvWarn.style.display = 'none';
+    }
+    
     $$('m4_per_net_row').classList.toggle('good', cum_profit > 0);
     $$('m4_per_net_row').classList.toggle('bad', cum_profit <= 0);
 
