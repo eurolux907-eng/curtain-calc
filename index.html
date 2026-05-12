@@ -1779,15 +1779,15 @@
     <!-- Точка перелома форм по обороту -->
     <div class="card">
       <div class="card-title"><span class="card-num">📊</span>Точка перелома: при каком обороте что выгоднее</div>
-      <p class="card-desc">Упрощённая годовая модель. Расчёт «сколько в кармане» при разных уровнях годовой выручки. Доли расходов сохраняются как в текущем сценарии.</p>
+      <p class="card-desc">Упрощённая годовая модель. Сравнение чистой прибыли форм <strong>после налогов</strong> при разных уровнях годовой выручки. Цифры не зависят от % вывода прибыли в карман — сравнивает формы, а не стратегии вывода.</p>
       <div style="overflow-x: auto;">
         <table style="width:100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 12px;">
           <thead>
             <tr style="border-bottom: 2px solid var(--line); background: var(--bg-row);">
               <th style="text-align:left; padding:10px 12px; font-weight:600; color: var(--ink-soft);">Годовая выручка</th>
               <th style="text-align:center; padding:10px 12px; font-weight:600; color: var(--ink-soft);">НДС</th>
-              <th style="text-align:right; padding:10px 12px; font-weight:600; color: var(--accent);">ИП в кармане</th>
-              <th style="text-align:right; padding:10px 12px; font-weight:600; color: var(--accent);">ООО в кармане</th>
+              <th style="text-align:right; padding:10px 12px; font-weight:600; color: var(--accent);">ИП после налогов</th>
+              <th style="text-align:right; padding:10px 12px; font-weight:600; color: var(--accent);">ООО после налогов</th>
               <th style="text-align:right; padding:10px 12px; font-weight:600; color: var(--brass);">Разница</th>
               <th style="text-align:center; padding:10px 12px; font-weight:600; color: var(--ink-soft);">Кто выгоднее</th>
             </tr>
@@ -1901,8 +1901,8 @@
       <p class="card-desc">Если бы выжимал максимум — без оглядки на план. Это «потолок» твоего бюджета.</p>
       <div class="result-block">
         <div class="result-row"><span class="label">Максимальный qty/мес</span><span id="max_qty">—</span></div>
-        <div class="result-row"><span class="label">Прибыль/мес на максимуме</span><span id="max_profit">—</span></div>
-        <div class="result-row"><span class="label">ROI год на максимуме</span><span id="max_roi" style="color: var(--brass);">—</span></div>
+        <div class="result-row"><span class="label">Прибыль/мес после налогов</span><span id="max_profit">—</span></div>
+        <div class="result-row"><span class="label">ROI год (от прибыли после налогов)</span><span id="max_roi" style="color: var(--brass);">—</span></div>
         <div class="result-row total" id="max_compare_row"><span class="label">Кратно vs плана</span><span id="max_compare" style="font-size: 12px; text-align: right;">—</span></div>
       </div>
       <div id="max_tax_trap" class="tip" style="display: none; margin-top: 12px;"></div>
@@ -1911,7 +1911,7 @@
     <!-- ============ ТАБЛИЦА "НА ЧТО РАССЧИТЫВАТЬ" ============ -->
     <div class="card">
       <div class="card-title"><span class="card-num">📊</span>На что рассчитывать при разных бюджетах</div>
-      <p class="card-desc">Текущий бюджет — выделен. Параметры товара (цена, выкуп, реклама, опекс) берутся из текущего сценария.</p>
+      <p class="card-desc">Текущий бюджет — выделен. Параметры товара (цена, выкуп, реклама, опекс) берутся из текущего сценария. <strong>ROI и окупаемость считаются от прибыли после налогов</strong> (не зависят от % вывода в карман).</p>
       <div style="overflow-x: auto;">
         <table style="width:100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 12px;">
           <thead>
@@ -3558,14 +3558,18 @@
       // Используем готовую compareAnnual для правильного учёта НДС-порогов и налогового режима
       const annual_revenue_b = m_revenue * 12;
       const r = compareAnnual(annual_revenue_b);
+      // ROI и окупаемость считаем от прибыли ПОСЛЕ НАЛОГОВ (до вывода) — это «ROI бизнеса»,
+      // не зависит от payout_pct. Это корректно: реинвестированная прибыль — это тоже доход капитала.
+      const annual_profit_after_tax = (taxFormName === 'ИП') ? r.ip_profit_after_tax : r.ooo_profit_after_tax;
       const annual_th = (taxFormName === 'ИП') ? r.ip_th : r.ooo_th;
-      const monthly_th = annual_th / 12;
+      const monthly_profit = annual_profit_after_tax / 12;
       return {
         max_qty: max_qty_b,
         m_revenue, m_mp2: m_mp2_b, 
         annual_take_home: annual_th,
-        roi_yearly: budget > 0 ? (annual_th / budget * 100) : 0,
-        payback_m: monthly_th > 0 ? (budget / monthly_th) : Infinity
+        annual_profit_after_tax,
+        roi_yearly: budget > 0 ? (annual_profit_after_tax / budget * 100) : 0,
+        payback_m: monthly_profit > 0 ? (budget / monthly_profit) : Infinity
       };
     }
     
@@ -3642,7 +3646,7 @@
     const taxTrapEl = $$('max_tax_trap');
     if (max_qty_b > 0) {
       const r_max = analyzeBudget(custom_budget);
-      const monthly_th_max = r_max.annual_take_home / 12;
+      const monthly_th_max = r_max.annual_profit_after_tax / 12;
       $$('max_qty').textContent = fmtNum(max_qty_b) + ' ед/мес';
       $$('max_profit').textContent = fmt(monthly_th_max);
       $$('max_roi').textContent = fmtPct(r_max.roi_yearly);
@@ -3691,7 +3695,7 @@
           // Используем compareAnnual для годовой выручки
           const annual_rev_opt = price_seller * safe_qty_optimum * 12;
           const r_opt = compareAnnual(annual_rev_opt);
-          const annual_th_opt = (taxFormName === 'ИП') ? r_opt.ip_th : r_opt.ooo_th;
+          const annual_th_opt = (taxFormName === 'ИП') ? r_opt.ip_profit_after_tax : r_opt.ooo_profit_after_tax;
           const monthly_th_opt = annual_th_opt / 12;
           const profit_diff_pct = monthly_th_max > 0 ? ((monthly_th_opt - monthly_th_max) / monthly_th_max * 100) : 0;
           
@@ -3829,7 +3833,9 @@
       }
       const ooo_th = ooo_div - ooo_ndfl_d;
       
-      return { annual_rev, vat_rate, ip_th, ooo_th, ip_pct: profit_pre > 0 ? ip_th/annual_rev*100 : 0, ooo_pct: profit_pre > 0 ? ooo_th/annual_rev*100 : 0 };
+      return { annual_rev, vat_rate, ip_th, ooo_th,
+               ip_profit_after_tax: ip_profit_a, ooo_profit_after_tax: ooo_profit_a,
+               ip_pct: profit_pre > 0 ? ip_th/annual_rev*100 : 0, ooo_pct: profit_pre > 0 ? ooo_th/annual_rev*100 : 0 };
     }
 
     // Метрики на шапку МП4
@@ -4053,16 +4059,18 @@
     let beHtml = '';
     breakEvenLevels.forEach(rev => {
       const r = compareAnnual(rev);
-      const diff = r.ip_th - r.ooo_th;
+      const ip_val = r.ip_profit_after_tax;
+      const ooo_val = r.ooo_profit_after_tax;
+      const diff = ip_val - ooo_val;
       const winner = diff > 0 ? 'ИП' : (diff < 0 ? 'ООО' : '=');
       const winnerColor = diff > 0 ? 'var(--good)' : (diff < 0 ? 'var(--accent)' : 'var(--ink-muted)');
       const vatLabel = r.vat_rate === 0 ? '0%' : (r.vat_rate === 0.05 ? '5%' : (r.vat_rate === 0.07 ? '7%' : '22% ОСНО'));
-      const pctLabel = Math.abs(diff) > 0 && Math.max(r.ip_th, r.ooo_th) > 0 ? `(${(Math.abs(diff)/Math.max(r.ip_th, r.ooo_th)*100).toFixed(1).replace('.', ',')}%)` : '';
+      const pctLabel = Math.abs(diff) > 0 && Math.max(ip_val, ooo_val) > 0 ? `(${(Math.abs(diff)/Math.max(ip_val, ooo_val)*100).toFixed(1).replace('.', ',')}%)` : '';
       beHtml += `<tr style="border-bottom: 1px solid var(--line-soft);">
         <td style="padding:8px 12px; color: var(--ink);">${fmt(rev)}</td>
         <td style="padding:8px 12px; text-align:center; font-size: 11px; color: var(--ink-soft);">${vatLabel}</td>
-        <td style="padding:8px 12px; text-align:right;">${fmt(r.ip_th)}</td>
-        <td style="padding:8px 12px; text-align:right;">${fmt(r.ooo_th)}</td>
+        <td style="padding:8px 12px; text-align:right;">${fmt(ip_val)}</td>
+        <td style="padding:8px 12px; text-align:right;">${fmt(ooo_val)}</td>
         <td style="padding:8px 12px; text-align:right; color: var(--brass);">${diff > 0 ? '+' : (diff < 0 ? '−' : '')}${fmt(Math.abs(diff))} ${pctLabel}</td>
         <td style="padding:8px 12px; text-align:center; color: ${winnerColor}; font-weight: 600;">${winner}</td>
       </tr>`;
