@@ -1616,7 +1616,10 @@
           <label>Темп роста, %/мес<small>оригинал в Карточке 10 → Срок и динамика</small></label>
           <input type="number" id="m4_reg_growth" step="1">
         </div>
-        <div class="input-row"></div>
+        <div class="input-row">
+          <label>Объём в месяц, ед<small>оригинал в Карточке 6 → План объёма</small></label>
+          <input type="number" id="m4_reg_qty" step="100">
+        </div>
       </div>
     </div>
 
@@ -4148,6 +4151,7 @@
   bindMirror('ctr_pct',        'm4_reg_ctr');
   bindMirror('cost_simple',    'm4_reg_cogs');
   bindMirror('f_growth_pct',   'm4_reg_growth');
+  bindMirror('qty_per_month',  'm4_reg_qty');
 
   // Умный bind для цены: в режиме "От процентов" → price_base, в "От цен ВБ" → price_jem
   function bindSmartPrice() {
