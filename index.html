@@ -687,45 +687,175 @@ body {
 ───────────────────────────────────────────── */
 @media (max-width: 768px) {
 
-  /* Убираем отступ для меню, показываем мобильный хедер */
+  /* ── БАЗОВОЕ: убираем десктопный отступ, показываем мобильный хедер ── */
   body { margin-left: 0; }
   .sidebar { display: none; }
   .mob-header { display: flex; }
   .mob-drawer { display: flex; }
 
-  /* ГЕРОЙ на мобильном */
+
+  /* ── МОБИЛЬНАЯ ШАПКА — крупнее, удобнее для пальца ── */
+  .mob-header {
+    padding: 16px 20px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+  /* Гамбургер — крупнее зона касания */
+  .burger-btn {
+    width: 44px;
+    height: 44px;
+    gap: 6px;
+    padding: 6px;
+  }
+  .burger-btn span {
+    height: 2px;
+  }
+  /* Название в шапке — читаемее */
+  .mob-logo-name {
+    font-size: 15px;
+    letter-spacing: 0.05em;
+  }
+  .mob-logo-city {
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    margin-top: 2px;
+  }
+  /* Выравниваем правый спейсер под новый размер гамбургера */
+  .mob-spacer { width: 44px; }
+
+
+  /* ── ГЕРОЙ: вертикальная колонка по центру ── */
   #screen1 {
     min-height: auto;
     align-items: flex-start;
+    overflow-x: hidden;
   }
   .hero-inner {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 32px 22px 44px;
-    gap: 24px;
+    padding: 36px 24px 52px;
+    gap: 28px;
+    width: 100%;
+    box-sizing: border-box;
   }
+
+  /* ── ЛЕВАЯ КОЛОНКА → растягивается на всю ширину ── */
   .hero-text {
     width: 100% !important;
     padding-top: 0 !important;
     align-items: center;
+    order: 1;
   }
-  .hero-title { font-size: 30px !important; }
-  .hero-subtitle { font-size: 14px; margin-bottom: 20px; }
-  .btn-sched { margin-top: 20px; }
+  /* Надпись над заголовком */
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    margin-bottom: 10px;
+  }
+  /* Заголовок — крупный, главный */
+  .hero-title {
+    font-size: 36px !important;
+    line-height: 1.15 !important;
+    margin-bottom: 12px;
+  }
+  /* Подзаголовок */
+  .hero-subtitle {
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 0;
+  }
+  /* Кнопка расписания */
+  .btn-sched {
+    margin-top: 22px;
+    font-size: 14px;
+    padding: 14px 22px;
+    width: 100%;
+  }
 
-  /* Уменьшаем оклад на мобильном */
-  .v2 { padding: 12px; }
-  .v2-inner img { height: 210px; }
 
-  /* РАСПИСАНИЕ на мобильном */
-  #screen2 { padding: 40px 20px 48px; }
+  /* ── ЦЕНТРАЛЬНЫЙ БЛОК КАРТОЧЕК → на всю ширину, под текстом ── */
+  .hero-center {
+    width: 100% !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 12px;
+    align-self: auto !important;
+    padding-top: 0;
+    order: 2;
+  }
+  /* Скрываем орнаменты и разделитель — на мобильном лишнее */
+  .hc-top-orn, .hc-bot-orn, .hc-divider { display: none; }
+
+  /* Каждая карточка — половина ширины */
+  .hc-card {
+    flex: 1;
+    min-width: 0;
+    padding: 18px 12px 16px;
+    gap: 8px;
+  }
+  /* Заголовок карточки крупнее */
+  .hc-card-title {
+    font-size: 15px;
+  }
+  /* Пояснение карточки крупнее */
+  .hc-card-desc {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  /* Кнопка внутри карточки крупнее */
+  .hc-btn {
+    font-size: 12px;
+    padding: 10px 10px;
+    margin-top: 6px;
+  }
+  /* Иконка-кружок чуть крупнее */
+  .hc-card-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+
+  /* ── ИКОНА — отдельный блок по центру, под карточками ── */
+  .icon-area {
+    order: 3;
+    align-self: center !important;
+    margin-left: 0 !important;
+    padding-top: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  /* Оклад — компактнее, но образ хорошо виден */
+  .v2 { padding: 14px; }
+  /* Высота иконы под мобильный экран */
+  .v2-inner img {
+    height: 260px;
+    width: auto;
+    max-width: 100%;
+  }
+
+
+  /* ── ЭКРАН №2: РАСПИСАНИЕ на мобильном ── */
+  #screen2 { padding: 40px 20px 52px; }
   .cards-grid { grid-template-columns: 1fr; gap: 14px; }
-  .section-title { font-size: 24px; }
-  .section-note { padding: 16px 0; }
+  .section-title { font-size: 26px; }
+  .section-sub { font-size: 12px; }
+  .card-day { font-size: 14px; }
+  .svc-time { font-size: 18px; }
+  .svc-name { font-size: 13px; }
+  .svc-desc { font-size: 11px; }
+  .section-note { padding: 16px 0; font-size: 12px; }
 
-  /* Плавающая кнопка — чуть меньше */
-  .float-btn { font-size: 13px; padding: 11px 18px; bottom: 20px; right: 16px; }
+
+  /* ── ПЛАВАЮЩАЯ КНОПКА ── */
+  .float-btn {
+    font-size: 13.5px;
+    padding: 12px 18px;
+    bottom: 20px;
+    right: 16px;
+  }
 }
 
 /* ─────────────────────────────────────────────
