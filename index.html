@@ -1050,27 +1050,72 @@ body {
 ───────────────────────────────────────────── */
 @media (min-width: 769px) {
 
-  /* Заголовок карточки — читаемо, не распухает */
+  /* ── Шрифты карточек (умеренные для ПК) ── */
+
   .hc-card-title {
     font-size: 17px;
   }
 
-  /* Пояснение в карточке — компактнее, не переносится на 4 строки */
   .hc-card-desc {
     font-size: 15px;
     line-height: 1.4;
   }
 
-  /* Кнопка карточки — умеренная */
   .hc-btn {
     font-size: 15px;
     padding: 10px 14px;
   }
 
-  /* Подзаголовок под названием храма — чуть меньше */
   .hero-subtitle {
     font-size: 16px;
     line-height: 1.55;
+  }
+
+  /* ── ПРАВКА 1: ЕДИНАЯ ВЕРХНЯЯ ЛИНИЯ ──
+     Убираем разные padding-top у трёх колонок —
+     все три стартуют с одного уровня.           */
+  .hero-inner {
+    align-items: flex-start;
+  }
+  .hero-text {
+    padding-top: 0;
+  }
+  .hero-center {
+    padding-top: 0;
+    align-self: flex-start;
+  }
+  .icon-area {
+    padding-top: 0;
+    align-self: flex-start;
+  }
+
+  /* ── ПРАВКА 2: КАРТОЧКИ ОДИНАКОВОЙ ВЫСОТЫ ──
+     hero-center растягивается на всю высоту иконы,
+     обе карточки делим поровну через flex.       */
+  .hero-center {
+    /* Растянуть на высоту самого высокого соседа */
+    align-self: stretch;
+    justify-content: flex-start;
+  }
+  .hc-card {
+    /* Обе карточки занимают равную долю высоты блока */
+    flex: 1;
+    /* justify-content: space-between распределяет
+       контент карточки равномерно по её высоте   */
+    justify-content: space-between;
+  }
+
+  /* ── ПРАВКА 3: АККУРАТНЫЙ ПЕРЕНОС ТЕКСТА ──
+     Шире карточки → меньше переносов.
+     «За здравие или за упокой — просто и быстро»
+     умещается в 2 строки при ширине 215px+.      */
+  .hero-center {
+    width: 230px;
+  }
+  .hc-card-desc {
+    /* text-wrap: balance равномерно распределяет
+       текст по строкам — нет «хвостов»           */
+    text-wrap: balance;
   }
 }
 </style>
