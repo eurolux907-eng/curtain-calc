@@ -109,10 +109,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 9px 12px;
-  font-size: 14px;
-  color: rgba(232,200,96,0.85);
-  letter-spacing: 0.03em;
+  padding: 12px 14px;
+  font-size: 15px;
+  color: rgba(232,200,96,0.90);
+  letter-spacing: 0.02em;
   text-decoration: none;
   border-radius: 3px;
   transition: background 0.18s, color 0.18s;
@@ -276,9 +276,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 12px;
-  font-size: 16px;
-  color: rgba(232,200,96,0.90);
+  padding: 14px 12px;
+  font-size: 20px;
+  color: rgba(232,200,96,0.92);
   text-decoration: none;
   border-radius: 3px;
   letter-spacing: 0.02em;
@@ -717,7 +717,7 @@ body {
   .mob-header { display: flex; }
   .mob-drawer { display: flex; }
 
-  /* ── ШАПКА — крупнее для пожилых ── */
+  /* ── ШАПКА ── */
   .mob-header {
     padding: 16px 20px 14px;
     position: sticky;
@@ -743,18 +743,26 @@ body {
   }
   .mob-spacer { width: 48px; }
 
+  /* ── ЗАДАЧА 4: МЕНЮ — 20px, удобные зоны касания ── */
+  .drawer-nav ul li a {
+    font-size: 20px;
+    padding: 14px 12px;
+    color: rgba(232,200,96,0.92);
+  }
+
   /* ── ГЕРОЙ: вертикальная колонка ── */
   #screen1 {
     min-height: auto;
     align-items: flex-start;
     overflow-x: hidden;
   }
+  /* Уменьшаем нижний паддинг — освобождаем место под икону и кнопку «Помочь» */
   .hero-inner {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 28px 22px 44px;
-    gap: 22px;
+    padding: 24px 22px 100px;
+    gap: 20px;
     width: 100%;
     box-sizing: border-box;
   }
@@ -772,35 +780,41 @@ body {
     margin-bottom: 8px;
     color: #6B4A08;
   }
-  /* Заголовок: ДВЕ строки крупным шрифтом — Храм Архангела / Михаила */
+
+  /* ── ЗАДАЧА 2: ЗАГОЛОВОК — ровно ДВЕ строки, крупный ── */
+  /* «Храм Архангела» на первой, «Михаила» на второй */
   .hero-title {
     font-size: 34px !important;
     line-height: 1.18 !important;
     margin-bottom: 10px;
-    word-break: keep-all;
+    /* Принудительный перенос: убираем <br> программно через CSS */
+    word-break: normal;
+    overflow-wrap: break-word;
   }
-  /* Подзаголовок — крупный и контрастный */
+
+  /* ── ЗАДАЧА 1б: ПОДЗАГОЛОВОК — 20px на мобильном ── */
   .hero-subtitle {
-    font-size: 16px;
-    line-height: 1.5;
+    font-size: 20px;
+    line-height: 1.45;
     color: #3A1F04;
     margin-bottom: 0;
   }
+
   /* Кнопка Расписание */
   .btn-sched {
     margin-top: 18px;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 500;
     padding: 15px 22px;
     width: 100%;
   }
 
-  /* ── КАРТОЧКИ ── */
+  /* ── ЗАДАЧА 1б: КАРТОЧКИ — крупный текст на мобильном ── */
   .hero-center {
     width: 100% !important;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 12px;
+    gap: 10px;
     align-self: auto !important;
     padding-top: 0;
     order: 2;
@@ -813,62 +827,66 @@ body {
     gap: 8px;
   }
   .hc-card-icon {
-    width: 46px;
-    height: 46px;
+    width: 44px;
+    height: 44px;
   }
-  /* Заголовок карточки — крупный */
+  /* Заголовок карточки — 24px */
   .hc-card-title {
-    font-size: 16px;
+    font-size: 24px;
   }
-  /* Пояснение карточки — крупное и контрастное */
+  /* Пояснение карточки — 18px, контрастное */
   .hc-card-desc {
-    font-size: 13px;
+    font-size: 18px;
     color: #5C3A08;
-    line-height: 1.4;
+    line-height: 1.35;
   }
-  /* Кнопка карточки */
+  /* Кнопка карточки — 18px */
   .hc-btn {
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 500;
     color: #3D2000;
-    padding: 11px 10px;
+    padding: 12px 10px;
     margin-top: 6px;
   }
 
-  /* ── ИКОНА — по центру, под карточками, хорошо видна ── */
+  /* ── ЗАДАЧА 3: ИКОНА — целиком, по центру, не обрезана ── */
   .icon-area {
     order: 3;
     align-self: center !important;
     margin-left: 0 !important;
     padding-top: 0;
+    /* Нижний отступ — чтобы плавающая кнопка «Помочь» не перекрывала */
+    padding-bottom: 20px;
     display: flex;
     justify-content: center;
     width: 100%;
   }
   .v2 { padding: 13px; }
+  /* Высота иконы: 220px — влезает на экран 375px даже с крупным заголовком */
   .v2-inner img {
-    height: 250px;
+    height: 220px;
     width: auto;
     max-width: 100%;
+    display: block;
   }
 
   /* ── ЭКРАН №2: РАСПИСАНИЕ ── */
-  #screen2 { padding: 36px 20px 48px; }
+  #screen2 { padding: 36px 20px 56px; }
   .cards-grid { grid-template-columns: 1fr; gap: 14px; }
   .section-title { font-size: 28px; }
   .section-sub { font-size: 14px; color: #5C3A08; margin-bottom: 32px; }
-  .card-day { font-size: 16px; }
-  .card-day-sub { font-size: 11px; color: rgba(240,212,120,0.75); }
-  .svc-time { font-size: 20px; }
-  .svc-name { font-size: 15px; }
-  .svc-desc { font-size: 12px; color: #5C3A08; }
+  .card-day { font-size: 17px; }
+  .card-day-sub { font-size: 12px; color: rgba(240,212,120,0.80); }
+  .svc-time { font-size: 22px; min-width: 58px; }
+  .svc-name { font-size: 16px; }
+  .svc-desc { font-size: 13px; color: #5C3A08; }
   .section-note { padding: 16px 0; font-size: 13px; line-height: 1.6; }
 
-  /* ── ПЛАВАЮЩАЯ КНОПКА ── */
+  /* ── ПЛАВАЮЩАЯ КНОПКА — не перекрывает икону ── */
   .float-btn {
     font-size: 14px;
     padding: 13px 20px;
-    bottom: 20px;
+    bottom: 16px;
     right: 16px;
   }
 }
@@ -950,7 +968,7 @@ body {
 /* Заголовок карточки */
 .hc-card-title {
   font-family: Georgia, serif;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 400;
   color: #1C0D06;
   letter-spacing: 0.02em;
@@ -959,9 +977,9 @@ body {
 
 /* Пояснение */
 .hc-card-desc {
-  font-size: 13px;
+  font-size: 17px;
   color: #5C3A08;
-  line-height: 1.5;
+  line-height: 1.45;
   letter-spacing: 0.02em;
 }
 
@@ -971,10 +989,10 @@ body {
   margin-top: 4px;
   background: transparent;
   color: #3D2000;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  padding: 10px 14px;
+  letter-spacing: 0.05em;
+  padding: 12px 14px;
   border-radius: 4px;
   text-decoration: none;
   text-align: center;
@@ -1006,7 +1024,7 @@ body {
     width: calc(50% - 6px);
     min-width: 136px;
   }
-  .hc-card-desc { font-size: 10px; }
+  /* hc-card-desc mobile override removed */
 
   /* На мобильном: порядок — текст, карточки, икона */
   .hero-inner {
@@ -1103,7 +1121,7 @@ body {
     <!-- Текст + кнопки -->
     <div class="hero-text">
       <div class="hero-eyebrow">Православный приход&nbsp;·&nbsp;<span style="white-space:nowrap">г.&nbsp;Кубинка</span></div>
-      <h1 class="hero-title">Храм<br>Архангела<br>Михаила</h1>
+      <h1 class="hero-title">Храм Архангела<br>Михаила</h1>
       <p class="hero-subtitle">«Кто, как Бог» — Архистратиг воинства небесного</p>
       <!-- КНОПКА РАСПИСАНИЯ — единственная в левой колонке -->
       <a href="#screen2" class="btn-sched">Расписание богослужений</a>
