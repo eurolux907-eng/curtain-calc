@@ -1008,42 +1008,7 @@ body {
 }
 
 /* ── АДАПТИВ: мобильный для центрального блока ── */
-@media (max-width: 768px) {
-  .hero-text { width: 100% !important; }
-
-  .hero-center {
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    order: 2; /* после текста, до иконы */
-  }
-  .hc-top-orn, .hc-bot-orn { display: none; }
-  .hc-divider { display: none; }
-
-  .hc-card {
-    width: calc(50% - 6px);
-    min-width: 136px;
-  }
-  /* hc-card-desc mobile override removed */
-
-  /* На мобильном: порядок — текст, карточки, икона */
-  .hero-inner {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 32px 20px 44px;
-    gap: 24px;
-  }
-  .hero-text { order: 1; }
-  .icon-area { order: 3; }
-
-  .hero-btns { max-width: 100%; align-items: center; }
-  .hero-title { font-size: 30px !important; }
-  .v2 { padding: 14px; }
-  .v2-inner img { height: 200px; }
-}
+/* Дублирующий мобильный блок удалён — правила есть в основном @media max-width:768px выше */
 
 
 /* ─────────────────────────────────────────────
@@ -1097,13 +1062,17 @@ body {
   .hero-center {
     justify-content: flex-start;
   }
+  /* РАВНАЯ ВЫСОТА КАРТОЧЕК: превращаем hero-center в grid.
+     grid-auto-rows: 1fr заставляет обе строки (карточки)
+     быть одинаковой высоты — по самой высокой.            */
+  .hero-center {
+    display: grid;
+    grid-auto-rows: 1fr;
+  }
   .hc-card {
-    /* Карточки идут вертикально (колонкой), поэтому flex:1
-       не выравнивает — нужна общая минимальная высота.
-       Обе карточки вытягиваются до 200px = высота большей.
-       Контент распределяется равномерно по высоте.        */
-    min-height: 200px;
+    /* Контент равномерно по высоте: иконка сверху, кнопка снизу */
     justify-content: space-between;
+    height: 100%;
   }
 
   /* ── ПРАВКА 3: АККУРАТНЫЙ ПЕРЕНОС ТЕКСТА ──
