@@ -493,6 +493,8 @@ body {
   border: 1px solid rgba(110,78,14,0.5);
   border-radius: 2px;
   box-shadow: 0 0 16px rgba(170,110,18,0.25), 0 4px 13px rgba(60,38,8,0.28);
+  /* Мягкое мерцание тёплого света по золоту */
+  animation: oklad-glow 7s ease-in-out infinite;
 }
 .v2::before {
   content: '';
@@ -1117,6 +1119,89 @@ body {
     text-wrap: balance;
   }
 }
+
+/* ─────────────────────────────────────────────
+   БОЖЕСТВЕННОЕ СВЕЧЕНИЕ — анимации света
+   (декоративные, поверх композиции, не меняют вёрстку)
+───────────────────────────────────────────── */
+
+/* ── 1. Мерцание золота на рамке иконы ── */
+@keyframes oklad-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 16px rgba(170,110,18,0.25),
+      0 4px 13px rgba(60,38,8,0.28);
+    filter: brightness(1);
+  }
+  50% {
+    /* Чуть тёплее и ярче свечение — едва заметно */
+    box-shadow:
+      0 0 24px rgba(200,150,40,0.38),
+      0 4px 13px rgba(60,38,8,0.28);
+    filter: brightness(1.05);
+  }
+}
+
+/* ── 2. Частицы света по фону ── */
+.light-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;  /* не мешают кликам по кнопкам */
+  z-index: 1;            /* над фоном-сеткой, под контентом (hero-inner z-index:2) */
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  /* Тёплое золотисто-белое мягкое свечение */
+  background: radial-gradient(circle, rgba(255,245,210,0.85) 0%, rgba(232,200,120,0.35) 45%, transparent 70%);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Размеры, позиции и тайминги — у каждой свои, движение медленное */
+.p1 { width: 5px;  height: 5px;  left: 12%; top: 70%; animation: float-up 16s ease-in-out 0s   infinite; }
+.p2 { width: 4px;  height: 4px;  left: 28%; top: 85%; animation: float-up 20s ease-in-out 3s   infinite; }
+.p3 { width: 6px;  height: 6px;  left: 47%; top: 78%; animation: float-up 18s ease-in-out 6s   infinite; }
+.p4 { width: 3px;  height: 3px;  left: 63%; top: 88%; animation: float-up 22s ease-in-out 2s   infinite; }
+.p5 { width: 5px;  height: 5px;  left: 78%; top: 72%; animation: float-up 19s ease-in-out 8s   infinite; }
+.p6 { width: 4px;  height: 4px;  left: 88%; top: 82%; animation: float-up 21s ease-in-out 5s   infinite; }
+.p7 { width: 3px;  height: 3px;  left: 38%; top: 90%; animation: float-up 23s ease-in-out 10s  infinite; }
+.p8 { width: 5px;  height: 5px;  left: 55%; top: 65%; animation: float-up 17s ease-in-out 12s  infinite; }
+
+/* Медленный подъём с мягким появлением и таянием */
+@keyframes float-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0);
+  }
+  15% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.45;
+    transform: translateY(-60px) translateX(12px);
+  }
+  85% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-120px) translateX(-8px);
+  }
+}
+
+/* ── Уважение к настройке «уменьшить движение» ── */
+@media (prefers-reduced-motion: reduce) {
+  .v2 {
+    animation: none;
+  }
+  .particle {
+    animation: none;
+    opacity: 0;  /* частицы полностью скрыты */
+  }
+}
 </style>
 </head>
 <body>
@@ -1190,6 +1275,19 @@ body {
    ЭКРАН №1 — ГЕРОЙ
 ───────────────────────────────────────── -->
 <section id="screen1">
+
+  <!-- ЧАСТИЦЫ СВЕТА — пылинки в солнечном луче (декоративно, не мешают кликам) -->
+  <div class="light-particles" aria-hidden="true">
+    <span class="particle p1"></span>
+    <span class="particle p2"></span>
+    <span class="particle p3"></span>
+    <span class="particle p4"></span>
+    <span class="particle p5"></span>
+    <span class="particle p6"></span>
+    <span class="particle p7"></span>
+    <span class="particle p8"></span>
+  </div>
+
   <div class="hero-inner">
 
     <!-- Текст + кнопки -->
