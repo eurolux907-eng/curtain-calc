@@ -363,23 +363,14 @@ body {
 .hero-inner {
   position: relative;
   z-index: 2;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
   width: 100%;
-  padding: 44px 56px 44px 44px;
-  gap: 24px;
 }
 
 /* Текстовая часть героя */
 .hero-text {
-  flex: 0 0 auto;
-  width: 255px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 0;
-  padding-top: 8px;
 }
 
 .hero-eyebrow {
@@ -474,10 +465,8 @@ body {
 
 /* ── ЗОЛОТОЙ ОКЛАД (Вариант 2) ── */
 .icon-area {
-  flex-shrink: 0;
-  margin-left: -4px;
-  align-self: flex-start;
-  padding-top: 4px;
+  display: flex;
+  justify-content: center;
 }
 
 .v2 {
@@ -711,200 +700,15 @@ body {
 /* ─────────────────────────────────────────────
    АДАПТИВ — МОБИЛЬНЫЕ
 ───────────────────────────────────────────── */
-@media (max-width: 768px) {
 
-  /* ── БАЗОВОЕ ── */
-  body { margin-left: 0; }
-  .sidebar { display: none; }
-  .mob-header { display: flex; }
-  .mob-drawer { display: flex; }
-
-  /* ── ШАПКА ── */
-  .mob-header {
-    padding: 16px 20px 14px;
-    position: sticky;
-    top: 0;
-    z-index: 200;
-  }
-  .burger-btn {
-    width: 48px;
-    height: 48px;
-    gap: 7px;
-    padding: 6px;
-  }
-  .burger-btn span { height: 2.5px; }
-  .mob-logo-name {
-    font-size: 16px;
-    letter-spacing: 0.04em;
-  }
-  .mob-logo-city {
-    font-size: 11px;
-    letter-spacing: 0.10em;
-    color: rgba(232,200,96,0.75);
-    margin-top: 2px;
-  }
-  .mob-spacer { width: 48px; }
-
-  /* ── ЗАДАЧА 4: МЕНЮ — 20px, удобные зоны касания ── */
-  .drawer-nav ul li a {
-    font-size: 20px;
-    padding: 14px 12px;
-    color: rgba(232,200,96,0.92);
-  }
-
-  /* ── ГЕРОЙ: вертикальная колонка ── */
-  #screen1 {
-    min-height: auto;
-    align-items: flex-start;
-    overflow-x: hidden;
-  }
-  /* Уменьшаем нижний паддинг — освобождаем место под икону и кнопку «Помочь» */
-  .hero-inner {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 24px 22px 100px;
-    gap: 20px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* ── ТЕКСТОВАЯ ЧАСТЬ ── */
-  .hero-text {
-    width: 100% !important;
-    padding-top: 0 !important;
-    align-items: center;
-    order: 1;
-  }
-  .hero-eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    margin-bottom: 8px;
-    color: #6B4A08;
-  }
-
-  /* ── ЗАДАЧА 2: ЗАГОЛОВОК — ровно ДВЕ строки, крупный ── */
-  /* «Храм Архангела» на первой, «Михаила» на второй */
-  .hero-title {
-    font-size: 34px !important;
-    line-height: 1.18 !important;
-    margin-bottom: 10px;
-    /* Принудительный перенос: убираем <br> программно через CSS */
-    word-break: normal;
-    overflow-wrap: break-word;
-  }
-
-  /* ── ЗАДАЧА 1б: ПОДЗАГОЛОВОК — 20px на мобильном ── */
-  .hero-subtitle {
-    font-size: 20px;
-    line-height: 1.45;
-    color: #3A1F04;
-    margin-bottom: 0;
-  }
-
-  /* Кнопка Расписание */
-  .btn-sched {
-    margin-top: 18px;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 15px 22px;
-    width: 100%;
-  }
-
-  /* ── ЗАДАЧА 1б: КАРТОЧКИ — крупный текст на мобильном ── */
-  .hero-center {
-    width: 100% !important;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 10px;
-    align-self: auto !important;
-    padding-top: 0;
-    order: 2;
-  }
-  .hc-top-orn, .hc-bot-orn, .hc-divider { display: none; }
-  .hc-card {
-    flex: 1;
-    min-width: 0;
-    padding: 16px 10px 14px;
-    gap: 8px;
-  }
-  .hc-card-icon {
-    width: 44px;
-    height: 44px;
-  }
-  /* Заголовок карточки — 24px */
-  .hc-card-title {
-    font-size: 24px;
-  }
-  /* Пояснение карточки — 18px, контрастное */
-  .hc-card-desc {
-    font-size: 18px;
-    color: #5C3A08;
-    line-height: 1.35;
-  }
-  /* Кнопка карточки — 18px */
-  .hc-btn {
-    font-size: 18px;
-    font-weight: 500;
-    color: #3D2000;
-    padding: 12px 10px;
-    margin-top: 6px;
-  }
-
-  /* ── ЗАДАЧА 3: ИКОНА — целиком, по центру, не обрезана ── */
-  .icon-area {
-    order: 3;
-    align-self: center !important;
-    margin-left: 0 !important;
-    padding-top: 0;
-    /* Нижний отступ — чтобы плавающая кнопка «Помочь» не перекрывала */
-    padding-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-  .v2 { padding: 13px; }
-  /* Высота иконы: 220px — влезает на экран 375px даже с крупным заголовком */
-  .v2-inner img {
-    height: 220px;
-    width: auto;
-    max-width: 100%;
-    display: block;
-  }
-
-  /* ── ЭКРАН №2: РАСПИСАНИЕ ── */
-  #screen2 { padding: 36px 20px 56px; }
-  .cards-grid { grid-template-columns: 1fr; gap: 14px; }
-  .section-title { font-size: 28px; }
-  .section-sub { font-size: 14px; color: #5C3A08; margin-bottom: 32px; }
-  .card-day { font-size: 17px; }
-  .card-day-sub { font-size: 12px; color: rgba(240,212,120,0.80); }
-  .svc-time { font-size: 22px; min-width: 58px; }
-  .svc-name { font-size: 16px; }
-  .svc-desc { font-size: 13px; color: #5C3A08; }
-  .section-note { padding: 16px 0; font-size: 13px; line-height: 1.6; }
-
-  /* ── ПЛАВАЮЩАЯ КНОПКА — не перекрывает икону ── */
-  .float-btn {
-    font-size: 14px;
-    padding: 13px 20px;
-    bottom: 16px;
-    right: 16px;
-  }
-}
 
 /* ─────────────────────────────────────────────
    ЦЕНТРАЛЬНЫЙ БЛОК — свеча и требы
 ───────────────────────────────────────────── */
 .hero-center {
-  flex: 0 0 auto;
-  width: 200px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  align-self: flex-start;
-  padding-top: 4px;
+  gap: 16px;
 }
 
 /* Верхний/нижний орнамент блока */
@@ -1017,75 +821,62 @@ body {
 ───────────────────────────────────────────── */
 @media (min-width: 769px) {
 
-  /* ── Шрифты карточек (умеренные для ПК) ── */
-
-  .hc-card-title {
-    font-size: 17px;
+  /* ═══════════ РАСКЛАДКА ТРЁХ КОЛОНОК (CSS GRID) ═══════════
+     Три колонки в один ряд:
+       [ текст 1fr ] [ карточки 240px ] [ икона auto ]
+     align-items: start — ВСЕ три начинаются на одной
+     верхней линии. gap — равные промежутки между ними.
+     Grid сам держит выравнивание, без ручных сдвигов.      */
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(220px, 320px) 240px auto;
+    align-items: start;          /* единая верхняя линия */
+    justify-content: center;     /* весь блок по центру экрана */
+    column-gap: 48px;            /* равные промежутки между колонками */
+    padding: 56px 64px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
+  /* Левая колонка — текст */
+  .hero-text {
+    /* верх заголовка = верх grid-ячейки = общая линия */
+  }
+
+  /* Центр — две карточки.
+     align-items: stretch (по умолчанию в grid-ячейке) +
+     одинаковая высота карточек через min-height.          */
+  .hero-center {
+    gap: 20px;
+  }
+  /* Обе карточки одинаковой высоты, контент распределён:
+     иконка сверху, кнопка снизу.                           */
+  .hc-card {
+    min-height: 232px;
+    justify-content: space-between;
+  }
+
+  /* Правая колонка — икона.
+     align-self: center центрирует икону по вертикали
+     относительно колонки карточек — гармоничный баланс.    */
+  .icon-area {
+    align-self: center;
+  }
+
+  /* ── Шрифты карточек (умеренные для ПК, не раскладка) ── */
+  .hc-card-title { font-size: 17px; }
   .hc-card-desc {
     font-size: 15px;
     line-height: 1.4;
+    text-wrap: balance;
   }
-
   .hc-btn {
     font-size: 15px;
     padding: 10px 14px;
   }
-
   .hero-subtitle {
     font-size: 16px;
     line-height: 1.55;
-  }
-
-  /* ── ПРАВКА 1: ЕДИНАЯ ВЕРХНЯЯ ЛИНИЯ ──
-     Убираем разные padding-top у трёх колонок —
-     все три стартуют с одного уровня.           */
-  .hero-inner {
-    align-items: flex-start;
-  }
-  .hero-text {
-    padding-top: 0;
-  }
-  .hero-center {
-    padding-top: 0;
-    align-self: flex-start;
-  }
-  .icon-area {
-    padding-top: 0;
-    align-self: flex-start;
-  }
-
-  /* ── ПРАВКА 2: КАРТОЧКИ ОДИНАКОВОЙ ВЫСОТЫ ──
-     hero-center растягивается на всю высоту иконы,
-     обе карточки делим поровну через flex.       */
-  .hero-center {
-    justify-content: flex-start;
-  }
-  /* РАВНАЯ ВЫСОТА КАРТОЧЕК: превращаем hero-center в grid.
-     grid-auto-rows: 1fr заставляет обе строки (карточки)
-     быть одинаковой высоты — по самой высокой.            */
-  .hero-center {
-    display: grid;
-    grid-auto-rows: 1fr;
-  }
-  .hc-card {
-    /* Контент равномерно по высоте: иконка сверху, кнопка снизу */
-    justify-content: space-between;
-    height: 100%;
-  }
-
-  /* ── ПРАВКА 3: АККУРАТНЫЙ ПЕРЕНОС ТЕКСТА ──
-     Шире карточки → меньше переносов.
-     «За здравие или за упокой — просто и быстро»
-     умещается в 2 строки при ширине 215px+.      */
-  .hero-center {
-    width: 230px;
-  }
-  .hc-card-desc {
-    /* text-wrap: balance равномерно распределяет
-       текст по строкам — нет «хвостов»           */
-    text-wrap: balance;
   }
 }
 
@@ -1169,6 +960,191 @@ body {
   .particle {
     animation: none;
     opacity: 0;  /* частицы полностью скрыты */
+  }
+}
+
+/* ════ МОБИЛЬНЫЙ БЛОК (в конце — побеждает базовые правила по каскаду) ════ */
+@media (max-width: 768px) {
+
+  /* ── БАЗОВОЕ ── */
+  body { margin-left: 0; }
+  .sidebar { display: none; }
+  .mob-header { display: flex; }
+  .mob-drawer { display: flex; }
+
+  /* ── ШАПКА ── */
+  .mob-header {
+    padding: 16px 20px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+  .burger-btn {
+    width: 48px;
+    height: 48px;
+    gap: 7px;
+    padding: 6px;
+  }
+  .burger-btn span { height: 2.5px; }
+  .mob-logo-name {
+    font-size: 16px;
+    letter-spacing: 0.04em;
+  }
+  .mob-logo-city {
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    color: rgba(232,200,96,0.75);
+    margin-top: 2px;
+  }
+  .mob-spacer { width: 48px; }
+
+  /* ── ЗАДАЧА 4: МЕНЮ — 20px, удобные зоны касания ── */
+  .drawer-nav ul li a {
+    font-size: 20px;
+    padding: 14px 12px;
+    color: rgba(232,200,96,0.92);
+  }
+
+  /* ── ГЕРОЙ: вертикальная колонка ── */
+  #screen1 {
+    min-height: auto;
+    align-items: flex-start;
+    overflow-x: hidden;
+  }
+  /* Уменьшаем нижний паддинг — освобождаем место под икону и кнопку «Помочь» */
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px 22px 100px;
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* ── ТЕКСТОВАЯ ЧАСТЬ ── */
+  .hero-text {
+    width: 100% !important;
+    padding-top: 0 !important;
+    align-items: center;
+    order: 1;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    margin-bottom: 8px;
+    color: #6B4A08;
+  }
+
+  /* ── ЗАДАЧА 2: ЗАГОЛОВОК — ровно ДВЕ строки, крупный ── */
+  /* «Храм Архангела» на первой, «Михаила» на второй */
+  .hero-title {
+    font-size: 34px !important;
+    line-height: 1.18 !important;
+    margin-bottom: 10px;
+    /* Принудительный перенос: убираем <br> программно через CSS */
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  /* ── ЗАДАЧА 1б: ПОДЗАГОЛОВОК — 20px на мобильном ── */
+  .hero-subtitle {
+    font-size: 20px;
+    line-height: 1.45;
+    color: #3A1F04;
+    margin-bottom: 0;
+  }
+
+  /* Кнопка Расписание */
+  .btn-sched {
+    margin-top: 18px;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 15px 22px;
+    width: 100%;
+  }
+
+  /* ── ЗАДАЧА 1б: КАРТОЧКИ — крупный текст на мобильном ── */
+  .hero-center {
+    width: 100% !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 10px;
+    align-self: auto !important;
+    align-items: stretch;   /* карточки равной высоты по большей */
+    padding-top: 0;
+    order: 2;
+  }
+  .hc-top-orn, .hc-bot-orn, .hc-divider { display: none; }
+  .hc-card {
+    flex: 1;
+    min-width: 0;
+    padding: 16px 10px 14px;
+    gap: 8px;
+  }
+  .hc-card-icon {
+    width: 44px;
+    height: 44px;
+  }
+  /* Заголовок карточки — 24px */
+  .hc-card-title {
+    font-size: 24px;
+  }
+  /* Пояснение карточки — 18px, контрастное */
+  .hc-card-desc {
+    font-size: 18px;
+    color: #5C3A08;
+    line-height: 1.35;
+  }
+  /* Кнопка карточки — 18px */
+  .hc-btn {
+    font-size: 18px;
+    font-weight: 500;
+    color: #3D2000;
+    padding: 12px 10px;
+    margin-top: 6px;
+  }
+
+  /* ── ЗАДАЧА 3: ИКОНА — целиком, по центру, не обрезана ── */
+  .icon-area {
+    order: 3;
+    align-self: center !important;
+    margin-left: 0 !important;
+    padding-top: 0;
+    /* Большой нижний отступ — плавающая кнопка «Помочь» не перекрывает икону */
+    padding-bottom: 80px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .v2 { padding: 13px; }
+  /* Высота иконы: 220px — влезает на экран 375px даже с крупным заголовком */
+  .v2-inner img {
+    height: 220px;
+    width: auto;
+    max-width: 100%;
+    display: block;
+  }
+
+  /* ── ЭКРАН №2: РАСПИСАНИЕ ── */
+  #screen2 { padding: 36px 20px 56px; }
+  .cards-grid { grid-template-columns: 1fr; gap: 14px; }
+  .section-title { font-size: 28px; }
+  .section-sub { font-size: 14px; color: #5C3A08; margin-bottom: 32px; }
+  .card-day { font-size: 17px; }
+  .card-day-sub { font-size: 12px; color: rgba(240,212,120,0.80); }
+  .svc-time { font-size: 22px; min-width: 58px; }
+  .svc-name { font-size: 16px; }
+  .svc-desc { font-size: 13px; color: #5C3A08; }
+  .section-note { padding: 16px 0; font-size: 13px; line-height: 1.6; }
+
+  /* ── ПЛАВАЮЩАЯ КНОПКА — не перекрывает икону ── */
+  .float-btn {
+    font-size: 14px;
+    padding: 13px 20px;
+    bottom: 16px;
+    right: 16px;
   }
 }
 </style>
