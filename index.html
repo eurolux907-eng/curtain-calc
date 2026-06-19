@@ -79,11 +79,19 @@ body {
 }
 .logo-name {
   font-family: Georgia, serif;
-  font-size: 14px;
+  font-size: 13px;
   color: #E8C860;
   text-align: center;
-  line-height: 1.45;
-  letter-spacing: 0.04em;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+/* Даты постройки — деликатная подпись под названием */
+.logo-dates {
+  font-size: 10.5px;
+  color: rgba(232,200,96,0.60);
+  text-align: center;
+  letter-spacing: 0.06em;
+  margin-top: 6px;
 }
 .logo-city {
   font-size: 11px;
@@ -252,10 +260,20 @@ body {
 .drawer-cross { font-size: 20px; color: #C4952A; margin-bottom: 6px; }
 .drawer-name {
   font-family: Georgia, serif;
-  font-size: 12.5px;
+  font-size: 13px;
   color: #E8C860;
   text-align: center;
   line-height: 1.4;
+  letter-spacing: 0.02em;
+  padding: 0 6px;
+}
+/* Даты в выдвижном меню */
+.drawer-dates {
+  font-size: 10.5px;
+  color: rgba(232,200,96,0.55);
+  text-align: center;
+  letter-spacing: 0.06em;
+  margin-top: 6px;
 }
 .drawer-city {
   font-size: 9px;
@@ -1157,8 +1175,8 @@ body {
 <aside class="sidebar">
   <div class="logo-block">
     <div class="logo-cross">✝</div>
-    <div class="logo-name">Храм Архангела<br>Михаила</div>
-    <div class="logo-city">г. Кубинка</div>
+    <div class="logo-name">Подворье Патриарха Московского и всея&nbsp;Руси,<br>храм Архангела Михаила</div>
+    <div class="logo-dates">1803–1809 гг.; 1862 г.</div>
   </div>
   <nav>
     <ul>
@@ -1168,6 +1186,8 @@ body {
       <li><a href="#">Святыни</a></li>
       <li><a href="#">Требы и пожертвования</a></li>
       <li><a href="#">Новости</a></li>
+      <li><a href="#">Воскресная школа</a></li>
+      <li><a href="#">Социальный центр «Благословение»</a></li>
       <li><a href="#">Как нас найти</a></li>
     </ul>
   </nav>
@@ -1184,7 +1204,6 @@ body {
   </button>
   <div class="mob-logo-c">
     <div class="mob-logo-name">Храм Архангела Михаила</div>
-    <div class="mob-logo-city">г. Кубинка</div>
   </div>
   <div class="mob-spacer"></div>
 </header>
@@ -1198,8 +1217,8 @@ body {
   <button class="drawer-close" id="drawerClose" aria-label="Закрыть меню">✕</button>
   <div class="drawer-logo">
     <div class="drawer-cross">✝</div>
-    <div class="drawer-name">Храм Архангела<br>Михаила</div>
-    <div class="drawer-city">г. Кубинка</div>
+    <div class="drawer-name">Подворье Патриарха Московского и всея&nbsp;Руси,<br>храм Архангела Михаила</div>
+    <div class="drawer-dates">1803–1809 гг.; 1862 г.</div>
   </div>
   <div class="drawer-nav">
     <ul>
@@ -1209,6 +1228,8 @@ body {
       <li><a href="#" class="drawer-link">Святыни</a></li>
       <li><a href="#" class="drawer-link">Требы и пожертвования</a></li>
       <li><a href="#" class="drawer-link">Новости</a></li>
+      <li><a href="#" class="drawer-link">Воскресная школа</a></li>
+      <li><a href="#" class="drawer-link">Социальный центр «Благословение»</a></li>
       <li><a href="#" class="drawer-link">Как нас найти</a></li>
     </ul>
   </div>
