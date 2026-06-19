@@ -2052,9 +2052,10 @@ body {
 
       <!-- РИСУНОК ХРАМА (под заголовком) -->
       <div class="hram-image">
-        <!-- СЮДА: рисунок храма -->
-        <!-- <img src="hram-risunok.jpg" alt="Храм Архангела Михаила" class="hram-img"> -->
-        <div class="hram-placeholder">
+        <!-- СЮДА: рисунок храма. Если файл не загрузится — покажется заглушка ниже -->
+        <img src="hram-risunok.jpg" alt="Храм Архангела Михаила" class="hram-img"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="hram-placeholder" style="display:none;">
           <svg width="40" height="40" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="6" y="11" width="32" height="24" rx="3" stroke="#9A6B0F" stroke-width="1.6" fill="none"/>
             <circle cx="22" cy="23" r="7" stroke="#9A6B0F" stroke-width="1.6" fill="none"/>
