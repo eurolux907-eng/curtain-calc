@@ -1218,6 +1218,80 @@ body {
   .clergy-name { font-size: 22px; }
 }
 
+/* ═══════════ БЛОК «СТАРОСТА» ═══════════ */
+/* Тёмно-синяя секция — в палитре сайта */
+.warden {
+  background: #0F1A30;
+  border-top: 2px solid #C4952A;
+  padding: 64px 56px 80px;
+}
+.warden-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+/* Заголовок секции — золотой, с засечками */
+.warden-title {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: #E8C860;
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin-bottom: 40px;
+}
+/* Карточка — единообразна с блоком «Священноначалие» (пергамент, золотая рамка) */
+.warden-card {
+  background: #FDF6E8;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 10px;
+  padding: 28px 32px 30px;
+  text-align: center;
+}
+/* Должность — мелким золотым шрифтом над именем */
+.warden-role {
+  font-size: 15px;
+  color: #A77B1A;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+/* Имя — крупно, золотом (тёмный оттенок для контраста на пергаменте), с засечками */
+.warden-name {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: #8A6012;
+  line-height: 1.3;
+  margin-bottom: 20px;
+}
+/* Временная заглушка «о себе» — серый курсив */
+.warden-about {
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #9C9070;
+  margin-bottom: 22px;
+}
+/* Телефон — крупно, читаемо; номер золотой кликабельной ссылкой */
+.warden-phone {
+  font-size: 18px;
+  color: #2C1A06;
+}
+.warden-phone a {
+  color: #8A6012;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.warden-phone a:hover { text-decoration: underline; }
+/* ── Мобильный ── */
+@media (max-width: 768px) {
+  .warden { padding: 44px 20px 56px; }
+  .warden-title { font-size: 28px; }
+  .warden-card { padding: 22px 18px 24px; }
+  .warden-name { font-size: 22px; }
+}
+
 </style>
 </head>
 <body>
@@ -1431,6 +1505,23 @@ body {
         <div class="clergy-name">Иерей Алексий Дроздов</div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- БЛОК СТАРОСТА (последний блок страницы) -->
+  <section class="warden" id="warden">
+    <div class="warden-inner">
+      <h2 class="warden-title">Староста</h2>
+
+      <div class="warden-card">
+        <div class="warden-role">Староста храма</div>
+        <div class="warden-name">Андрейчук Мария Викторовна</div>
+
+        <!-- ТЕКСТ СТАРОСТЫ: заменить заглушку реальным текстом, когда будет готов -->
+        <p class="warden-about">Здесь будет рассказ старосты о служении при храме. Текст готовится.</p>
+
+        <p class="warden-phone">Телефон: <a href="tel:+79859998700">+7 985 999 87 00</a></p>
+      </div>
     </div>
   </section>
 
