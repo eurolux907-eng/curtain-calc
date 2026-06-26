@@ -965,9 +965,10 @@ body {
 /* Плейсхолдер под икону — строго квадрат (aspect-ratio: 1),
    чтобы будущие изображения не разъезжали карточки */
 .altar-img {
-  aspect-ratio: 1;
+  aspect-ratio: 3 / 4;
   width: 100%;
-  background: #F4E8CC;
+  /* Пергаментный фон в тон карточки — поля при object-fit: contain не выделяются */
+  background: #FDF6E8;
   border: 1px solid rgba(196,149,42,0.55);
   border-radius: 6px;
   display: flex;
@@ -976,7 +977,7 @@ body {
   color: #9C9070;
   font-size: 16px;
   letter-spacing: 0.04em;
-  object-fit: cover;
+  object-fit: contain;
   margin-bottom: 20px;
 }
 /* Подпись придела — мелким золотым шрифтом над названием */
