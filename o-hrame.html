@@ -1015,6 +1015,144 @@ body {
   .altar-card.main { max-width: 440px; width: 100%; }
 }
 
+/* ═══════════ БЛОК «НАСТОЯТЕЛЬ» ═══════════ */
+/* Тёмно-синяя секция — в палитре сайта */
+.abbot {
+  background: #0F1A30;
+  border-top: 2px solid #C4952A;
+  padding: 64px 56px 72px;
+}
+.abbot-inner {
+  max-width: 1060px;
+  margin: 0 auto;
+}
+/* Заголовок секции — золотой, с засечками */
+.abbot-title {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: #E8C860;
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin-bottom: 40px;
+}
+/* Раскладка: фото слева, текст справа (десктоп) */
+.abbot-grid {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  background: #FDF6E8;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 12px;
+  padding: 32px;
+}
+/* Фото настоятеля — строго квадрат (aspect-ratio: 1) */
+.abbot-photo {
+  position: relative;
+  flex: 0 0 300px;
+  width: 300px;
+  aspect-ratio: 1;
+  background: #F4E8CC;
+  border: 1px solid rgba(196,149,42,0.55);
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(154,107,15,0.18);
+  overflow: hidden;
+}
+/* Плейсхолдер — виден, если файла nastoyatel.jpg ещё нет */
+.abbot-photo-ph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9C9070;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+}
+/* Реальное фото перекрывает плейсхолдер, когда загрузится */
+.abbot-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Текстовая часть */
+.abbot-text {
+  flex: 1;
+  min-width: 0;
+}
+/* Сан и имя — крупно, золотом (тёмный оттенок для контраста на пергаменте), с засечками */
+.abbot-name {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: #8A6012;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+/* Подпись под именем — мелким золотым шрифтом */
+.abbot-role {
+  font-size: 15px;
+  color: #A77B1A;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  margin-bottom: 26px;
+}
+.abbot-group + .abbot-group { margin-top: 28px; }
+/* Подзаголовки групп — золотые, с засечками, чуть мельче имени */
+.abbot-subtitle {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #9A6B0F;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(196,149,42,0.30);
+}
+/* Списки — спокойный читаемый шрифт */
+.abbot-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.abbot-list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #2C1A06;
+}
+.abbot-list li::before {
+  content: "✝";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  color: rgba(196,149,42,0.65);
+  font-size: 13px;
+}
+/* Годы — выделены золотом и жирным */
+.abbot-year {
+  color: #8A6012;
+  font-weight: 600;
+}
+/* ── Мобильный: фото сверху, текст под ним ── */
+@media (max-width: 768px) {
+  .abbot { padding: 44px 20px 52px; }
+  .abbot-title { font-size: 28px; }
+  .abbot-grid { flex-direction: column; gap: 24px; padding: 22px; }
+  .abbot-photo {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .abbot-name { font-size: 26px; }
+  .abbot-subtitle { font-size: 20px; }
+  .abbot-list li { font-size: 16px; }
+}
+
 </style>
 </head>
 <body>
@@ -1162,6 +1300,45 @@ body {
           <h3 class="altar-name">Святитель Леонтий Ростовский</h3>
           <p class="altar-desc">Придел освящён в 1862 году. Память святителя — 5 июня.</p>
         </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК НАСТОЯТЕЛЬ -->
+  <section class="abbot" id="abbot">
+    <div class="abbot-inner">
+      <h2 class="abbot-title">Настоятель</h2>
+      <div class="abbot-grid">
+
+        <!-- Фото настоятеля (квадрат). Файл nastoyatel.jpg добавляется в репозиторий отдельно -->
+        <div class="abbot-photo">
+          <span class="abbot-photo-ph">фото настоятеля</span>
+          <!-- сюда будет добавлен файл nastoyatel.jpg; если файла нет — остаётся плейсхолдер выше -->
+          <img src="nastoyatel.jpg" alt="Протоиерей Николай Крюков" onerror="this.remove()">
+        </div>
+
+        <div class="abbot-text">
+          <div class="abbot-name">Протоиерей Николай Крюков</div>
+          <div class="abbot-role">Настоятель Патриаршего Подворья — храма Архангела Михаила</div>
+
+          <div class="abbot-group">
+            <h3 class="abbot-subtitle">Образование</h3>
+            <ul class="abbot-list">
+              <li><span class="abbot-year">1998</span> — Московская Духовная Семинария</li>
+              <li><span class="abbot-year">2004</span> — Московская Духовная Академия</li>
+              <li><span class="abbot-year">2010</span> — Государственный Университет Управления при Президенте РФ</li>
+            </ul>
+          </div>
+
+          <div class="abbot-group">
+            <h3 class="abbot-subtitle">Рукоположение</h3>
+            <ul class="abbot-list">
+              <li><span class="abbot-year">3 ноября 1996</span> — рукоположен в диаконы епископом Верейским Евгением в храме Иоанна Лествичника Московской Духовной Семинарии</li>
+              <li><span class="abbot-year">15 марта 1997</span> — рукоположен в сан иерея епископом Верейским Евгением в храме Покрова Пресвятой Богородицы Московской Духовной Академии</li>
+            </ul>
+          </div>
+        </div>
 
       </div>
     </div>
