@@ -909,6 +909,112 @@ body {
   margin-top: 4px;
 }
 
+/* ═══════════ БЛОК «ПРЕСТОЛЫ ХРАМА» ═══════════ */
+/* Тёмно-синяя секция — в палитре бокового меню сайта */
+.altars {
+  background: #0F1A30;
+  border-top: 2px solid #C4952A;
+  padding: 64px 56px 72px;
+}
+.altars-inner {
+  max-width: 1060px;
+  margin: 0 auto;
+}
+/* Заголовок секции — золотой, с засечками */
+.altars-title {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: #E8C860;
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin-bottom: 14px;
+}
+/* Вводная строка */
+.altars-lead {
+  text-align: center;
+  font-size: 19px;
+  color: rgba(232,200,96,0.85);
+  letter-spacing: 0.02em;
+  margin-bottom: 42px;
+}
+/* Ряд карточек (десктоп) */
+.altars-grid {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 28px;
+}
+/* Карточка престола — пергаментный фон, золотая рамка */
+.altar-card {
+  flex: 1 1 0;
+  max-width: 320px;
+  background: #FDF6E8;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 10px;
+  padding: 22px 22px 28px;
+  display: flex;
+  flex-direction: column;
+}
+/* Центральная карточка — главный престол: крупнее и с более яркой рамкой */
+.altar-card.main {
+  max-width: 350px;
+  border: 2px solid #C4952A;
+  padding: 26px 24px 32px;
+}
+/* Плейсхолдер под икону — строго квадрат (aspect-ratio: 1),
+   чтобы будущие изображения не разъезжали карточки */
+.altar-img {
+  aspect-ratio: 1;
+  width: 100%;
+  background: #F4E8CC;
+  border: 1px solid rgba(196,149,42,0.55);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9C9070;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+/* Подпись придела — мелким золотым шрифтом над названием */
+.altar-place {
+  font-size: 14px;
+  color: #A77B1A;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 8px;
+}
+/* Название престола — шрифт с засечками, золотой (тёмный для контраста на пергаменте) */
+.altar-name {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #8A6012;
+  text-align: center;
+  line-height: 1.3;
+  margin-bottom: 14px;
+}
+.altar-card.main .altar-name { font-size: 24px; }
+/* Описание — крупное и контрастное (аудитория пожилая) */
+.altar-desc {
+  font-size: 17px;
+  line-height: 1.7;
+  color: #2C1A06;
+  text-align: center;
+}
+/* ── Мобильный: карточки в столбик ── */
+@media (max-width: 768px) {
+  .altars { padding: 44px 20px 52px; }
+  .altars-title { font-size: 28px; }
+  .altars-lead { font-size: 17px; margin-bottom: 30px; }
+  .altars-grid { flex-direction: column; align-items: center; gap: 22px; }
+  .altar-card,
+  .altar-card.main { max-width: 440px; width: 100%; }
+}
+
 </style>
 </head>
 <body>
@@ -1016,6 +1122,46 @@ body {
         <p>Возрождение храма Архангела Михаила началось в 1994 году, когда игумен Лука отслужил первый молебен после долгих лет запустения. В 1995 году священник Константин Молчанов совершил в полуразрушенном храме первую за многие годы Божественную Литургию, положив начало возрождению духовной жизни Кубинки. В 1994 году северный придел храма был освящён в честь Иверской иконы Божией Матери. В 1996 году храм Архангела Михаила стал Патриаршим Подворьем.</p>
 
         <p>В период с 2007 по 2012 годы на территории храма были построены церковные здания для воскресной церковно-приходской школы. 21 ноября 2009 года, в праздник Собора Архистратига Михаила, отмечалось 200-летие храма, и в этот день было совершено первое архиерейское богослужение — Божественную литургию возглавил архиепископ Орехово-Зуевский Алексий. Сегодня храм является памятником истории и культуры регионального значения и бережно восстанавливается.</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК ПРЕСТОЛЫ ХРАМА -->
+  <section class="altars" id="altars">
+    <div class="altars-inner">
+      <h2 class="altars-title">Престолы храма</h2>
+      <p class="altars-lead">В храме освящены три престола:</p>
+
+      <!-- Порядок слева направо — как расположены приделы в самом храме -->
+      <div class="altars-grid">
+
+        <!-- Левый придел -->
+        <article class="altar-card">
+          <!-- сюда вставить реальное изображение иконы -->
+          <div class="altar-img">изображение</div>
+          <div class="altar-place">Левый придел</div>
+          <h3 class="altar-name">Иверская икона Божией Матери</h3>
+          <p class="altar-desc">Празднования: 25 февраля, 6 мая и 26 октября.</p>
+        </article>
+
+        <!-- Центральный престол (главный) -->
+        <article class="altar-card main">
+          <!-- сюда вставить реальное изображение иконы -->
+          <div class="altar-img">изображение</div>
+          <div class="altar-place">Центральный престол (главный)</div>
+          <h3 class="altar-name">Архангел Михаил</h3>
+          <p class="altar-desc">Главный престол храма. Престольный праздник — Собор Архистратига Михаила, 21 ноября. Также чтится Чудо Архангела Михаила в Хонех — 19 сентября.</p>
+        </article>
+
+        <!-- Правый придел -->
+        <article class="altar-card">
+          <!-- сюда вставить реальное изображение иконы -->
+          <div class="altar-img">изображение</div>
+          <div class="altar-place">Правый придел</div>
+          <h3 class="altar-name">Святитель Леонтий Ростовский</h3>
+          <p class="altar-desc">Придел освящён в 1862 году. Память святителя — 5 июня.</p>
+        </article>
 
       </div>
     </div>
