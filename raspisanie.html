@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Расписание богослужений — Храм Архангела Михаила</title>
+<style>
+
+
+/* ─────────────────────────────────────────────
+   СБРОС И БАЗОВЫЕ ПРАВИЛА
+───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #F9F0DF;
+  color: #1C0D06;
+  /* На десктопе — сдвигаем контент правее на ширину меню */
+  margin-left: 240px;
+}
+
+
+/* ─────────────────────────────────────────────
+   БОКОВОЕ МЕНЮ (десктоп)
+───────────────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 240px;
+  height: 100vh;
+  background: #0F1A30;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 18px;
+  z-index: 100;
+  overflow-y: auto;
+}
+.sidebar::before {
+  content: "";
+  position: fixed;
+  top: 10px; left: 10px;
+  width: 220px;
+  height: calc(100vh - 20px);
+  border: 1px solid rgba(196,149,42,0.45);
+  pointer-events: none;
+  z-index: 101;
+}
+.sidebar::after {
+  content: "";
+  position: fixed;
+  top: 16px; left: 16px;
+  width: 208px;
+  height: calc(100vh - 32px);
+  border: 1px solid rgba(196,149,42,0.18);
+  pointer-events: none;
+  z-index: 101;
+}
+.logo-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(196,149,42,0.28);
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 102;
+}
+.logo-cross { font-size: 22px; color: #C4952A; margin-bottom: 7px; }
+.logo-name {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  color: #E8C860;
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+.logo-dates {
+  font-size: 10.5px;
+  color: rgba(232,200,96,0.60);
+  text-align: center;
+  letter-spacing: 0.06em;
+  margin-top: 6px;
+}
+.sidebar nav {
+  flex: 1;
+  position: relative;
+  z-index: 102;
+}
+.sidebar nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.sidebar nav ul li a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  font-size: 15px;
+  color: rgba(232,200,96,0.90);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border-radius: 3px;
+  transition: background 0.18s, color 0.18s;
+}
+.sidebar nav ul li a:hover {
+  background: rgba(196,149,42,0.10);
+  color: #E8C860;
+}
+.sidebar nav ul li.active a {
+  background: rgba(196,149,42,0.14);
+  color: #E8C860;
+  border: 1px solid rgba(196,149,42,0.32);
+}
+.sidebar nav ul li.active a::after {
+  content: "›";
+  color: #C4952A;
+  font-size: 16px;
+}
+.sidebar-orn {
+  position: relative;
+  z-index: 102;
+  text-align: center;
+  color: rgba(196,149,42,0.40);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  padding-top: 16px;
+  border-top: 1px solid rgba(196,149,42,0.18);
+  margin-top: 14px;
+}
+
+
+/* ─────────────────────────────────────────────
+   МОБИЛЬНАЯ ШАПКА (скрыта на десктопе)
+───────────────────────────────────────────── */
+.mob-header {
+  display: none;
+  background: #0F1A30;
+  padding: 14px 18px 12px;
+  align-items: center;
+  border-bottom: 2px solid #C4952A;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.mob-header::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(196,149,42,0.25);
+  pointer-events: none;
+}
+.burger-btn {
+  width: 36px; height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  padding: 4px;
+}
+.burger-btn span {
+  display: block;
+  height: 1.5px;
+  background: #C4952A;
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+.mob-logo-c {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.mob-logo-name {
+  font-family: Georgia, serif;
+  font-size: 12.5px;
+  color: #E8C860;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+}
+.mob-spacer { width: 36px; }
+
+.mob-drawer {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 280px;
+  height: 100vh;
+  background: #0F1A30;
+  z-index: 300;
+  padding: 24px 18px;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.28s ease;
+  overflow-y: auto;
+}
+.mob-drawer.open { transform: translateX(0); }
+.mob-drawer::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(196,149,42,0.45);
+  pointer-events: none;
+}
+.mob-drawer::after {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border: 1px solid rgba(196,149,42,0.18);
+  pointer-events: none;
+}
+.drawer-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(196,149,42,0.28);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+.drawer-cross { font-size: 20px; color: #C4952A; margin-bottom: 6px; }
+.drawer-name {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  color: #E8C860;
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  padding: 0 6px;
+}
+.drawer-dates {
+  font-size: 10.5px;
+  color: rgba(232,200,96,0.55);
+  text-align: center;
+  letter-spacing: 0.06em;
+  margin-top: 6px;
+}
+.drawer-nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: relative;
+  z-index: 1;
+}
+.drawer-nav ul li a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 12px;
+  font-size: 20px;
+  color: rgba(232,200,96,0.92);
+  text-decoration: none;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
+}
+.drawer-nav ul li a:hover { background: rgba(196,149,42,0.10); color: #E8C860; }
+.drawer-nav ul li.active a {
+  background: rgba(196,149,42,0.14);
+  color: #E8C860;
+  border: 1px solid rgba(196,149,42,0.32);
+}
+.drawer-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  background: rgba(196,149,42,0.15);
+  border: 1.5px solid rgba(196,149,42,0.45);
+  border-radius: 50%;
+  color: #E8C860;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background 0.18s;
+}
+.drawer-close:hover { background: rgba(196,149,42,0.28); }
+.drawer-orn {
+  text-align: center;
+  color: rgba(196,149,42,0.38);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  padding-top: 14px;
+  border-top: 1px solid rgba(196,149,42,0.18);
+  margin-top: 14px;
+  position: relative;
+  z-index: 1;
+}
+.drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.50);
+  z-index: 250;
+}
+.drawer-overlay.open { display: block; }
+
+
+/* ─────────────────────────────────────────────
+   СОДЕРЖИМОЕ СТРАНИЦЫ
+───────────────────────────────────────────── */
+.page-wrap {
+  background: #F9F0DF;
+  min-height: 100vh;
+}
+.page-header {
+  position: relative;
+  padding: 60px 64px 40px;
+  text-align: center;
+  background: radial-gradient(ellipse at 50% 38%, #FFF8E0 0%, #EED5A0 48%, #D4B560 100%);
+  border-bottom: 2px solid #C4952A;
+  box-shadow: inset 0 -6px 0 rgba(232,200,96,0.35), 0 3px 14px rgba(154,107,15,0.18);
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(139,94,0,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,94,0,0.06) 1px, transparent 1px);
+  background-size: 38px 38px;
+  pointer-events: none;
+}
+.page-title {
+  position: relative;
+  font-family: Georgia, serif;
+  font-size: 50px;
+  font-weight: 400;
+  color: #1C0D06;
+  letter-spacing: 0.02em;
+}
+.page-subtitle {
+  position: relative;
+  font-size: 18px;
+  color: #5C3A08;
+  letter-spacing: 0.04em;
+  margin-top: 12px;
+}
+.read-col {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+/* ── Общая шапка тёмно-синих секций ── */
+.dark-section {
+  background: #0F1A30;
+  border-top: 2px solid #C4952A;
+  padding: 56px 56px 64px;
+}
+.dark-inner {
+  max-width: 860px;
+  margin: 0 auto;
+}
+.dark-title {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: #E8C860;
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin-bottom: 12px;
+}
+.dark-sub {
+  text-align: center;
+  font-size: 16px;
+  color: rgba(232,200,96,0.78);
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 0 auto 36px;
+}
+
+/* ── БЛОК 1: ПОСТОЯННОЕ РАСПИСАНИЕ (на пергаменте) ── */
+#permanent {
+  padding: 48px 64px 8px;
+}
+.perm-title {
+  font-family: Georgia, serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: #1C0D06;
+  text-align: center;
+  margin-bottom: 14px;
+  letter-spacing: 0.02em;
+}
+.perm-note {
+  text-align: center;
+  font-size: 16px;
+  color: #6B4A10;
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 0 auto 32px;
+}
+.sched-wrap {
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 14px rgba(154,107,15,0.10);
+}
+.sched-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #FDF6E8;
+}
+.sched-table th {
+  background: #0F1A30;
+  color: #E8C860;
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-size: 19px;
+  text-align: left;
+  padding: 16px 22px;
+  letter-spacing: 0.02em;
+}
+.sched-table td {
+  font-size: 18px;
+  color: #2C1A06;
+  padding: 18px 22px;
+  border-top: 1px solid rgba(196,149,42,0.28);
+  line-height: 1.65;
+  vertical-align: top;
+}
+.sched-table tr td:first-child {
+  font-weight: 700;
+  color: #5C3A08;
+  white-space: nowrap;
+}
+.sched-time {
+  color: #8A6012;
+  font-weight: 700;
+}
+.perm-after {
+  text-align: center;
+  font-size: 18px;
+  color: #2C1A06;
+  line-height: 1.7;
+  margin-top: 26px;
+}
+.perm-after a {
+  color: #8A6012;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.perm-after a:hover { text-decoration: underline; }
+
+/* ── БЛОК 2: СЕГОДНЯ (пергаментная карточка на тёмно-синем) ── */
+.today-card {
+  background: #FDF6E8;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 12px;
+  padding: 32px 36px;
+}
+.today-date {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: #8A6012;
+  text-align: center;
+  line-height: 1.35;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(196,149,42,0.30);
+}
+.today-row {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(196,149,42,0.22);
+}
+.today-row:last-child { border-bottom: none; }
+.today-label {
+  flex: 0 0 220px;
+  font-weight: 600;
+  color: #5C3A08;
+  font-size: 17px;
+}
+.today-value {
+  flex: 1;
+  color: #2C1A06;
+  font-size: 18px;
+  line-height: 1.5;
+}
+.today-value.fast { color: #8A4A10; font-weight: 600; }
+
+/* ── БЛОК 3: ПРАЗДНИКИ ── */
+.feast-group { margin-bottom: 28px; }
+.feast-group:last-child { margin-bottom: 0; }
+.feast-card {
+  background: #FDF6E8;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 10px;
+  padding: 14px 28px;
+}
+.feast-group-title {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #E8C860;
+  margin-bottom: 14px;
+  letter-spacing: 0.01em;
+}
+.feast-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.feast-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 18px;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(196,149,42,0.22);
+  font-size: 18px;
+  color: #2C1A06;
+  line-height: 1.45;
+}
+.feast-list li:last-child { border-bottom: none; }
+.feast-name { flex: 1; }
+.feast-date {
+  color: #8A6012;
+  font-weight: 700;
+  white-space: nowrap;
+}
+/* Престольные — золотая рамка, крупнее */
+.feast-card.throne {
+  border: 2px solid #C4952A;
+  background: #FFFBEF;
+  box-shadow: 0 0 0 4px rgba(196,149,42,0.10);
+  padding: 20px 28px 14px;
+}
+.throne-label {
+  display: inline-block;
+  font-size: 13px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #A77B1A;
+  margin-bottom: 6px;
+}
+.feast-card.throne .feast-list li { font-size: 19px; }
+.feast-card.throne .feast-name { font-weight: 600; }
+.feast-card.throne .feast-main { color: #8A6012; font-weight: 700; }
+
+/* ── БЛОК 4: СЧЁТЧИК ── */
+.countdown {
+  padding: 48px 56px;
+  background: #F9F0DF;
+}
+.countdown-card {
+  max-width: 760px;
+  margin: 0 auto;
+  background: radial-gradient(ellipse at 50% 40%, #FFF8E0 0%, #EED5A0 100%);
+  border: 2px solid #C4952A;
+  border-radius: 14px;
+  padding: 38px 36px;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(154,107,15,0.18);
+}
+.countdown-text {
+  font-family: Georgia, serif;
+  font-size: 28px;
+  color: #1C0D06;
+  line-height: 1.45;
+}
+.countdown-num { color: #8A6012; font-weight: 700; }
+
+/* ── БЛОК 5: ССЫЛКИ ── */
+.links-text {
+  text-align: center;
+  font-size: 18px;
+  color: rgba(232,200,96,0.85);
+  line-height: 1.7;
+  max-width: 640px;
+  margin: 0 auto 32px;
+}
+.links-row {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.link-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 260px;
+  font-size: 19px;
+  font-weight: 600;
+  color: #FFF8E7;
+  background: #C4952A;
+  border: none;
+  border-radius: 10px;
+  padding: 18px 28px;
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 18px rgba(154,107,15,0.40);
+  transition: background 0.18s, transform 0.18s;
+}
+.link-btn:hover { background: #d0a03a; transform: translateY(-1px); }
+
+/* ── ПОДВАЛ ── */
+.page-foot {
+  background: #0F1A30;
+  border-top: 2px solid #C4952A;
+  padding: 34px 56px 40px;
+  text-align: center;
+}
+.page-foot p {
+  color: rgba(232,200,96,0.72);
+  font-size: 14.5px;
+  line-height: 1.8;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.page-foot a { color: #E8C860; text-decoration: none; font-weight: 600; }
+.page-foot a:hover { text-decoration: underline; }
+
+
+/* ─────────────────────────────────────────────
+   ПЛАВАЮЩАЯ КНОПКА + ПОПАП ПОЖЕРТВОВАНИЯ
+───────────────────────────────────────────── */
+.float-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: #C4952A;
+  color: #FFF8E7;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 14px 24px;
+  border-radius: 50px;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 20px rgba(154,107,15,0.48);
+  cursor: pointer;
+  z-index: 500;
+  border: none;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: opacity 0.45s ease, transform 0.45s ease, box-shadow 0.18s;
+}
+.float-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 26px rgba(154,107,15,0.55);
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,13,6,0.62);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 1000;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background: #FDF6E8;
+  border: 1px solid rgba(196,149,42,0.40);
+  border-radius: 12px;
+  padding: 40px 36px 36px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.40);
+  margin: auto;
+}
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 46px;
+  height: 46px;
+  background: rgba(196,149,42,0.12);
+  border: 1.5px solid rgba(196,149,42,0.40);
+  border-radius: 50%;
+  color: #9A6B0F;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s;
+}
+.modal-close:hover { background: rgba(196,149,42,0.24); }
+.modal-title {
+  font-family: Georgia, serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #1C0D06;
+  text-align: center;
+  margin-bottom: 28px;
+  letter-spacing: 0.02em;
+}
+.donate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.field-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #5C3A08;
+  letter-spacing: 0.02em;
+}
+.field-input {
+  width: 100%;
+  font-size: 18px;
+  font-family: inherit;
+  color: #1C0D06;
+  background: #FFFDF7;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 6px;
+  padding: 13px 14px;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.field-input::placeholder { color: rgba(92,58,8,0.40); }
+.field-input:focus {
+  border-color: #C4952A;
+  box-shadow: 0 0 0 3px rgba(196,149,42,0.15);
+}
+.field-money { position: relative; display: block; }
+.field-money .field-input { padding-right: 40px; }
+.field-rub {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 19px;
+  color: #9A6B0F;
+  pointer-events: none;
+}
+.field-input[type=number]::-webkit-inner-spin-button,
+.field-input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.field-input[type=number] { -moz-appearance: textfield; }
+.toggle-group {
+  display: flex;
+  gap: 0;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.toggle-btn {
+  flex: 1;
+  font-size: 16px;
+  font-family: inherit;
+  color: #6B4A10;
+  background: #FFFDF7;
+  border: none;
+  padding: 13px 10px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.toggle-btn + .toggle-btn { border-left: 1px solid rgba(196,149,42,0.45); }
+.toggle-btn.active { background: #0F1A30; color: #E8C860; font-weight: 600; }
+.pay-options { display: flex; flex-direction: column; gap: 10px; }
+.pay-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  color: #2C1A06;
+  background: #FFFDF7;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 6px;
+  padding: 14px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.18s, background 0.18s;
+}
+.pay-option:hover { background: rgba(196,149,42,0.06); }
+.pay-option.active { border-color: #C4952A; background: rgba(196,149,42,0.10); }
+.pay-option.active .pay-radio { border-color: #C4952A; }
+.pay-option.active .pay-radio::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: #C4952A;
+  border-radius: 50%;
+}
+.pay-radio {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(154,107,15,0.50);
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color 0.18s;
+}
+.btn-donate {
+  margin-top: 8px;
+  width: 100%;
+  font-size: 19px;
+  font-weight: 600;
+  font-family: inherit;
+  color: #FFF8E7;
+  background: #C4952A;
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 18px rgba(154,107,15,0.40);
+  transition: background 0.18s, transform 0.18s;
+}
+.btn-donate:hover { background: #d0a03a; transform: translateY(-1px); }
+.donate-message {
+  text-align: center;
+  font-size: 16px;
+  color: #5C3A08;
+  background: rgba(196,149,42,0.12);
+  border: 1px solid rgba(196,149,42,0.30);
+  border-radius: 6px;
+  padding: 14px;
+  margin-top: 4px;
+}
+
+
+/* ─────────────────────────────────────────────
+   МОБИЛЬНЫЙ
+───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  body { margin-left: 0; }
+  .sidebar { display: none; }
+  .mob-header { display: flex; }
+  .mob-drawer { display: flex; }
+  .mob-header { padding: 16px 20px 14px; position: sticky; top: 0; z-index: 200; }
+  .burger-btn { width: 48px; height: 48px; gap: 7px; padding: 6px; }
+  .burger-btn span { height: 2.5px; }
+  .mob-logo-name { font-size: 16px; letter-spacing: 0.04em; }
+  .mob-spacer { width: 48px; }
+  .drawer-nav ul li a { font-size: 20px; padding: 14px 12px; color: rgba(232,200,96,0.92); }
+
+  .page-header { padding: 44px 20px 28px; }
+  .page-title { font-size: 32px; }
+  .page-subtitle { font-size: 15px; }
+
+  .dark-section { padding: 44px 20px 52px; }
+  .dark-title { font-size: 27px; }
+  .dark-inner { max-width: 460px; }
+
+  #permanent { padding: 32px 20px 4px; }
+  .perm-title { font-size: 26px; }
+  .perm-note { font-size: 15px; }
+  .sched-table th { font-size: 17px; padding: 14px 16px; }
+  .sched-table td { font-size: 16.5px; padding: 14px 16px; }
+  .perm-after { font-size: 16.5px; }
+
+  .today-card { padding: 24px 18px; }
+  .today-date { font-size: 22px; }
+  .today-row { flex-direction: column; gap: 4px; padding: 12px 0; }
+  .today-label { flex: none; }
+
+  .feast-card { padding: 10px 18px; }
+  .feast-card.throne { padding: 16px 18px 10px; }
+  .feast-list li { font-size: 16.5px; gap: 12px; }
+  .feast-card.throne .feast-list li { font-size: 17px; }
+  .feast-group-title { font-size: 20px; }
+
+  .countdown { padding: 36px 20px; }
+  .countdown-card { padding: 28px 20px; }
+  .countdown-text { font-size: 22px; }
+
+  .links-text { font-size: 16.5px; }
+  .link-btn { min-width: 0; width: 100%; font-size: 18px; }
+
+  .page-foot { padding: 28px 20px 32px; }
+
+  .modal-overlay { padding: 20px 12px; }
+  .modal-box { padding: 36px 22px 28px; }
+  .modal-close { width: 48px; height: 48px; font-size: 24px; }
+  .modal-title { font-size: 24px; margin-bottom: 24px; }
+  .field-input { font-size: 17px; padding: 14px; }
+  .float-btn { font-size: 14px; padding: 13px 20px; bottom: 16px; right: 16px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ───────── БОКОВОЕ МЕНЮ (как на других страницах) ───────── -->
+<aside class="sidebar">
+  <div class="logo-block">
+    <div class="logo-cross">✝</div>
+    <div class="logo-name">Подворье Патриарха Московского и всея&nbsp;Руси,<br>храм Архангела Михаила</div>
+    <div class="logo-dates">1803–1809 гг.; 1862 г.</div>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="index.html#screen1">Главная</a></li>
+      <li><a href="o-hrame.html">О храме</a></li>
+      <li class="active"><a href="raspisanie.html">Расписание</a></li>
+      <li><a href="#">Святыни</a></li>
+      <li><a href="#">Требы и пожертвования</a></li>
+      <li><a href="#">Новости</a></li>
+      <li><a href="#">Воскресная школа</a></li>
+      <li><a href="#">Социальный центр «Благословение»</a></li>
+      <li><a href="pomoshch.html">Получить помощь</a></li>
+      <li><a href="#">Как нас найти</a></li>
+    </ul>
+  </nav>
+  <div class="sidebar-orn">· · ✝ · ·</div>
+</aside>
+
+<!-- ───────── МОБИЛЬНАЯ ШАПКА ───────── -->
+<header class="mob-header">
+  <button class="burger-btn" id="burgerBtn" aria-label="Открыть меню">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="mob-logo-c">
+    <div class="mob-logo-name">Храм Архангела Михаила</div>
+  </div>
+  <div class="mob-spacer"></div>
+</header>
+
+<!-- ───────── ВЫДВИЖНОЕ МЕНЮ ───────── -->
+<nav class="mob-drawer" id="mobDrawer">
+  <button class="drawer-close" id="drawerClose" aria-label="Закрыть меню">✕</button>
+  <div class="drawer-logo">
+    <div class="drawer-cross">✝</div>
+    <div class="drawer-name">Подворье Патриарха Московского и всея&nbsp;Руси,<br>храм Архангела Михаила</div>
+    <div class="drawer-dates">1803–1809 гг.; 1862 г.</div>
+  </div>
+  <div class="drawer-nav">
+    <ul>
+      <li><a href="index.html#screen1" class="drawer-link">Главная</a></li>
+      <li><a href="o-hrame.html" class="drawer-link">О храме</a></li>
+      <li class="active"><a href="raspisanie.html" class="drawer-link">Расписание</a></li>
+      <li><a href="#" class="drawer-link">Святыни</a></li>
+      <li><a href="#" class="drawer-link">Требы и пожертвования</a></li>
+      <li><a href="#" class="drawer-link">Новости</a></li>
+      <li><a href="#" class="drawer-link">Воскресная школа</a></li>
+      <li><a href="#" class="drawer-link">Социальный центр «Благословение»</a></li>
+      <li><a href="pomoshch.html" class="drawer-link">Получить помощь</a></li>
+      <li><a href="#" class="drawer-link">Как нас найти</a></li>
+    </ul>
+  </div>
+  <div class="drawer-orn">· · ✝ · ·</div>
+</nav>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- ───────── СОДЕРЖИМОЕ СТРАНИЦЫ ───────── -->
+<div class="page-wrap">
+
+  <!-- ШАПКА -->
+  <header class="page-header">
+    <h1 class="page-title">Расписание богослужений</h1>
+    <div class="page-subtitle">Храм Архангела Михаила, г. Кубинка</div>
+  </header>
+
+  <!-- ═══ БЛОК 1: ПОСТОЯННОЕ РАСПИСАНИЕ ═══ -->
+  <section id="permanent">
+    <div class="read-col">
+      <h2 class="perm-title">Постоянное расписание богослужений</h2>
+      <p class="perm-note">Обычный порядок служб. В дни больших праздников расписание может меняться — уточняйте по телефону или в нашем чате.</p>
+
+      <div class="sched-wrap">
+        <table class="sched-table">
+          <tbody>
+            <tr>
+              <th>День</th>
+              <th>Время и службы</th>
+            </tr>
+            <tr>
+              <td>Будние&nbsp;дни</td>
+              <td><span class="sched-time">7:00</span> — Утреня, Часы, Божественная литургия, Панихида</td>
+            </tr>
+            <tr>
+              <td>Пятница</td>
+              <td>
+                <span class="sched-time">7:00</span> — Литургия (как в будни)<br>
+                <span class="sched-time">17:00</span> — Вечернее богослужение
+              </td>
+            </tr>
+            <tr>
+              <td>Суббота</td>
+              <td>
+                <span class="sched-time">8:30</span> — Часы, Божественная литургия, Панихида<br>
+                <span class="sched-time">17:00</span> — Вечернее богослужение
+              </td>
+            </tr>
+            <tr>
+              <td>Воскресенье</td>
+              <td><span class="sched-time">8:30</span> — Часы, Божественная литургия, Панихида</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="perm-after">
+        Исповедь — перед началом Литургии и на вечернем богослужении.<br>
+        Телефон храма: <a href="tel:+79685931433">8-968-593-14-33</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ БЛОК 2: СЕГОДНЯ ═══ -->
+  <section class="dark-section" id="today">
+    <div class="dark-inner">
+      <h2 class="dark-title">Сегодня</h2>
+      <div class="today-card">
+        <div class="today-date" id="todayDate">—</div>
+        <div class="today-row">
+          <div class="today-label">По старому стилю</div>
+          <div class="today-value" id="todayOldStyle">—</div>
+        </div>
+        <div class="today-row">
+          <div class="today-label">Пост</div>
+          <div class="today-value fast" id="todayFast">—</div>
+        </div>
+        <div class="today-row">
+          <div class="today-label">День седмицы</div>
+          <div class="today-value" id="todayChurchDow">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ БЛОК 3: ЦЕРКОВНЫЕ ПРАЗДНИКИ ═══ -->
+  <section class="dark-section" id="feasts">
+    <div class="dark-inner">
+      <h2 class="dark-title">Церковные праздники</h2>
+      <p class="dark-sub" id="feastsYearSub">—</p>
+
+      <!-- Престольные праздники храма (особо) -->
+      <div class="feast-group">
+        <div class="feast-card throne">
+          <span class="throne-label">Престольные праздники нашего храма</span>
+          <ul class="feast-list" id="throneList"></ul>
+        </div>
+      </div>
+
+      <!-- Переходящие праздники -->
+      <div class="feast-group">
+        <h3 class="feast-group-title">Переходящие праздники</h3>
+        <div class="feast-card">
+          <ul class="feast-list" id="movableList"></ul>
+        </div>
+      </div>
+
+      <!-- Неподвижные праздники -->
+      <div class="feast-group">
+        <h3 class="feast-group-title">Двунадесятые и великие праздники</h3>
+        <div class="feast-card">
+          <ul class="feast-list" id="fixedList"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ БЛОК 4: СЧЁТЧИК ДО БЛИЖАЙШЕГО ПРАЗДНИКА ═══ -->
+  <section class="countdown" id="countdown">
+    <div class="countdown-card">
+      <div class="countdown-text" id="countdownText">—</div>
+    </div>
+  </section>
+
+  <!-- ═══ БЛОК 5: АКТУАЛЬНОЕ НА ЭТОЙ НЕДЕЛЕ ═══ -->
+  <section class="dark-section" id="week">
+    <div class="dark-inner">
+      <h2 class="dark-title">Расписание на текущую неделю</h2>
+      <p class="links-text">Подробное расписание служб на ближайшую неделю с указанием праздников и святых мы выкладываем в нашем чате и группе ВКонтакте:</p>
+      <!-- Заменить REPLACE_MAX_LINK и REPLACE_VK_LINK на реальные ссылки -->
+      <div class="links-row">
+        <a class="link-btn" href="REPLACE_MAX_LINK" target="_blank" rel="noopener">💬 Наш чат в MAX</a>
+        <a class="link-btn" href="REPLACE_VK_LINK" target="_blank" rel="noopener">🔵 Группа ВКонтакте</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ПОДВАЛ ═══ -->
+  <footer class="page-foot">
+    <p>
+      Календарь обновляется автоматически. Сегодня: <span id="footToday">—</span>.<br>
+      Расписание может меняться в дни праздников — уточняйте по телефону <a href="tel:+79685931433">8-968-593-14-33</a>.
+    </p>
+  </footer>
+
+</div>
+
+
+<!-- ───────── ПЛАВАЮЩАЯ КНОПКА «ПОМОЧЬ» ───────── -->
+<button type="button" class="float-btn" id="openDonate2">🕯 Помочь</button>
+
+<!-- ═══ ВСПЛЫВАЮЩЕЕ ОКНО — форма пожертвования ═══ -->
+<div class="modal-overlay" id="donateModal" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-label="Помочь храму">
+    <button class="modal-close" id="modalClose" aria-label="Закрыть окно">✕</button>
+    <h2 class="modal-title">Помочь храму</h2>
+    <div class="donate-form">
+      <label class="field">
+        <span class="field-label">Ваше имя</span>
+        <input type="text" class="field-input" placeholder="Например, Мария" autocomplete="name">
+      </label>
+      <label class="field">
+        <span class="field-label">Сумма пожертвования</span>
+        <span class="field-money">
+          <input type="number" class="field-input" placeholder="500" min="1" inputmode="numeric">
+          <span class="field-rub">₽</span>
+        </span>
+      </label>
+      <label class="field">
+        <span class="field-label">Email</span>
+        <input type="email" class="field-input" placeholder="mail@example.com" autocomplete="email">
+      </label>
+      <div class="field">
+        <span class="field-label">Периодичность</span>
+        <div class="toggle-group" role="radiogroup">
+          <button type="button" class="toggle-btn active" data-period="once">Разово</button>
+          <button type="button" class="toggle-btn" data-period="monthly">Ежемесячно</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-label">Способ оплаты</span>
+        <div class="pay-options">
+          <button type="button" class="pay-option active" data-pay="card">
+            <span class="pay-radio"></span>Картой онлайн
+          </button>
+          <button type="button" class="pay-option" data-pay="sbp">
+            <span class="pay-radio"></span>СБП
+          </button>
+          <button type="button" class="pay-option" data-pay="other">
+            <span class="pay-radio"></span>Другие способы
+          </button>
+        </div>
+      </div>
+      <!-- СЮДА: подключение платёжной системы (эквайринг), реальная оплата добавляется отдельно -->
+      <button type="button" class="btn-donate" id="donateSubmit">Пожертвовать</button>
+      <div class="donate-message" id="donateMessage" hidden>
+        Спасибо! Скоро здесь появится онлайн-оплата.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   ЦЕРКОВНЫЙ КАЛЕНДАРЬ — чистый JavaScript, без сети и библиотек.
+   Все даты вычисляются математически при каждом открытии страницы.
+════════════════════════════════════════════════════════════ */
+
+/* ── Русские названия месяцев (родительный падеж) и дней недели ── */
+var MONTHS_GEN = ['января','февраля','марта','апреля','мая','июня','июля',
+                  'августа','сентября','октября','ноября','декабря'];
+var WEEKDAYS = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+/* День седмицы по-церковному (воскресенье = «Неделя») */
+var CHURCH_DOW = ['Неделя (воскресный день)','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+
+/* ── Вспомогательные функции работы с датами ── */
+function atMidnight(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function addDays(date, n) { var r = new Date(date); r.setDate(r.getDate() + n); return r; }
+function fmtDayMonth(d) { return d.getDate() + ' ' + MONTHS_GEN[d.getMonth()]; }
+function fmtDayMonthYear(d) { return d.getDate() + ' ' + MONTHS_GEN[d.getMonth()] + ' ' + d.getFullYear() + ' года'; }
+function fmtFull(d) { return fmtDayMonthYear(d) + ', ' + WEEKDAYS[d.getDay()]; }
+
+/* Правильное склонение слова «день» */
+function pluralDays(n) {
+  var n10 = n % 10, n100 = n % 100;
+  if (n10 === 1 && n100 !== 11) return 'день';
+  if (n10 >= 2 && n10 <= 4 && !(n100 >= 12 && n100 <= 14)) return 'дня';
+  return 'дней';
+}
+
+/* ── Дата Православной Пасхи (григорианский календарь) ──
+   Алгоритм Гаусса для юлианской Пасхи + перевод в григорианский (+13 дней, XXI век). */
+function calculatePascha(year) {
+  var a = year % 19;
+  var b = year % 4;
+  var c = year % 7;
+  var d = (19 * a + 15) % 30;
+  var e = (2 * b + 4 * c + 6 * d + 6) % 7;
+  var f = d + e; // дней после 22 марта (юлианского)
+  // 22 марта (ст. ст.) + f дней, затем +13 дней для перевода в новый стиль
+  return new Date(year, 2, 22 + f + 13);
+}
+
+/* ── Переходящие праздники текущего года ── */
+function movableFeasts(year) {
+  var p = calculatePascha(year);
+  return [
+    { name: 'Масленица (начало сырной седмицы)', date: addDays(p, -55) },
+    { name: 'Прощёное воскресенье', date: addDays(p, -49) },
+    { name: 'Начало Великого поста', date: addDays(p, -48) },
+    { name: 'Вербное воскресенье (Вход Господень в Иерусалим)', date: addDays(p, -7) },
+    { name: 'Пасха. Светлое Христово Воскресение', date: new Date(p) },
+    { name: 'Вознесение Господне', date: addDays(p, 39) },
+    { name: 'Троица. Пятидесятница', date: addDays(p, 49) },
+    { name: 'Начало Петрова поста', date: addDays(p, 57) }
+  ];
+}
+
+/* ── Неподвижные двунадесятые и великие праздники (новый стиль) ── */
+function fixedFeasts(year) {
+  return [
+    { name: 'Рождество Христово', date: new Date(year, 0, 7) },
+    { name: 'Крещение Господне (Богоявление)', date: new Date(year, 0, 19) },
+    { name: 'Сретение Господне', date: new Date(year, 1, 15) },
+    { name: 'Благовещение Пресвятой Богородицы', date: new Date(year, 3, 7) },
+    { name: 'Преображение Господне', date: new Date(year, 7, 19) },
+    { name: 'Успение Пресвятой Богородицы', date: new Date(year, 7, 28) },
+    { name: 'Рождество Пресвятой Богородицы', date: new Date(year, 8, 21) },
+    { name: 'Воздвижение Креста Господня', date: new Date(year, 8, 27) },
+    { name: 'Покров Пресвятой Богородицы', date: new Date(year, 9, 14) },
+    { name: 'Введение во храм Пресвятой Богородицы', date: new Date(year, 11, 4) }
+  ];
+}
+
+/* ── Престольные праздники храма ── */
+function throneFeasts(year) {
+  return [
+    { name: 'Собор Архистратига Михаила (главный престольный праздник)', date: new Date(year, 10, 21), main: true },
+    { name: 'Воспоминание чуда Архангела Михаила в Хонех', date: new Date(year, 8, 19) },
+    { name: 'Святителя Леонтия, епископа Ростовского', date: new Date(year, 5, 5) },
+    { name: 'Иверской иконы Божией Матери', date: new Date(year, 1, 25) },
+    { name: 'Иверской иконы Божией Матери', date: new Date(year, 4, 6) },
+    { name: 'Иверской иконы Божией Матери', date: new Date(year, 9, 26) },
+    { name: 'Священномученика Григория Воинова (новомученика храма)', date: new Date(year, 11, 8) }
+  ];
+}
+
+/* ── Многодневные посты: возвращает название поста или null ── */
+function getMultiDayFast(date) {
+  var y = date.getFullYear();
+  var p = calculatePascha(y);
+  var t = atMidnight(date).getTime();
+
+  var greatStart = atMidnight(addDays(p, -48)).getTime();
+  var greatEnd   = atMidnight(addDays(p, -1)).getTime();
+  if (t >= greatStart && t <= greatEnd) return 'Великий пост';
+
+  var petrovStart = atMidnight(addDays(p, 57)).getTime();
+  var petrovEnd   = new Date(y, 6, 11).getTime(); // 11 июля включительно
+  if (petrovStart <= petrovEnd && t >= petrovStart && t <= petrovEnd) return 'Петров пост';
+
+  if (t >= new Date(y, 7, 14).getTime() && t <= new Date(y, 7, 27).getTime()) return 'Успенский пост';
+
+  // Рождественский пост: 28 ноября — 6 января (через границу года)
+  if (t >= new Date(y, 10, 28).getTime() && t <= new Date(y, 11, 31).getTime()) return 'Рождественский пост';
+  if (t >= new Date(y, 0, 1).getTime() && t <= new Date(y, 0, 6).getTime()) return 'Рождественский пост';
+
+  return null;
+}
+
+/* ── Сплошные седмицы (в среду и пятницу поста нет) ── */
+function inContinuousWeek(date) {
+  var y = date.getFullYear();
+  var p = calculatePascha(y);
+  var t = atMidnight(date).getTime();
+  var ranges = [
+    [new Date(y, 0, 7), new Date(y, 0, 17)],      // Святки
+    [addDays(p, -69), addDays(p, -64)],           // Седмица мытаря и фарисея
+    [addDays(p, -55), addDays(p, -49)],           // Сырная седмица (Масленица)
+    [addDays(p, 1), addDays(p, 6)],               // Светлая седмица
+    [addDays(p, 50), addDays(p, 56)]              // Троицкая седмица
+  ];
+  for (var i = 0; i < ranges.length; i++) {
+    var s = atMidnight(ranges[i][0]).getTime();
+    var e = atMidnight(ranges[i][1]).getTime();
+    if (t >= s && t <= e) return true;
+  }
+  return false;
+}
+
+/* ── Общая информация о посте на дату ── */
+function getCurrentFast(date) {
+  var multi = getMultiDayFast(date);
+  if (multi) return multi;
+  if (inContinuousWeek(date)) return 'Сплошная седмица — поста в среду и пятницу нет';
+  var dow = date.getDay();
+  if (dow === 3) return 'Постный день (среда)';
+  if (dow === 5) return 'Постный день (пятница)';
+  return 'Поста нет';
+}
+
+/* ── Все праздники года (для счётчика) ── */
+function allFeasts(year) {
+  return movableFeasts(year).concat(fixedFeasts(year)).concat(throneFeasts(year));
+}
+
+/* ════════════════════════════════════════════════════════════
+   ОТРИСОВКА
+════════════════════════════════════════════════════════════ */
+(function renderCalendar() {
+  var now = new Date();
+  var today = atMidnight(now);
+  var year = today.getFullYear();
+
+  /* ── Блок 2: Сегодня ── */
+  document.getElementById('todayDate').textContent = fmtFull(today);
+  var oldStyle = addDays(today, -13);
+  document.getElementById('todayOldStyle').textContent = fmtDayMonthYear(oldStyle) + ' (юлианский календарь)';
+  document.getElementById('todayFast').textContent = getCurrentFast(today);
+  document.getElementById('todayChurchDow').textContent = CHURCH_DOW[today.getDay()];
+
+  /* ── Блок 3: Праздники ── */
+  document.getElementById('feastsYearSub').textContent = 'Главные праздники на ' + year + ' год';
+
+  function buildList(elId, feasts, options) {
+    options = options || {};
+    var ul = document.getElementById(elId);
+    var html = '';
+    for (var i = 0; i < feasts.length; i++) {
+      var f = feasts[i];
+      var nameClass = (options.markMain && f.main) ? 'feast-name feast-main' : 'feast-name';
+      html += '<li><span class="' + nameClass + '">' + f.name + '</span>' +
+              '<span class="feast-date">' + fmtDayMonth(f.date) + '</span></li>';
+    }
+    ul.innerHTML = html;
+  }
+
+  // Престольные — в порядке по дате
+  var throne = throneFeasts(year).slice().sort(function (a, b) { return a.date - b.date; });
+  buildList('throneList', throne, { markMain: true });
+
+  // Переходящие — в естественном (хронологическом) порядке
+  buildList('movableList', movableFeasts(year));
+
+  // Неподвижные — по дате
+  var fixed = fixedFeasts(year).slice().sort(function (a, b) { return a.date - b.date; });
+  buildList('fixedList', fixed);
+
+  /* ── Блок 4: Счётчик до ближайшего праздника ── */
+  var pool = allFeasts(year).concat(allFeasts(year + 1));
+  pool = pool.filter(function (f) { return atMidnight(f.date).getTime() >= today.getTime(); });
+  pool.sort(function (a, b) { return atMidnight(a.date).getTime() - atMidnight(b.date).getTime(); });
+
+  var cdEl = document.getElementById('countdownText');
+  if (pool.length) {
+    var next = pool[0];
+    var diff = Math.round((atMidnight(next.date).getTime() - today.getTime()) / 86400000);
+    if (diff === 0) {
+      cdEl.innerHTML = 'Сегодня <span class="countdown-num">' + next.name + '</span>!';
+    } else {
+      cdEl.innerHTML = 'До праздника «' + next.name + '» осталось ' +
+                       '<span class="countdown-num">' + diff + ' ' + pluralDays(diff) + '</span>.';
+    }
+  } else {
+    cdEl.textContent = '';
+  }
+
+  /* ── Подвал ── */
+  document.getElementById('footToday').textContent = fmtDayMonthYear(today);
+})();
+
+/* ════════════════════════════════════════════════════════════
+   ИНТЕРФЕЙС: меню и попап пожертвования (как на других страницах)
+════════════════════════════════════════════════════════════ */
+(function () {
+  var burger  = document.getElementById('burgerBtn');
+  var drawer  = document.getElementById('mobDrawer');
+  var overlay = document.getElementById('drawerOverlay');
+  function openDrawer() { drawer.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = ''; }
+  burger.addEventListener('click', openDrawer);
+  overlay.addEventListener('click', closeDrawer);
+  var closeBtn = document.getElementById('drawerClose');
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  document.querySelectorAll('.drawer-link').forEach(function (link) { link.addEventListener('click', closeDrawer); });
+
+  var modal      = document.getElementById('donateModal');
+  var modalClose = document.getElementById('modalClose');
+  var openBtn2   = document.getElementById('openDonate2');
+  function openModal() { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; }
+  function closeModal() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; }
+  if (openBtn2) openBtn2.addEventListener('click', openModal);
+  if (modalClose) modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+  document.querySelectorAll('.toggle-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.toggle-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.pay-option').forEach(function (opt) {
+    opt.addEventListener('click', function () {
+      document.querySelectorAll('.pay-option').forEach(function (o) { o.classList.remove('active'); });
+      opt.classList.add('active');
+    });
+  });
+  var donateSubmit  = document.getElementById('donateSubmit');
+  var donateMessage = document.getElementById('donateMessage');
+  if (donateSubmit) donateSubmit.addEventListener('click', function () { donateMessage.hidden = false; });
+})();
+</script>
+
+</body>
+</html>
