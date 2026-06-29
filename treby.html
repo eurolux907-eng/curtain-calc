@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Получить помощь — Храм Архангела Михаила</title>
+<title>Требы и пожертвования — Храм Архангела Михаила</title>
 <style>
 
 
@@ -403,7 +403,7 @@ body {
   margin: 0 auto;
 }
 
-/* ── БЛОК «МЫ ГОТОВЫ ВЫСЛУШАТЬ КАЖДОГО» (вводный, на пергаменте) ── */
+/* ── БЛОК ВСТУПЛЕНИЯ (на пергаменте) ── */
 #intro {
   padding: 48px 64px 56px;
 }
@@ -423,17 +423,17 @@ body {
   letter-spacing: 0.01em;
 }
 
-/* ── БЛОК «КАК ЭТО РАБОТАЕТ» — тёмно-синяя секция, пергаментные карточки-шаги ── */
-.steps {
+/* ── БЛОК «КАКИЕ БЫВАЮТ ТРЕБЫ» — тёмно-синяя секция, пергаментные карточки ── */
+.treby-kinds {
   background: #0F1A30;
   border-top: 2px solid #C4952A;
   padding: 64px 56px 72px;
 }
-.steps-inner {
+.treby-kinds-inner {
   max-width: 1060px;
   margin: 0 auto;
 }
-.steps-title {
+.treby-kinds-title {
   font-family: Georgia, serif;
   font-size: 34px;
   font-weight: 400;
@@ -442,106 +442,58 @@ body {
   letter-spacing: 0.02em;
   margin-bottom: 42px;
 }
-.steps-grid {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
+/* Сетка карточек — три в ряд (десктоп) */
+.kinds-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 28px;
 }
-.step-card {
-  flex: 1 1 0;
-  max-width: 320px;
+/* Карточка требы — пергаментный фон, золотая рамка (в стиле .altar-card / .step-card) */
+.kind-card {
   background: #FDF6E8;
   border: 1px solid rgba(196,149,42,0.45);
   border-radius: 10px;
-  padding: 30px 24px 32px;
+  padding: 26px 24px 28px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   text-align: center;
 }
-/* Крупная золотая цифра шага в круге */
-.step-num {
-  width: 64px;
-  height: 64px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: #0F1A30;
-  border: 2px solid #C4952A;
-  color: #E8C860;
+/* Название требы — шрифт с засечками, золотой (тёмный для контраста на пергаменте) */
+.kind-name {
   font-family: Georgia, serif;
-  font-size: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
+  font-size: 23px;
+  font-weight: 400;
+  color: #8A6012;
+  line-height: 1.3;
+  margin-bottom: 14px;
 }
-.step-text {
-  font-size: 18px;
+/* Описание — крупное и контрастное (аудитория пожилая) */
+.kind-desc {
+  font-size: 17px;
   line-height: 1.7;
   color: #2C1A06;
 }
 
-/* ── БЛОК СРОЧНОЙ ПОМОЩИ — спокойная золотистая плашка (не красная) ── */
-.urgent {
-  padding: 40px 64px 8px;
-}
-.urgent-band {
-  max-width: 860px;
-  margin: 0 auto;
-  display: flex;
-  gap: 18px;
-  align-items: flex-start;
-  background: rgba(196,149,42,0.12);
-  border: 1px solid rgba(196,149,42,0.45);
-  border-left: 5px solid #C4952A;
-  border-radius: 10px;
-  padding: 24px 28px;
-}
-.urgent-icon {
-  font-size: 28px;
-  line-height: 1.2;
-  color: #9A6B0F;
-  flex-shrink: 0;
-}
-.urgent-text {
-  font-size: 18px;
-  line-height: 1.7;
-  color: #3A2407;
-}
-.urgent-text strong {
-  color: #8A6012;
-  font-weight: 700;
-}
-
-/* ── ФОРМА ОБРАЩЕНИЯ — тёмно-синяя секция, пергаментная карточка ── */
-.help-form-section {
+/* ── ФОРМА ЗАКАЗА ТРЕБЫ — тёмно-синяя секция, пергаментная карточка ── */
+.treba-form-section {
   background: #0F1A30;
   border-top: 2px solid #C4952A;
-  padding: 56px 56px 80px;
-  margin-top: 40px;
+  padding: 56px 56px 72px;
 }
-.help-form-inner {
+.treba-form-inner {
   max-width: 720px;
   margin: 0 auto;
 }
-.help-form-title {
+.treba-form-title {
   font-family: Georgia, serif;
   font-size: 34px;
   font-weight: 400;
   color: #E8C860;
   text-align: center;
   letter-spacing: 0.02em;
-  margin-bottom: 12px;
-}
-.help-form-lead {
-  text-align: center;
-  font-size: 18px;
-  color: rgba(232,200,96,0.85);
-  letter-spacing: 0.02em;
   margin-bottom: 38px;
 }
-.help-card {
+.treba-card {
   background: #FDF6E8;
   border: 1px solid rgba(196,149,42,0.45);
   border-radius: 12px;
@@ -549,7 +501,7 @@ body {
 }
 
 /* Поля формы */
-.help-form {
+.treba-form {
   display: flex;
   flex-direction: column;
   gap: 22px;
@@ -594,11 +546,11 @@ select.field-input {
   cursor: pointer;
 }
 textarea.field-input {
-  min-height: 150px;
+  min-height: 120px;
   line-height: 1.6;
   resize: vertical;
 }
-/* Подпись-пояснение под группой контактов */
+/* Подпись-пояснение под полем */
 .field-hint {
   font-size: 15px;
   color: #6B4A10;
@@ -673,7 +625,7 @@ textarea.field-input {
 }
 .form-note[hidden] { display: none; }
 
-/* ── ЭКРАН БЛАГОДАРНОСТИ (показывается вместо формы) ── */
+/* ── ЭКРАН ПОСЛЕ ОТПРАВКИ (показывается вместо формы) ── */
 .thanks {
   text-align: center;
   padding: 16px 8px 8px;
@@ -696,28 +648,160 @@ textarea.field-input {
   line-height: 1.8;
   color: #2C1A06;
   max-width: 560px;
-  margin: 0 auto 28px;
-}
-.thanks-support {
-  display: inline-block;
-  font-size: 18px;
-  font-weight: 600;
-  font-family: inherit;
-  color: #FFF8E7;
-  background: #C4952A;
-  border: none;
-  border-radius: 8px;
-  padding: 15px 32px;
-  cursor: pointer;
-  letter-spacing: 0.04em;
-  box-shadow: 0 4px 18px rgba(154,107,15,0.40);
-  transition: background 0.18s, transform 0.18s;
-}
-.thanks-support:hover {
-  background: #d0a03a;
-  transform: translateY(-1px);
+  margin: 0 auto;
 }
 .thanks[hidden] { display: none; }
+
+/* ── ПЛАШКА ПРО ОПЛАТУ (под формой) ── */
+.pay-band {
+  max-width: 720px;
+  margin: 28px auto 0;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  background: rgba(196,149,42,0.12);
+  border: 1px solid rgba(196,149,42,0.45);
+  border-left: 5px solid #C4952A;
+  border-radius: 10px;
+  padding: 24px 28px;
+}
+.pay-band-icon {
+  font-size: 28px;
+  line-height: 1.2;
+  color: #9A6B0F;
+  flex-shrink: 0;
+}
+.pay-band-text {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #3A2407;
+}
+
+/* ── БЛОК «ПОЖЕРТВОВАНИЯ НА ХРАМ» (на пергаменте) ── */
+#donate-info {
+  padding: 56px 64px 40px;
+}
+.donate-info-inner {
+  max-width: 820px;
+  margin: 0 auto;
+}
+.donate-info-title {
+  font-family: Georgia, serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: #1C0D06;
+  text-align: center;
+  margin-bottom: 22px;
+  letter-spacing: 0.02em;
+}
+.donate-info-lead {
+  font-size: 19px;
+  line-height: 1.8;
+  color: #2C1A06;
+  text-align: center;
+  margin-bottom: 40px;
+}
+/* Раскладка: реквизиты слева, QR справа (десктоп) */
+.donate-grid {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+/* Карточка реквизитов — пергамент, золотая рамка */
+.requisites {
+  flex: 1 1 0;
+  min-width: 0;
+  background: #FDF6E8;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 12px;
+  padding: 30px 32px 34px;
+}
+.requisites-title {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #8A6012;
+  margin-bottom: 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(196,149,42,0.30);
+}
+.req-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(196,149,42,0.18);
+}
+.req-row:last-child { border-bottom: none; }
+.req-key {
+  font-size: 15px;
+  color: #A77B1A;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.req-val {
+  font-size: 19px;
+  line-height: 1.5;
+  color: #1C0D06;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  word-break: break-word;
+}
+/* Длинное наименование — без жирного, читаемое */
+.req-val.req-val-long {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+/* QR-код — квадратная заглушка */
+.qr-col {
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.qr-box {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #FDF6E8;
+  border: 2px dashed #C4952A;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  color: #9A6B0F;
+  font-size: 17px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+/* ── СТРОКА С ТЕЛЕФОНОМ (под всем блоком) ── */
+.contact-line {
+  padding: 8px 64px 64px;
+}
+.contact-line-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 19px;
+  line-height: 1.7;
+  color: #2C1A06;
+  background: rgba(196,149,42,0.10);
+  border: 1px solid rgba(196,149,42,0.30);
+  border-radius: 10px;
+  padding: 22px 24px;
+}
+.contact-line-inner a {
+  color: #8A6012;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.contact-line-inner a:hover { text-decoration: underline; }
 
 
 /* ─────────────────────────────────────────────
@@ -970,22 +1054,31 @@ textarea.field-input {
   .intro-title { font-size: 26px; margin-bottom: 22px; }
   .intro-text { font-size: 18px; line-height: 1.8; }
 
-  .steps { padding: 44px 20px 52px; }
-  .steps-title { font-size: 28px; margin-bottom: 30px; }
-  .steps-grid { flex-direction: column; align-items: center; gap: 22px; }
-  .step-card { max-width: 440px; width: 100%; }
+  .treby-kinds { padding: 44px 20px 52px; }
+  .treby-kinds-title { font-size: 28px; margin-bottom: 30px; }
+  .kinds-grid { grid-template-columns: 1fr; gap: 22px; max-width: 440px; margin: 0 auto; }
+  .kind-name { font-size: 22px; }
 
-  .urgent { padding: 28px 20px 4px; }
-  .urgent-band { flex-direction: row; gap: 14px; padding: 20px 18px; }
-  .urgent-text { font-size: 17px; }
-
-  .help-form-section { padding: 44px 20px 56px; margin-top: 28px; }
-  .help-form-title { font-size: 28px; }
-  .help-form-lead { font-size: 17px; margin-bottom: 28px; }
-  .help-card { padding: 24px 18px 28px; }
+  .treba-form-section { padding: 44px 20px 56px; }
+  .treba-form-title { font-size: 28px; margin-bottom: 28px; }
+  .treba-card { padding: 24px 18px 28px; }
   .field-input { font-size: 17px; padding: 14px; }
   .thanks-title { font-size: 26px; }
   .thanks-text { font-size: 18px; }
+  .pay-band { flex-direction: row; gap: 14px; padding: 20px 18px; }
+  .pay-band-text { font-size: 17px; }
+
+  #donate-info { padding: 40px 20px 32px; }
+  .donate-info-title { font-size: 26px; }
+  .donate-info-lead { font-size: 18px; margin-bottom: 30px; }
+  .donate-grid { flex-direction: column; gap: 24px; }
+  .requisites { padding: 24px 20px 26px; width: 100%; }
+  .req-val { font-size: 18px; }
+  .req-val.req-val-long { font-size: 16px; }
+  .qr-col { flex: 0 0 auto; width: 100%; max-width: 280px; margin: 0 auto; }
+
+  .contact-line { padding: 8px 20px 48px; }
+  .contact-line-inner { font-size: 18px; padding: 20px 18px; }
 
   /* ── ПОПАП ── */
   .modal-overlay { padding: 20px 12px; }
@@ -1012,11 +1105,11 @@ textarea.field-input {
       <li><a href="o-hrame.html">О храме</a></li>
       <li><a href="raspisanie.html">Расписание</a></li>
       <li><a href="svyatyni.html">Святыни</a></li>
-      <li><a href="treby.html">Требы и пожертвования</a></li>
+      <li class="active"><a href="treby.html">Требы и пожертвования</a></li>
       <li><a href="#">Новости</a></li>
       <li><a href="#">Воскресная школа</a></li>
       <li><a href="#">Социальный центр «Благословение»</a></li>
-      <li class="active"><a href="pomoshch.html">Получить помощь</a></li>
+      <li><a href="pomoshch.html">Получить помощь</a></li>
       <li><a href="#">Как нас найти</a></li>
     </ul>
   </nav>
@@ -1048,11 +1141,11 @@ textarea.field-input {
       <li><a href="o-hrame.html" class="drawer-link">О храме</a></li>
       <li><a href="raspisanie.html" class="drawer-link">Расписание</a></li>
       <li><a href="svyatyni.html" class="drawer-link">Святыни</a></li>
-      <li><a href="treby.html" class="drawer-link">Требы и пожертвования</a></li>
+      <li class="active"><a href="treby.html" class="drawer-link">Требы и пожертвования</a></li>
       <li><a href="#" class="drawer-link">Новости</a></li>
       <li><a href="#" class="drawer-link">Воскресная школа</a></li>
       <li><a href="#" class="drawer-link">Социальный центр «Благословение»</a></li>
-      <li class="active"><a href="pomoshch.html" class="drawer-link">Получить помощь</a></li>
+      <li><a href="pomoshch.html" class="drawer-link">Получить помощь</a></li>
       <li><a href="#" class="drawer-link">Как нас найти</a></li>
     </ul>
   </div>
@@ -1065,93 +1158,102 @@ textarea.field-input {
 
   <!-- ШАПКА: заголовок (охристая, в стиле главной) -->
   <header class="page-header">
-    <h1 class="page-title">Получить помощь</h1>
-    <div class="page-subtitle">Фонд храма Архангела Михаила</div>
+    <h1 class="page-title">Требы и пожертвования</h1>
+    <div class="page-subtitle">Храм Архангела Михаила</div>
   </header>
 
-  <!-- БЛОК 1: ЗАГОЛОВОК-ПРИГЛАШЕНИЕ И ВВОДНЫЙ ТЕКСТ -->
+  <!-- БЛОК 1: ВСТУПЛЕНИЕ -->
   <section id="intro">
     <div class="read-col">
-      <h2 class="intro-title">Мы готовы выслушать каждого</h2>
-      <p class="intro-text">Если на душе тяжело, если вы оказались в трудной ситуации или просто не знаете, к кому обратиться — напишите нам. Фонд храма Архангела Михаила готов выслушать любого человека и постараться помочь. Вы можете задать вопрос о здоровье, о семье и отношениях, о работе и делах, о вере и духовной жизни — о чём угодно. Мы не оставим вас одних. Эта помощь бесплатна и идёт от сердца. А если вы захотите поддержать наш храм — это будет по вашему доброму желанию, но никто и никогда не сделает это условием помощи.</p>
+      <h2 class="intro-title">Требы и пожертвования</h2>
+      <p class="intro-text">В храме можно заказать поминовение о здравии и о упокоении, молебны и другие требы. Здесь же вы найдёте реквизиты для пожертвований. Храм существует на пожертвования прихожан, и любая помощь — дело доброй воли каждого.</p>
     </div>
   </section>
 
-  <!-- БЛОК 2: КАК ЭТО РАБОТАЕТ — три шага -->
-  <section class="steps" id="how">
-    <div class="steps-inner">
-      <h2 class="steps-title">Как это работает</h2>
-      <div class="steps-grid">
+  <!-- БЛОК 2: КАКИЕ БЫВАЮТ ТРЕБЫ -->
+  <section class="treby-kinds" id="kinds">
+    <div class="treby-kinds-inner">
+      <h2 class="treby-kinds-title">Какие бывают требы</h2>
+      <div class="kinds-grid">
 
-        <article class="step-card">
-          <div class="step-num">1</div>
-          <p class="step-text">Напишите свой вопрос в форме ниже.</p>
+        <article class="kind-card">
+          <h3 class="kind-name">Записка о здравии</h3>
+          <p class="kind-desc">Молитва о живых: о здоровье, помощи в делах, путешествующих, болящих.</p>
         </article>
 
-        <article class="step-card">
-          <div class="step-num">2</div>
-          <p class="step-text">Оставьте имя и контакт, чтобы мы могли ответить.</p>
+        <article class="kind-card">
+          <h3 class="kind-name">Записка о упокоении</h3>
+          <p class="kind-desc">Молитва об усопших православных христианах.</p>
         </article>
 
-        <article class="step-card">
-          <div class="step-num">3</div>
-          <p class="step-text">Человек от Фонда свяжется с вами. Обычно отвечаем в течение часа, но иногда нужно больше времени — мы обязательно с вами свяжемся.</p>
+        <article class="kind-card">
+          <h3 class="kind-name">Молебен</h3>
+          <p class="kind-desc">Особое богослужение с прошением о помощи Божией в нуждах или благодарением.</p>
+        </article>
+
+        <article class="kind-card">
+          <h3 class="kind-name">Панихида</h3>
+          <p class="kind-desc">Заупокойное богослужение, молитва об усопших.</p>
+        </article>
+
+        <article class="kind-card">
+          <h3 class="kind-name">Сорокоуст</h3>
+          <p class="kind-desc">Поминовение на 40 Литургиях подряд — о здравии или о упокоении.</p>
+        </article>
+
+        <article class="kind-card">
+          <h3 class="kind-name">Крещение, Венчание, Отпевание</h3>
+          <p class="kind-desc">Церковные Таинства и чинопоследования. Подробности и день совершения — по телефону храма.</p>
         </article>
 
       </div>
     </div>
   </section>
 
-  <!-- БЛОК 3: СРОЧНАЯ ПОМОЩЬ — спокойная плашка -->
-  <section class="urgent" id="urgent">
-    <div class="urgent-band">
-      <div class="urgent-icon">⚠</div>
-      <p class="urgent-text">Если ваш вопрос срочный и связан с угрозой жизни или здоровью — пожалуйста, не ждите ответа и сразу звоните: скорая помощь — <strong>103</strong>, единый номер экстренных служб — <strong>112</strong>.</p>
-    </div>
-  </section>
+  <!-- БЛОК 3: ФОРМА ЗАКАЗА ТРЕБЫ -->
+  <section class="treba-form-section" id="order">
+    <div class="treba-form-inner">
+      <h2 class="treba-form-title">Заказать требу</h2>
 
-  <!-- БЛОК 4: ФОРМА ОБРАЩЕНИЯ -->
-  <section class="help-form-section" id="form">
-    <div class="help-form-inner">
-      <h2 class="help-form-title">Написать нам</h2>
-      <p class="help-form-lead">Расскажите, что вас тревожит — мы рядом.</p>
+      <div class="treba-card">
 
-      <div class="help-card">
+        <!-- Endpoint Formspree временно общий с формой помощи (xkolbqyl, почта eurolux907@gmail.com). Позже переключить на отдельную почту храма — поменять значение action. -->
+        <form class="treba-form" id="trebaForm" action="https://formspree.io/f/xkolbqyl" method="POST" novalidate>
 
-        <!-- Письма приходят на eurolux907@gmail.com -->
-        <form class="help-form" id="helpForm" action="https://formspree.io/f/xkolbqyl" method="POST" novalidate>
+          <!-- Скрытая тема письма. Запасное статичное значение; JS подставит «ТРЕБА: [тип]» при отправке -->
+          <input type="hidden" name="_subject" id="subjectField" value="ТРЕБА с сайта храма">
 
-          <!-- Скрытая тема письма -->
-          <input type="hidden" name="_subject" value="Новое обращение с сайта храма">
-
-          <!-- Имя (обязательное) -->
+          <!-- Тип требы -->
           <div class="field">
-            <label class="field-label" for="f-name">Имя <span class="req">*</span></label>
+            <label class="field-label" for="f-treba">Тип требы</label>
+            <select id="f-treba" name="treba" class="field-input">
+              <option value="Записка о здравии">Записка о здравии</option>
+              <option value="Записка о упокоении">Записка о упокоении</option>
+              <option value="Молебен">Молебен</option>
+              <option value="Панихида">Панихида</option>
+              <option value="Сорокоуст о здравии">Сорокоуст о здравии</option>
+              <option value="Сорокоуст о упокоении">Сорокоуст о упокоении</option>
+              <option value="Крещение">Крещение</option>
+              <option value="Венчание">Венчание</option>
+              <option value="Отпевание">Отпевание</option>
+            </select>
+          </div>
+
+          <!-- Имена для поминовения -->
+          <div class="field">
+            <label class="field-label" for="f-imena">Имена для поминовения</label>
+            <textarea id="f-imena" name="imena" class="field-input" placeholder="Иоанна, Марии, Сергия…"></textarea>
+            <p class="field-hint">Укажите имена в родительном падеже, как в записках (например: Иоанна, Марии). Только крещёные православные. До 10 имён в одной записке.</p>
+          </div>
+
+          <!-- Ваше имя (обязательное) -->
+          <div class="field">
+            <label class="field-label" for="f-name">Ваше имя <span class="req">*</span></label>
             <input type="text" id="f-name" name="name" class="field-input" placeholder="Как к вам обращаться" autocomplete="name">
             <p class="field-error" id="err-name" hidden>Пожалуйста, напишите ваше имя.</p>
           </div>
 
-          <!-- Категория вопроса -->
-          <div class="field">
-            <label class="field-label" for="f-category">Категория вопроса</label>
-            <select id="f-category" name="category" class="field-input">
-              <option value="Здоровье">Здоровье</option>
-              <option value="Семья и отношения">Семья и отношения</option>
-              <option value="Работа и дела">Работа и дела</option>
-              <option value="Вера и духовность">Вера и духовность</option>
-              <option value="Житейский вопрос">Житейский вопрос</option>
-              <option value="Другое">Другое</option>
-            </select>
-          </div>
-
-          <!-- Вопрос (обязательное) -->
-          <div class="field">
-            <label class="field-label" for="f-question">Ваш вопрос <span class="req">*</span></label>
-            <textarea id="f-question" name="question" class="field-input" placeholder="Опишите вашу ситуацию или вопрос — так подробно, как вам удобно."></textarea>
-            <p class="field-error" id="err-question" hidden>Пожалуйста, напишите ваш вопрос.</p>
-          </div>
-
-          <!-- Контакты: телефон или почта -->
+          <!-- Контакт для ответа: телефон или почта -->
           <div class="field">
             <label class="field-label" for="f-phone">Телефон</label>
             <input type="tel" id="f-phone" name="phone" class="field-input" placeholder="8-900-000-00-00" autocomplete="tel">
@@ -1160,7 +1262,7 @@ textarea.field-input {
           <div class="field">
             <label class="field-label" for="f-email">E-mail</label>
             <input type="email" id="f-email" name="email" class="field-input" placeholder="mail@example.com" autocomplete="email">
-            <p class="field-hint">Укажите телефон или e-mail — как вам удобнее получить ответ.</p>
+            <p class="field-hint">Укажите телефон или e-mail — как вам удобнее.</p>
             <p class="field-error" id="err-contact" hidden>Пожалуйста, оставьте телефон или e-mail, чтобы мы могли ответить.</p>
           </div>
 
@@ -1168,28 +1270,92 @@ textarea.field-input {
           <div class="field">
             <label class="consent">
               <input type="checkbox" id="f-consent" name="consent" value="Согласен на обработку данных">
-              <span class="consent-text">Я согласен на обработку моих данных для ответа на обращение</span>
+              <span class="consent-text">Я согласен на обработку моих данных для оформления требы</span>
             </label>
-            <p class="field-error" id="err-consent" hidden>Чтобы мы могли ответить, отметьте, пожалуйста, согласие.</p>
+            <p class="field-error" id="err-consent" hidden>Чтобы мы могли оформить требу, отметьте, пожалуйста, согласие.</p>
           </div>
 
           <!-- Кнопка -->
-          <button type="submit" class="btn-help" id="helpSubmit">Отправить обращение</button>
+          <button type="submit" class="btn-help" id="trebaSubmit">Отправить заявку</button>
 
           <!-- Сообщение об ошибке отправки -->
-          <p class="form-note" id="formNote" hidden>Не удалось отправить обращение. Пожалуйста, попробуйте ещё раз или позвоните нам.</p>
+          <p class="form-note" id="formNote" hidden>Не удалось отправить заявку. Пожалуйста, попробуйте ещё раз или позвоните нам.</p>
 
         </form>
 
-        <!-- ЭКРАН БЛАГОДАРНОСТИ (скрыт; показывается после успешной отправки) -->
+        <!-- ЭКРАН ПОСЛЕ ОТПРАВКИ (скрыт; показывается после успешной отправки) -->
         <div class="thanks" id="thanks" hidden>
           <div class="thanks-cross">✝</div>
-          <h2 class="thanks-title">Спасибо, мы вас услышали</h2>
-          <p class="thanks-text">Ваше обращение принято. Человек от Фонда храма свяжется с вами в ближайшее время. Берегите себя — вы не одни.</p>
-          <button type="button" class="thanks-support" id="thanksSupport">Поддержать храм</button>
+          <h2 class="thanks-title">Заявка принята</h2>
+          <p class="thanks-text">Ваша заявка на требу принята. Человек от храма свяжется с вами, чтобы уточнить детали и размер пожертвования. Вы также можете подать требу лично в храме.</p>
         </div>
 
       </div>
+
+      <!-- ПЛАШКА ПРО ОПЛАТУ -->
+      <div class="pay-band">
+        <div class="pay-band-icon">🕯</div>
+        <p class="pay-band-text">Это заявка на требу. Размер пожертвования и оплату уточнит человек от храма при связи с вами, либо вы можете подать требу лично в свечной лавке храма.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК 4: ПОЖЕРТВОВАНИЯ НА ХРАМ -->
+  <section id="donate-info">
+    <div class="donate-info-inner">
+      <h2 class="donate-info-title">Пожертвования на храм</h2>
+      <p class="donate-info-lead">Поддержать храм можно переводом по реквизитам или по QR-коду. Любое пожертвование — добровольное.</p>
+
+      <div class="donate-grid">
+
+        <!-- Реквизиты -->
+        <div class="requisites">
+          <h3 class="requisites-title">Реквизиты для перевода</h3>
+
+          <div class="req-row">
+            <span class="req-key">Полное наименование</span>
+            <span class="req-val req-val-long">Местная религиозная организация православный приход храма Архангела Михаила г. Кубинка Московской епархии Русской Православной Церкви</span>
+          </div>
+          <div class="req-row">
+            <span class="req-key">ИНН</span>
+            <span class="req-val">5032056044</span>
+          </div>
+          <div class="req-row">
+            <span class="req-key">КПП</span>
+            <span class="req-val">503201001</span>
+          </div>
+          <div class="req-row">
+            <span class="req-key">ОГРН</span>
+            <span class="req-val">1035000011661</span>
+          </div>
+          <div class="req-row">
+            <span class="req-key">Р/сч</span>
+            <span class="req-val">40703810140290108403</span>
+          </div>
+          <div class="req-row">
+            <span class="req-key">БИК</span>
+            <span class="req-val">044525225</span>
+          </div>
+          <div class="req-row">
+            <span class="req-key">Назначение платежа</span>
+            <span class="req-val req-val-long">Добровольное пожертвование на уставную деятельность</span>
+          </div>
+        </div>
+
+        <!-- QR-код — заглушка -->
+        <div class="qr-col">
+          <!-- Заменить заглушку на реальный QR-код (СБП/банк), когда храм предоставит. Файл назвать qr-donate.png -->
+          <div class="qr-box">QR-код для пожертвования</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК 5: СТРОКА С ТЕЛЕФОНОМ -->
+  <section class="contact-line">
+    <div class="contact-line-inner">
+      По всем вопросам о требах и пожертвованиях — по телефону <a href="tel:+79685931433">8-968-593-14-33</a>
     </div>
   </section>
 
@@ -1342,24 +1508,21 @@ textarea.field-input {
       donateMessage.hidden = false;
     });
   }
-  // Кнопка «Поддержать храм» на экране благодарности открывает то же окно пожертвования
-  const thanksSupport = document.getElementById('thanksSupport');
-  if (thanksSupport) thanksSupport.addEventListener('click', openModal);
 
-  /* ── ФОРМА ОБРАЩЕНИЯ + ВАЛИДАЦИЯ + ОТПРАВКА ЧЕРЕЗ FORMSPREE ── */
-  const form     = document.getElementById('helpForm');
-  const thanks   = document.getElementById('thanks');
-  const formNote = document.getElementById('formNote');
-  const submitBtn = document.getElementById('helpSubmit');
+  /* ── ФОРМА ЗАКАЗА ТРЕБЫ + ВАЛИДАЦИЯ + ОТПРАВКА ЧЕРЕЗ FORMSPREE ── */
+  const form      = document.getElementById('trebaForm');
+  const thanks    = document.getElementById('thanks');
+  const formNote  = document.getElementById('formNote');
+  const submitBtn = document.getElementById('trebaSubmit');
 
+  const fTreba    = document.getElementById('f-treba');
   const fName     = document.getElementById('f-name');
-  const fQuestion = document.getElementById('f-question');
   const fPhone    = document.getElementById('f-phone');
   const fEmail    = document.getElementById('f-email');
   const fConsent  = document.getElementById('f-consent');
+  const subjectFld = document.getElementById('subjectField');
 
   const errName    = document.getElementById('err-name');
-  const errQuestion= document.getElementById('err-question');
   const errContact = document.getElementById('err-contact');
   const errConsent = document.getElementById('err-consent');
 
@@ -1369,9 +1532,6 @@ textarea.field-input {
     // Имя
     if (!fName.value.trim()) { errName.hidden = false; ok = false; }
     else { errName.hidden = true; }
-    // Вопрос
-    if (!fQuestion.value.trim()) { errQuestion.hidden = false; ok = false; }
-    else { errQuestion.hidden = true; }
     // Хотя бы один контакт
     if (!fPhone.value.trim() && !fEmail.value.trim()) { errContact.hidden = false; ok = false; }
     else { errContact.hidden = true; }
@@ -1383,7 +1543,6 @@ textarea.field-input {
 
   // Прячем сообщение об ошибке поля, как только пользователь начал исправлять
   fName.addEventListener('input', () => { if (fName.value.trim()) errName.hidden = true; });
-  fQuestion.addEventListener('input', () => { if (fQuestion.value.trim()) errQuestion.hidden = true; });
   fPhone.addEventListener('input', () => { if (fPhone.value.trim() || fEmail.value.trim()) errContact.hidden = true; });
   fEmail.addEventListener('input', () => { if (fPhone.value.trim() || fEmail.value.trim()) errContact.hidden = true; });
   fConsent.addEventListener('change', () => { if (fConsent.checked) errConsent.hidden = true; });
@@ -1392,6 +1551,12 @@ textarea.field-input {
     e.preventDefault();
     formNote.hidden = true;
     if (!validate()) return;
+
+    // Тема письма: «ТРЕБА: [выбранный тип]». При сбое останется запасное значение из HTML.
+    try {
+      const trebaType = fTreba.options[fTreba.selectedIndex].value;
+      if (trebaType) subjectFld.value = 'ТРЕБА: ' + trebaType;
+    } catch (e2) { /* остаётся статичное «ТРЕБА с сайта храма» */ }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Отправляем…';
@@ -1404,7 +1569,7 @@ textarea.field-input {
       });
 
       if (response.ok) {
-        // Успех — прячем форму, показываем экран благодарности
+        // Успех — прячем форму, показываем экран «Заявка принята»
         form.hidden = true;
         thanks.hidden = false;
         thanks.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1414,7 +1579,7 @@ textarea.field-input {
     } catch (err) {
       formNote.hidden = false;
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Отправить обращение';
+      submitBtn.textContent = 'Отправить заявку';
     }
   });
 </script>
