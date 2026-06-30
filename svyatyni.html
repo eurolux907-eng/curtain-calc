@@ -1583,11 +1583,14 @@ body {
   border-color: #C4952A;
   box-shadow: 0 0 0 3px rgba(196,149,42,0.15);
 }
-.svecha-name-display {
-  font-size: 16px;
-  color: #2C1A06;            /* тёмный читаемый, не золото */
+/* Подпись-статус под пламенем — мельче описания, тёплый читаемый цвет (НЕ золото).
+   Иерархия размеров: название (крупное) → описание (среднее) → статус (мелкий). */
+.svecha-status {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #6B4A10;
   text-align: center;
-  font-style: italic;
+  max-width: 240px;
 }
 
 /* Две кнопки под карточкой — прижаты к низу для ровного ряда */
@@ -1813,10 +1816,10 @@ body {
           <h3 class="altar-name">Икона Архистратига Михаила и Святых Архангелов</h3>
           <p class="altar-desc">Главная святыня нашего храма. Архистратиг Михаил — вождь небесного воинства, защитник верующих от зла. Храм освящён в честь этого образа.</p>
 
-          <!-- СВЕЧА: огонёк + поле имени (появляются при зажигании) -->
-          <div class="svecha-area" hidden>
-            <div class="candle"><span class="flame"></span><span class="candle-body"></span></div>
-            <div class="svecha-name-display" hidden></div>
+          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
+          <div class="svecha-area">
+            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
+            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
             <label class="svecha-name-field" hidden>
               <span class="svecha-name-label">Имя для поминовения</span>
               <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
@@ -1846,10 +1849,10 @@ body {
           <h3 class="altar-name">Крест с частицей Животворящего Креста Господня</h3>
           <p class="altar-desc">Частица того Креста, на котором был распят Спаситель, — величайшая христианская святыня. Встроена в поклонный крест нашего храма.</p>
 
-          <!-- СВЕЧА: огонёк + поле имени (появляются при зажигании) -->
-          <div class="svecha-area" hidden>
-            <div class="candle"><span class="flame"></span><span class="candle-body"></span></div>
-            <div class="svecha-name-display" hidden></div>
+          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
+          <div class="svecha-area">
+            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
+            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
             <label class="svecha-name-field" hidden>
               <span class="svecha-name-label">Имя для поминовения</span>
               <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
@@ -1868,10 +1871,10 @@ body {
           <h3 class="altar-name">Камень с кровью мученика Василиска</h3>
           <p class="altar-desc">Камень привезён из Абхазии, с места мученической кончины святого Василиска Команского, пострадавшего за Христа в начале IV века.</p>
 
-          <!-- СВЕЧА: огонёк + поле имени (появляются при зажигании) -->
-          <div class="svecha-area" hidden>
-            <div class="candle"><span class="flame"></span><span class="candle-body"></span></div>
-            <div class="svecha-name-display" hidden></div>
+          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
+          <div class="svecha-area">
+            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
+            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
             <label class="svecha-name-field" hidden>
               <span class="svecha-name-label">Имя для поминовения</span>
               <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
@@ -1901,10 +1904,10 @@ body {
           <h3 class="altar-name">Икона 14 000 Вифлеемских младенцев</h3>
           <p class="altar-desc">С частицей святых мощей. Младенцы, убиенные царём Иродом, — первые мученики за Христа.</p>
 
-          <!-- СВЕЧА: огонёк + поле имени (появляются при зажигании) -->
-          <div class="svecha-area" hidden>
-            <div class="candle"><span class="flame"></span><span class="candle-body"></span></div>
-            <div class="svecha-name-display" hidden></div>
+          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
+          <div class="svecha-area">
+            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
+            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
             <label class="svecha-name-field" hidden>
               <span class="svecha-name-label">Имя для поминовения</span>
               <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
@@ -1923,10 +1926,10 @@ body {
           <h3 class="altar-name">Икона великомученицы Анастасии Узорешительницы</h3>
           <p class="altar-desc">С частицей святых мощей. Покровительница заключённых и страждущих, помощница в скорбях.</p>
 
-          <!-- СВЕЧА: огонёк + поле имени (появляются при зажигании) -->
-          <div class="svecha-area" hidden>
-            <div class="candle"><span class="flame"></span><span class="candle-body"></span></div>
-            <div class="svecha-name-display" hidden></div>
+          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
+          <div class="svecha-area">
+            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
+            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
             <label class="svecha-name-field" hidden>
               <span class="svecha-name-label">Имя для поминовения</span>
               <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
@@ -1945,10 +1948,10 @@ body {
           <h3 class="altar-name">Икона священномученика Григория Воинова</h3>
           <p class="altar-desc">Образ настоятеля нашего храма, принявшего мученическую кончину в 1937 году.</p>
 
-          <!-- СВЕЧА: огонёк + поле имени (появляются при зажигании) -->
-          <div class="svecha-area" hidden>
-            <div class="candle"><span class="flame"></span><span class="candle-body"></span></div>
-            <div class="svecha-name-display" hidden></div>
+          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
+          <div class="svecha-area">
+            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
+            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
             <label class="svecha-name-field" hidden>
               <span class="svecha-name-label">Имя для поминовения</span>
               <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
@@ -1967,10 +1970,10 @@ body {
           <h3 class="altar-name">Икона блаженной Матроны Московской</h3>
           <p class="altar-desc">Одна из самых почитаемых русских святых. Скорая помощница в болезнях, житейских нуждах и скорбях.</p>
 
-          <!-- СВЕЧА: огонёк + поле имени (появляются при зажигании) -->
-          <div class="svecha-area" hidden>
-            <div class="candle"><span class="flame"></span><span class="candle-body"></span></div>
-            <div class="svecha-name-display" hidden></div>
+          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
+          <div class="svecha-area">
+            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
+            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
             <label class="svecha-name-field" hidden>
               <span class="svecha-name-label">Имя для поминовения</span>
               <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
@@ -2000,10 +2003,10 @@ body {
           <h3 class="altar-name">Иверская</h3>
           <p class="altar-desc">Благая Вратарница, хранительница дома и обители.</p>
 
-          <!-- СВЕЧА: огонёк + поле имени (появляются при зажигании) -->
-          <div class="svecha-area" hidden>
-            <div class="candle"><span class="flame"></span><span class="candle-body"></span></div>
-            <div class="svecha-name-display" hidden></div>
+          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
+          <div class="svecha-area">
+            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
+            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
             <label class="svecha-name-field" hidden>
               <span class="svecha-name-label">Имя для поминовения</span>
               <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
@@ -2022,10 +2025,10 @@ body {
           <h3 class="altar-name">Боголюбская</h3>
           <p class="altar-desc">Один из древнейших чтимых образов Божией Матери на Руси.</p>
 
-          <!-- СВЕЧА: огонёк + поле имени (появляются при зажигании) -->
-          <div class="svecha-area" hidden>
-            <div class="candle"><span class="flame"></span><span class="candle-body"></span></div>
-            <div class="svecha-name-display" hidden></div>
+          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
+          <div class="svecha-area">
+            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
+            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
             <label class="svecha-name-field" hidden>
               <span class="svecha-name-label">Имя для поминовения</span>
               <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
@@ -2044,10 +2047,10 @@ body {
           <h3 class="altar-name">Тихвинская</h3>
           <p class="altar-desc">Покровительница северных пределов Русской земли.</p>
 
-          <!-- СВЕЧА: огонёк + поле имени (появляются при зажигании) -->
-          <div class="svecha-area" hidden>
-            <div class="candle"><span class="flame"></span><span class="candle-body"></span></div>
-            <div class="svecha-name-display" hidden></div>
+          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
+          <div class="svecha-area">
+            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
+            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
             <label class="svecha-name-field" hidden>
               <span class="svecha-name-label">Имя для поминовения</span>
               <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
@@ -2066,10 +2069,10 @@ body {
           <h3 class="altar-name">Троеручница</h3>
           <p class="altar-desc">Скорая помощница в болезнях и нуждах.</p>
 
-          <!-- СВЕЧА: огонёк + поле имени (появляются при зажигании) -->
-          <div class="svecha-area" hidden>
-            <div class="candle"><span class="flame"></span><span class="candle-body"></span></div>
-            <div class="svecha-name-display" hidden></div>
+          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
+          <div class="svecha-area">
+            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
+            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
             <label class="svecha-name-field" hidden>
               <span class="svecha-name-label">Имя для поминовения</span>
               <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
@@ -2373,27 +2376,28 @@ body {
 /* ═══════════ МЕХАНИКА 1: «Поставить свечу» — живой огонёк + память 24ч ═══════════ */
   (function () {
     const DAY = 24 * 60 * 60 * 1000;   // сутки в миллисекундах
+    const OFF_TEXT = 'Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.';
 
-    // Показать имя рядом со свечой
-    function updateName(card, name) {
-      const display = card.querySelector('.svecha-name-display');
-      if (!display) return;
+    // Обновить подпись-статус под пламенем
+    function renderStatus(card, lit, name) {
+      const status = card.querySelector('.svecha-status');
+      if (!status) return;
+      if (!lit) { status.textContent = OFF_TEXT; return; }
       name = (name || '').trim();
-      if (name) { display.textContent = 'За ' + name; display.hidden = false; }
-      else      { display.textContent = '';          display.hidden = true;  }
+      status.textContent = name ? ('Свеча горит за ' + name + '.') : 'Свеча горит.';
     }
 
     // Зажечь свечу в карточке (визуально)
     function lightCard(card, name) {
-      const area  = card.querySelector('.svecha-area');
-      const field = card.querySelector('.svecha-name-field');
-      const input = card.querySelector('.svecha-name-input');
-      const btn   = card.querySelector('.btn-svecha');
-      if (area)  area.hidden = false;
-      if (field) field.hidden = false;
-      if (btn)   { btn.textContent = '🕯 Свеча горит'; btn.classList.add('lit'); }
+      const candle = card.querySelector('.candle');
+      const field  = card.querySelector('.svecha-name-field');
+      const input  = card.querySelector('.svecha-name-input');
+      const btn    = card.querySelector('.btn-svecha');
+      if (candle) candle.hidden = false;
+      if (field)  field.hidden = false;
+      if (btn)    { btn.textContent = '🕯 Свеча горит'; btn.classList.add('lit'); }
       if (input && typeof name === 'string') input.value = name;
-      updateName(card, name || '');
+      renderStatus(card, true, name || '');
     }
 
     // Сохранить запись в localStorage: момент времени + имя
@@ -2409,6 +2413,9 @@ body {
       const key   = btn.getAttribute('data-svecha');
       const input = card.querySelector('.svecha-name-input');
 
+      // По умолчанию — приглашение зажечь (пустое/просроченное состояние)
+      renderStatus(card, false);
+
       // При загрузке: восстановить горящую свечу, если прошло меньше 24 часов
       try {
         const raw = localStorage.getItem(key);
@@ -2417,7 +2424,7 @@ body {
           if (rec && rec.t && (Date.now() - rec.t) < DAY) {
             lightCard(card, rec.name || '');
           } else {
-            localStorage.removeItem(key);   // прошло больше суток — гасим
+            localStorage.removeItem(key);   // прошло больше суток — гасим, остаётся приглашение
           }
         }
       } catch (e) { /* битая запись — игнорируем */ }
@@ -2430,10 +2437,10 @@ body {
         if (input) input.focus();
       });
 
-      // Ввод имени — показываем рядом и сохраняем
+      // Ввод имени — обновляем статус и сохраняем
       if (input) {
         input.addEventListener('input', () => {
-          updateName(card, input.value);
+          renderStatus(card, true, input.value);
           save(key, input.value);
         });
       }
