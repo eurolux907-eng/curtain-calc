@@ -1366,6 +1366,103 @@ body {
   .saint-text { font-size: 16.5px; }
 }
 
+/* На странице «Святыни» все святыни — единый стандарт карточки (.altar-card).
+   Разрешаем перенос на новую строку, когда в ряду 4+ карточек. */
+.altars-grid { flex-wrap: wrap; }
+
+/* ═══════════ КАНДИЛО (декоративный напольный подсвечник) ═══════════ */
+/* ВНИМАНИЕ: пока это СТАТИЧНЫЙ элемент — свечи не горят, кликов и анимации нет.
+   Зажигание свечей по клику, огонёк и формы — отдельный второй шаг. */
+.kandilo-section {
+  background: #0F1A30;
+  border-top: 2px solid #C4952A;
+  padding: 56px 56px 76px;
+}
+.kandilo-lead {
+  text-align: center;
+  font-size: 18px;
+  color: rgba(232,200,96,0.75);
+  letter-spacing: 0.03em;
+  margin-bottom: 44px;
+}
+/* Сам подсвечник — собран из золотых деталей, стоит по центру */
+.kandilo {
+  width: 260px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 12px 20px rgba(0,0,0,0.45));
+}
+/* Чаша: плоский верх, округлое дно — как у храмового кандила */
+.kandilo-bowl {
+  position: relative;
+  width: 240px;
+  height: 72px;
+  background: linear-gradient(180deg, #F2D87A 0%, #C4952A 55%, #9A6B0F 100%);
+  border: 2px solid #8A6012;
+  border-radius: 0 0 120px 120px / 0 0 64px 64px;
+  box-shadow: inset 0 7px 11px rgba(255,248,224,0.50),
+              inset 0 -9px 13px rgba(60,36,0,0.35);
+}
+/* Верхний обод чаши */
+.kandilo-rim {
+  position: absolute;
+  top: -11px;
+  left: -7px;
+  right: -7px;
+  height: 22px;
+  background: linear-gradient(180deg, #FBEBA8 0%, #C4952A 100%);
+  border: 2px solid #8A6012;
+  border-radius: 14px;
+}
+/* Ряд ячеек под свечи (пустые, без огня) */
+.kandilo-cells {
+  position: absolute;
+  top: 4px;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 13px;
+  z-index: 1;
+}
+.kandilo-cell {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, #5C3A08, #271603 72%);
+  border: 2px solid #E8C860;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.65);
+}
+/* Ножка подсвечника */
+.kandilo-stem {
+  width: 24px;
+  height: 118px;
+  background: linear-gradient(90deg, #8A6012 0%, #F2D87A 45%, #C4952A 62%, #8A6012 100%);
+}
+/* Узел на ножке */
+.kandilo-knob {
+  width: 50px;
+  height: 32px;
+  margin-top: -14px;
+  background: linear-gradient(180deg, #FBEBA8, #C4952A 60%, #9A6B0F);
+  border: 1px solid #8A6012;
+  border-radius: 50%;
+}
+/* Основание */
+.kandilo-base {
+  width: 156px;
+  height: 28px;
+  margin-top: -6px;
+  background: linear-gradient(180deg, #F2D87A 0%, #C4952A 55%, #8A6012 100%);
+  border: 2px solid #8A6012;
+  border-radius: 50% / 70%;
+}
+@media (max-width: 768px) {
+  .kandilo-section { padding: 40px 20px 56px; }
+  .kandilo-lead { font-size: 16.5px; margin-bottom: 34px; }
+}
+
 </style>
 </head>
 <body>
@@ -1452,7 +1549,53 @@ body {
     </div>
   </section>
 
-  <!-- БЛОК 2: ИКОНЫ С ЧАСТИЦАМИ МОЩЕЙ -->
+  <!-- БЛОК: ГЛАВНАЯ СВЯТЫНЯ -->
+  <section class="altars" id="glavnaya">
+    <div class="altars-inner">
+      <h2 class="altars-title">Главная святыня</h2>
+
+      <div class="altars-grid">
+
+        <!-- Икона Архистратига Михаила и Святых Архангелов -->
+        <article class="altar-card main">
+          <!-- Заменить заглушку на: <img class="altar-img" src="arhangel-mihail-ikona.jpg" alt="Икона Архистратига Михаила и Святых Архангелов"> -->
+          <div class="altar-img altar-img-ph">фото иконы</div>
+          <h3 class="altar-name">Икона Архистратига Михаила и Святых Архангелов</h3>
+          <p class="altar-desc">Главная святыня нашего храма. Архистратиг Михаил — вождь небесного воинства, защитник верующих от зла. Храм освящён в честь этого образа.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК: РЕЛИКВИИ -->
+  <section class="altars" id="relikvii">
+    <div class="altars-inner">
+      <h2 class="altars-title">Реликвии</h2>
+
+      <div class="altars-grid">
+
+        <!-- Крест с частицей Животворящего Креста Господня -->
+        <article class="altar-card">
+          <!-- Заменить заглушку на: <img class="altar-img" src="krest-relikvia.jpg" alt="Крест с частицей Животворящего Креста Господня"> -->
+          <div class="altar-img altar-img-ph">фото креста</div>
+          <h3 class="altar-name">Крест с частицей Животворящего Креста Господня</h3>
+          <p class="altar-desc">Частица того Креста, на котором был распят Спаситель, — величайшая христианская святыня. Встроена в поклонный крест нашего храма.</p>
+        </article>
+
+        <!-- Камень с кровью мученика Василиска -->
+        <article class="altar-card">
+          <!-- Заменить заглушку на: <img class="altar-img" src="kamen-vasilisk.jpg" alt="Камень с кровью мученика Василиска"> -->
+          <div class="altar-img altar-img-ph">фото камня</div>
+          <h3 class="altar-name">Камень с кровью мученика Василиска</h3>
+          <p class="altar-desc">Камень привезён из Абхазии, с места мученической кончины святого Василиска Команского, пострадавшего за Христа в начале IV века.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК: ИКОНЫ С ЧАСТИЦАМИ МОЩЕЙ -->
   <section class="altars" id="relics">
     <div class="altars-inner">
       <h2 class="altars-title">Иконы с частицами мощей</h2>
@@ -1483,38 +1626,81 @@ body {
           <p class="altar-desc">Образ настоятеля нашего храма, принявшего мученическую кончину в 1937 году.</p>
         </article>
 
+        <!-- Икона блаженной Матроны Московской -->
+        <article class="altar-card">
+          <!-- Заменить заглушку на: <img class="altar-img" src="matrona-moskovskaya.jpg" alt="Икона блаженной Матроны Московской"> -->
+          <div class="altar-img altar-img-ph">фото иконы</div>
+          <h3 class="altar-name">Икона блаженной Матроны Московской</h3>
+          <p class="altar-desc">Одна из самых почитаемых русских святых. Скорая помощница в болезнях, житейских нуждах и скорбях.</p>
+        </article>
+
       </div>
     </div>
   </section>
 
-  <!-- БЛОК 3: ЧТИМЫЕ ИКОНЫ ПРЕСВЯТОЙ БОГОРОДИЦЫ -->
-  <section class="clergy" id="bogorodica">
-    <div class="clergy-inner">
-      <h2 class="clergy-title">Чтимые иконы Пресвятой Богородицы</h2>
+  <!-- БЛОК: ЧТИМЫЕ ИКОНЫ ПРЕСВЯТОЙ БОГОРОДИЦЫ -->
+  <section class="altars" id="bogorodica">
+    <div class="altars-inner">
+      <h2 class="altars-title">Чтимые иконы Пресвятой Богородицы</h2>
 
-      <div class="icons-list">
+      <div class="altars-grid">
 
-        <div class="icon-card">
-          <div class="icon-name">Иверская</div>
-          <p class="icon-desc">Благая Вратарница, хранительница дома и обители.</p>
-        </div>
+        <!-- Иверская -->
+        <article class="altar-card">
+          <!-- Заменить заглушку на: <img class="altar-img" src="iverskaya.jpg" alt="Иверская икона Божией Матери"> -->
+          <div class="altar-img altar-img-ph">фото иконы</div>
+          <h3 class="altar-name">Иверская</h3>
+          <p class="altar-desc">Благая Вратарница, хранительница дома и обители.</p>
+        </article>
 
-        <div class="icon-card">
-          <div class="icon-name">Боголюбская</div>
-          <p class="icon-desc">Один из древнейших чтимых образов Божией Матери на Руси.</p>
-        </div>
+        <!-- Боголюбская -->
+        <article class="altar-card">
+          <!-- Заменить заглушку на: <img class="altar-img" src="bogolyubskaya.jpg" alt="Боголюбская икона Божией Матери"> -->
+          <div class="altar-img altar-img-ph">фото иконы</div>
+          <h3 class="altar-name">Боголюбская</h3>
+          <p class="altar-desc">Один из древнейших чтимых образов Божией Матери на Руси.</p>
+        </article>
 
-        <div class="icon-card">
-          <div class="icon-name">Тихвинская</div>
-          <p class="icon-desc">Покровительница северных пределов Русской земли.</p>
-        </div>
+        <!-- Тихвинская -->
+        <article class="altar-card">
+          <!-- Заменить заглушку на: <img class="altar-img" src="tihvinskaya.jpg" alt="Тихвинская икона Божией Матери"> -->
+          <div class="altar-img altar-img-ph">фото иконы</div>
+          <h3 class="altar-name">Тихвинская</h3>
+          <p class="altar-desc">Покровительница северных пределов Русской земли.</p>
+        </article>
 
-        <div class="icon-card">
-          <div class="icon-name">Троеручница</div>
-          <p class="icon-desc">Скорая помощница в болезнях и нуждах.</p>
-        </div>
+        <!-- Троеручница -->
+        <article class="altar-card">
+          <!-- Заменить заглушку на: <img class="altar-img" src="troeruchnitsa.jpg" alt="Икона Божией Матери «Троеручица»"> -->
+          <div class="altar-img altar-img-ph">фото иконы</div>
+          <h3 class="altar-name">Троеручница</h3>
+          <p class="altar-desc">Скорая помощница в болезнях и нуждах.</p>
+        </article>
 
       </div>
+    </div>
+  </section>
+
+  <!-- БЛОК: КАНДИЛО (декоративный напольный подсвечник под иконами) -->
+  <!-- Пока статично: свечи не горят, кликов и анимации нет — это второй шаг. -->
+  <section class="kandilo-section" id="kandilo">
+    <p class="kandilo-lead">Перед святынями возжигают свечи</p>
+    <div class="kandilo" aria-hidden="true">
+      <div class="kandilo-bowl">
+        <div class="kandilo-rim"></div>
+        <div class="kandilo-cells">
+          <span class="kandilo-cell"></span>
+          <span class="kandilo-cell"></span>
+          <span class="kandilo-cell"></span>
+          <span class="kandilo-cell"></span>
+          <span class="kandilo-cell"></span>
+          <span class="kandilo-cell"></span>
+          <span class="kandilo-cell"></span>
+        </div>
+      </div>
+      <div class="kandilo-stem"></div>
+      <div class="kandilo-knob"></div>
+      <div class="kandilo-base"></div>
     </div>
   </section>
 
