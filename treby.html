@@ -473,6 +473,30 @@ body {
   line-height: 1.7;
   color: #2C1A06;
 }
+/* Цена требы — сумма золотым коротким акцентом, пояснение обычным тёмным цветом.
+   Прижата к низу карточки, чтобы суммы в ряду шли на одной линии. */
+.kind-price {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(196,149,42,0.25);
+  font-size: 17px;
+  line-height: 1.55;
+  color: #2C1A06;
+}
+.price-amt {
+  color: #8A6012;
+  font-weight: 700;
+  white-space: nowrap;
+}
+/* Пометка вместо цены (Таинства) — обычный тёмный текст, без золота */
+.kind-note {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(196,149,42,0.25);
+  font-size: 16px;
+  line-height: 1.6;
+  color: #5C3A08;
+}
 
 /* ── ФОРМА ЗАКАЗА ТРЕБЫ — тёмно-синяя секция, пергаментная карточка ── */
 .treba-form-section {
@@ -804,6 +828,104 @@ textarea.field-input {
 .contact-line-inner a:hover { text-decoration: underline; }
 
 
+/* ── БЛОК «ОСОБОЕ ПОМИНОВЕНИЕ ВОИНОВ» — тёмно-синяя секция, пергаментная карточка ── */
+.veterans {
+  background: #0F1A30;
+  border-top: 2px solid #C4952A;
+  padding: 56px 56px 64px;
+}
+.veterans-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.veterans-title {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: #E8C860;
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin-bottom: 32px;
+}
+.veterans-card {
+  background: #FDF6E8;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 12px;
+  padding: 32px 34px 34px;
+}
+/* Текст блока — обычный тёмный читаемый цвет (НЕ золото) */
+.veterans-text {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #2C1A06;
+  margin-bottom: 18px;
+}
+.veterans-text:last-of-type { margin-bottom: 0; }
+.veterans-note {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(196,149,42,0.30);
+  font-size: 16px;
+  line-height: 1.6;
+  color: #5C3A08;
+}
+
+/* ── БЛОК «ПОЖЕРТВОВАНИЕ В АЛТАРЬ» — тёмно-синяя секция, пергаментная карточка ── */
+.altar-don {
+  background: #0F1A30;
+  border-top: 2px solid #C4952A;
+  padding: 56px 56px 64px;
+}
+.altar-don-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.altar-don-title {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: #E8C860;
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin-bottom: 32px;
+}
+.altar-don-card {
+  background: #FDF6E8;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 12px;
+  padding: 30px 34px 32px;
+}
+/* Вступительная строка — обычным тёмным цветом */
+.altar-don-lead {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #2C1A06;
+  margin-bottom: 24px;
+}
+.altar-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.altar-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 18px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(196,149,42,0.20);
+  font-size: 17px;
+  line-height: 1.5;
+}
+.altar-list li:last-child { border-bottom: none; }
+.altar-item { color: #2C1A06; }
+.altar-amt {
+  color: #2C1A06;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+
 /* ─────────────────────────────────────────────
    ПЛАВАЮЩАЯ КНОПКА + ПОПАП ПОЖЕРТВОВАНИЯ (как на других страницах)
 ───────────────────────────────────────────── */
@@ -1080,6 +1202,19 @@ textarea.field-input {
   .contact-line { padding: 8px 20px 48px; }
   .contact-line-inner { font-size: 18px; padding: 20px 18px; }
 
+  .veterans { padding: 44px 20px 52px; }
+  .veterans-title { font-size: 28px; margin-bottom: 26px; }
+  .veterans-card { padding: 24px 20px 26px; }
+  .veterans-text { font-size: 17px; line-height: 1.75; }
+
+  .altar-don { padding: 44px 20px 52px; }
+  .altar-don-title { font-size: 28px; margin-bottom: 26px; }
+  .altar-don-card { padding: 22px 18px 24px; }
+  .altar-don-lead { font-size: 17px; }
+  /* На телефоне строка списка — в столбик: название сверху, сумма под ним */
+  .altar-list li { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .altar-amt { text-align: left; }
+
   /* ── ПОПАП ── */
   .modal-overlay { padding: 20px 12px; }
   .modal-box { padding: 36px 22px 28px; }
@@ -1181,31 +1316,49 @@ textarea.field-input {
         <article class="kind-card">
           <h3 class="kind-name">Записка о здравии</h3>
           <p class="kind-desc">Молитва о живых: о здоровье, помощи в делах, путешествующих, болящих.</p>
+          <p class="kind-price">Простая — <span class="price-amt">50 ₽</span> · Заказная — <span class="price-amt">70 ₽</span></p>
         </article>
 
         <article class="kind-card">
           <h3 class="kind-name">Записка о упокоении</h3>
           <p class="kind-desc">Молитва об усопших православных христианах.</p>
+          <p class="kind-price">Простая — <span class="price-amt">100 ₽</span> · Заказная — <span class="price-amt">200 ₽</span></p>
         </article>
 
         <article class="kind-card">
           <h3 class="kind-name">Молебен</h3>
           <p class="kind-desc">Особое богослужение с прошением о помощи Божией в нуждах или благодарением.</p>
+          <p class="kind-price"><span class="price-amt">90 ₽</span></p>
         </article>
 
         <article class="kind-card">
           <h3 class="kind-name">Панихида</h3>
           <p class="kind-desc">Заупокойное богослужение, молитва об усопших.</p>
+          <p class="kind-price"><span class="price-amt">90 ₽</span></p>
         </article>
 
         <article class="kind-card">
           <h3 class="kind-name">Сорокоуст</h3>
           <p class="kind-desc">Поминовение на 40 Литургиях подряд — о здравии или о упокоении.</p>
+          <p class="kind-price"><span class="price-amt">600 ₽</span> за одно имя</p>
         </article>
 
         <article class="kind-card">
           <h3 class="kind-name">Крещение, Венчание, Отпевание</h3>
           <p class="kind-desc">Церковные Таинства и чинопоследования. Подробности и день совершения — по телефону храма.</p>
+          <p class="kind-note">Совершаются в храме. Подробности и день — по телефону храма.</p>
+        </article>
+
+        <article class="kind-card">
+          <h3 class="kind-name">Поминовение на год о здравии</h3>
+          <p class="kind-desc">Имя поминается за богослужениями в течение всего года — о здравии.</p>
+          <p class="kind-price"><span class="price-amt">1000 ₽</span> за одно имя</p>
+        </article>
+
+        <article class="kind-card">
+          <h3 class="kind-name">Поминовение на год о упокоении</h3>
+          <p class="kind-desc">Имя поминается за богослужениями в течение всего года — о упокоении.</p>
+          <p class="kind-price"><span class="price-amt">1000 ₽</span> за одно имя</p>
         </article>
 
       </div>
@@ -1229,15 +1382,15 @@ textarea.field-input {
           <div class="field">
             <label class="field-label" for="f-treba">Тип требы</label>
             <select id="f-treba" name="treba" class="field-input">
-              <option value="Записка о здравии">Записка о здравии</option>
-              <option value="Записка о упокоении">Записка о упокоении</option>
-              <option value="Молебен">Молебен</option>
-              <option value="Панихида">Панихида</option>
-              <option value="Сорокоуст о здравии">Сорокоуст о здравии</option>
-              <option value="Сорокоуст о упокоении">Сорокоуст о упокоении</option>
-              <option value="Крещение">Крещение</option>
-              <option value="Венчание">Венчание</option>
-              <option value="Отпевание">Отпевание</option>
+              <option value="Записка о здравии (простая) — 50 ₽">Записка о здравии (простая) — 50 ₽</option>
+              <option value="Записка о здравии (заказная) — 70 ₽">Записка о здравии (заказная) — 70 ₽</option>
+              <option value="Записка о упокоении (простая) — 100 ₽">Записка о упокоении (простая) — 100 ₽</option>
+              <option value="Записка о упокоении (заказная) — 200 ₽">Записка о упокоении (заказная) — 200 ₽</option>
+              <option value="Молебен — 90 ₽">Молебен — 90 ₽</option>
+              <option value="Панихида — 90 ₽">Панихида — 90 ₽</option>
+              <option value="Сорокоуст (одно имя) — 600 ₽">Сорокоуст (одно имя) — 600 ₽</option>
+              <option value="Поминовение на год о здравии (одно имя) — 1000 ₽">Поминовение на год о здравии (одно имя) — 1000 ₽</option>
+              <option value="Поминовение на год о упокоении (одно имя) — 1000 ₽">Поминовение на год о упокоении (одно имя) — 1000 ₽</option>
             </select>
           </div>
 
@@ -1298,6 +1451,46 @@ textarea.field-input {
       <div class="pay-band">
         <div class="pay-band-icon">🕯</div>
         <p class="pay-band-text">Это заявка на требу. Размер пожертвования и оплату уточнит человек от храма при связи с вами, либо вы можете подать требу лично в свечной лавке храма.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК: ОСОБОЕ ПОМИНОВЕНИЕ ВОИНОВ -->
+  <section class="veterans" id="veterans">
+    <div class="veterans-inner">
+      <h2 class="veterans-title">Особое поминовение воинов</h2>
+      <div class="veterans-card">
+        <p class="veterans-text">В нашем храме ведётся особый журнал поминовения воинов. В него записываются имена тех, кто несёт ратное служение, — и они поминаются постоянно, за каждым богослужением.</p>
+        <p class="veterans-text">Записать имя воина может каждый, за любое пожертвование. По слову нашего настоятеля, даже если воин погибает — для Бога он живой, и его поминают как живого.</p>
+        <p class="veterans-note">Записать имя воина можно через форму заявки выше или лично в храме — за любое пожертвование.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК: ПОЖЕРТВОВАНИЕ В АЛТАРЬ -->
+  <section class="altar-don" id="altar-don">
+    <div class="altar-don-inner">
+      <h2 class="altar-don-title">Пожертвование в алтарь</h2>
+      <div class="altar-don-card">
+        <p class="altar-don-lead">В храме можно пожертвовать всё необходимое для богослужения. Указанные суммы — ориентир пожертвования.</p>
+        <ul class="altar-list">
+          <li>
+            <span class="altar-item">Вино, свечи, лампадное масло, ладан в алтарь</span>
+            <span class="altar-amt"><span class="price-amt">1000 ₽</span></span>
+          </li>
+          <li>
+            <span class="altar-item">Свечи</span>
+            <span class="altar-amt"><span class="price-amt">250 ₽</span></span>
+          </li>
+          <li>
+            <span class="altar-item">Лампадное масло</span>
+            <span class="altar-amt">маленькое — <span class="price-amt">150 ₽</span> · большое — <span class="price-amt">250 ₽</span></span>
+          </li>
+          <li>
+            <span class="altar-item">Ладан</span>
+            <span class="altar-amt">малый — <span class="price-amt">220 ₽</span> · средний — <span class="price-amt">850 ₽</span> · большой — <span class="price-amt">1200 ₽</span></span>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
