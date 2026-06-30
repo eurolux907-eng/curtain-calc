@@ -510,6 +510,17 @@ body {
   .scripture { font-size: 18px; padding-left: 18px; }
 }
 
+/* ── Боковые отступы на телефоне ──
+   Колонка чтения (вступительный текст) на узких экранах шла во всю ширину
+   и текст упирался в край. Даём ей общий боковой отступ 16px.
+   Карточки икон свой отступ уже получают через padding своих секций (.altars). */
+@media (max-width: 600px) {
+  .read-col {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
 @media (max-width: 768px) {
   /* ── БАЗОВОЕ ── */
   body { margin-left: 0; }
