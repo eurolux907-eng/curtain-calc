@@ -1381,279 +1381,14 @@ body {
    Разрешаем перенос на новую строку, когда в ряду 4+ карточек. */
 .altars-grid { flex-wrap: wrap; }
 
-/* ═══════════ КАНДИЛО (декоративный напольный подсвечник) ═══════════ */
-/* На кандиле горит несколько свечей (декор, без кликов). Свечи человек
-   ставит в карточках икон — к кандилу клики и формы не привязаны. */
-.kandilo-section {
-  background: #0F1A30;
-  border-top: 2px solid #C4952A;
-  padding: 56px 56px 76px;
-}
-.kandilo-lead {
-  text-align: center;
-  font-size: 18px;
-  color: rgba(232,200,96,0.75);
-  letter-spacing: 0.03em;
-  margin-bottom: 44px;
-}
-/* Сам подсвечник — собран из золотых деталей, стоит по центру */
-.kandilo {
-  width: 260px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  filter: drop-shadow(0 12px 20px rgba(0,0,0,0.45));
-}
-/* Чаша: плоский верх, округлое дно — как у храмового кандила */
-.kandilo-bowl {
-  position: relative;
-  width: 240px;
-  height: 72px;
-  background: linear-gradient(180deg, #F2D87A 0%, #C4952A 55%, #9A6B0F 100%);
-  border: 2px solid #8A6012;
-  border-radius: 0 0 120px 120px / 0 0 64px 64px;
-  box-shadow: inset 0 7px 11px rgba(255,248,224,0.50),
-              inset 0 -9px 13px rgba(60,36,0,0.35);
-}
-/* Верхний обод чаши */
-.kandilo-rim {
-  position: absolute;
-  top: -11px;
-  left: -7px;
-  right: -7px;
-  height: 22px;
-  background: linear-gradient(180deg, #FBEBA8 0%, #C4952A 100%);
-  border: 2px solid #8A6012;
-  border-radius: 14px;
-}
-/* Ряд ячеек под свечи (пустые, без огня) */
-.kandilo-cells {
-  position: absolute;
-  top: 4px;
-  left: 0; right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 13px;
-  z-index: 1;
-}
-.kandilo-cell {
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 35%, #5C3A08, #271603 72%);
-  border: 2px solid #E8C860;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.65);
-}
-/* Ножка подсвечника */
-.kandilo-stem {
-  width: 24px;
-  height: 118px;
-  background: linear-gradient(90deg, #8A6012 0%, #F2D87A 45%, #C4952A 62%, #8A6012 100%);
-}
-/* Узел на ножке */
-.kandilo-knob {
-  width: 50px;
-  height: 32px;
-  margin-top: -14px;
-  background: linear-gradient(180deg, #FBEBA8, #C4952A 60%, #9A6B0F);
-  border: 1px solid #8A6012;
-  border-radius: 50%;
-}
-/* Основание */
-.kandilo-base {
-  width: 156px;
-  height: 28px;
-  margin-top: -6px;
-  background: linear-gradient(180deg, #F2D87A 0%, #C4952A 55%, #8A6012 100%);
-  border: 2px solid #8A6012;
-  border-radius: 50% / 70%;
-}
-@media (max-width: 768px) {
-  .kandilo-section { padding: 40px 20px 56px; }
-  .kandilo-lead { font-size: 16.5px; margin-bottom: 34px; }
-}
-
-/* ═══════════ ШАГ 2: ЖИВОЙ ОГОНЁК СВЕЧИ ═══════════ */
-/* Спокойное колышущееся пламя на чистом CSS (без библиотек). */
-/* --fs — масштаб пламени по стадии догорания (1 → 0.7 → 0.4). По умолчанию 1. */
-@keyframes flameFlicker {
-  0%   { transform: rotate(-1.2deg) scale(calc(var(--fs,1) * 1),    calc(var(--fs,1) * 1));    opacity: 0.94; }
-  25%  { transform: rotate(0.8deg)  scale(calc(var(--fs,1) * 1.03), calc(var(--fs,1) * 1.05)); }
-  50%  { transform: rotate(-0.6deg) scale(calc(var(--fs,1) * 0.98), calc(var(--fs,1) * 1.02)); opacity: 1; }
-  75%  { transform: rotate(1deg)    scale(calc(var(--fs,1) * 1.04), calc(var(--fs,1) * 1.07)); }
-  100% { transform: rotate(-0.4deg) scale(calc(var(--fs,1) * 0.99), calc(var(--fs,1) * 1.03)); opacity: 0.97; }
-}
-
-/* Свеча в карточке иконы — появляется при зажигании */
-.svecha-area {
-  margin-top: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-.svecha-area[hidden] { display: none; }      /* перебиваем display:flex, чтобы [hidden] работал */
-
-.candle {
-  position: relative;
-  width: 34px;
-  height: 82px;
-}
-.candle-body {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  margin-left: -8.5px;
-  width: 17px;
-  height: 42px;
-  background: linear-gradient(90deg, #cdb98f 0%, #fff7e6 45%, #cdb98f 100%);
-  border-radius: 3px 3px 2px 2px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-}
-/* Пламя — вытянутая капля, заострённая кверху.
-   Общий вид для свечей в карточках (.flame) и на кандиле (.kflame). */
-.flame, .kflame {
-  position: absolute;
-  left: 50%;
-  /* капля: заострённый верх, округлое основание */
-  border-radius: 50% 50% 50% 50% / 72% 72% 32% 32%;
-  /* внешний слой: оранжевые края → жёлтый → полупрозрачный кончик */
-  background: linear-gradient(to top,
-      #ff6a00 0%,
-      #ff8c1a 30%,
-      #ffc63f 60%,
-      #ffe9a8 85%,
-      rgba(255,233,168,0) 100%);
-  transform-origin: 50% 100%;
-  /* мягкое тёплое жёлто-оранжевое свечение */
-  filter: drop-shadow(0 0 8px rgba(255,175,55,0.70))
-          drop-shadow(0 0 20px rgba(255,130,20,0.40));
-  animation: flameFlicker 2s ease-in-out infinite alternate;
-}
-/* Голубоватое основание у фитиля */
-.flame::before, .kflame::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 64%;
-  height: 36%;
-  background: radial-gradient(ellipse at 50% 100%,
-      #8fc0ff 0%, rgba(125,180,255,0.65) 45%, rgba(125,180,255,0) 82%);
-  border-radius: 50%;
-}
-/* Внутреннее яркое бело-жёлтое ядро поверх внешнего пламени */
-.flame::after, .kflame::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 14%;
-  transform: translateX(-50%);
-  width: 50%;
-  height: 60%;
-  background: linear-gradient(to top,
-      #ffd23f 0%, #fffaf0 40%, #fff3c0 72%, rgba(255,243,192,0) 100%);
-  border-radius: 50% 50% 50% 50% / 72% 72% 32% 32%;
-}
-/* Размер и положение пламени в карточке иконы — строго над фитилём, по центру */
-.flame {
-  width: 20px;
-  height: 50px;
-  margin-left: -10px;
-  bottom: 36px;
-}
-
-/* ── Стадии догорания: размер пламени реально убывает 100% → 70% → 40% ── */
-.candle.stage-dim .flame {
-  --fs: 0.7;                 /* догорает: меньше и мягче */
-  filter: drop-shadow(0 0 6px rgba(255,170,55,0.50))
-          drop-shadow(0 0 13px rgba(255,130,20,0.26));
-}
-.candle.stage-low .flame {
-  --fs: 0.4;                 /* скоро погаснет: маленький слабый огонёк */
-  filter: drop-shadow(0 0 3px rgba(255,160,70,0.32))
-          drop-shadow(0 0 7px rgba(255,130,20,0.16));
-}
-/* Свеча погасла — пламя убрано, лёгкий намёк на дымок над фитилём */
-.candle.stage-out .flame { display: none; }
-.candle.stage-out::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 42px;
-  width: 6px;
-  height: 26px;
-  margin-left: -3px;
-  background: linear-gradient(to top, rgba(150,150,150,0.32), rgba(150,150,150,0));
-  border-radius: 50%;
-  filter: blur(2px);
-  transform-origin: 50% 100%;
-  animation: smokeRise 3.4s ease-in-out infinite;
-}
-@keyframes smokeRise {
-  0%   { opacity: 0;   transform: translateY(2px)   scaleX(0.7) skewX(0deg);  }
-  25%  { opacity: 0.5; }
-  100% { opacity: 0;   transform: translateY(-16px) scaleX(1.3) skewX(10deg); }
-}
-/* Плавное гашение — только если человек на странице ровно когда истекают сутки */
-.candle.extinguishing .flame {
-  animation: none;
-  transition: opacity 1.4s ease, transform 1.4s ease;
-  opacity: 0;
-  transform: scaleY(0.18);
-}
-
-/* Имя для поминовения рядом со свечой */
-.svecha-name-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
-}
-.svecha-name-field[hidden] { display: none; }
-.svecha-name-label {
-  font-size: 14px;
-  color: #5C3A08;
-  text-align: center;
-}
-.svecha-name-input {
-  width: 100%;
-  font-size: 16px;
-  font-family: inherit;
-  color: #1C0D06;
-  background: #FFFDF7;
-  border: 1px solid rgba(196,149,42,0.45);
-  border-radius: 6px;
-  padding: 10px 12px;
-  outline: none;
-  text-align: center;
-  transition: border-color 0.18s, box-shadow 0.18s;
-}
-.svecha-name-input:focus {
-  border-color: #C4952A;
-  box-shadow: 0 0 0 3px rgba(196,149,42,0.15);
-}
-/* Подпись-статус под пламенем — мельче описания, тёплый читаемый цвет (НЕ золото).
-   Иерархия размеров: название (крупное) → описание (среднее) → статус (мелкий). */
-.svecha-status {
-  font-size: 14px;
-  line-height: 1.5;
-  color: #6B4A10;
-  text-align: center;
-  max-width: 240px;
-}
-
-/* Две кнопки под карточкой — прижаты к низу для ровного ряда */
+/* Кнопка под карточкой — прижата к низу для ровного ряда карточек */
 .svecha-btns {
   margin-top: auto;
   padding-top: 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
-.btn-svecha,
+/* «Поставить свечу в храме» — заполненная золотая (заявка) */
 .btn-svecha-hram {
   font-family: inherit;
   font-size: 16px;
@@ -1662,38 +1397,12 @@ body {
   padding: 12px 14px;
   letter-spacing: 0.02em;
   font-weight: 600;
-  transition: background 0.18s, border-color 0.18s, transform 0.12s;
-}
-/* «Поставить свечу» — спокойная золотая обводка (бесплатно) */
-.btn-svecha {
-  color: #5C3A08;
-  background: rgba(196,149,42,0.12);
-  border: 1.5px solid rgba(196,149,42,0.55);
-}
-.btn-svecha:hover { background: rgba(196,149,42,0.20); }
-.btn-svecha.lit {
-  color: #8A6012;
-  background: rgba(196,149,42,0.18);
-  border-color: #C4952A;
-  cursor: default;
-}
-/* «Поставить свечу в храме» — заполненная золотая (заявка) */
-.btn-svecha-hram {
   color: #FFF8E7;
   background: #C4952A;
   border: 1.5px solid #C4952A;
+  transition: background 0.18s, border-color 0.18s, transform 0.12s;
 }
 .btn-svecha-hram:hover { background: #d0a03a; transform: translateY(-1px); }
-
-/* ── Свечи на кандиле (декор, без кликов) ── */
-.kandilo-cell { position: relative; }
-/* Размер и положение пламени на кандиле (мельче, тот же вид) */
-.kflame {
-  width: 14px;
-  height: 33px;
-  margin-left: -7px;
-  bottom: 9px;
-}
 
 /* ── Модалка «Поставить свечу в храме» (доп. поля) ── */
 .field-hint {
@@ -1870,17 +1579,7 @@ body {
           <h3 class="altar-name">Икона Архистратига Михаила и Святых Архангелов</h3>
           <p class="altar-desc">Главная святыня нашего храма. Архистратиг Михаил — вождь небесного воинства, защитник верующих от зла. Храм освящён в честь этого образа.</p>
 
-          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
-          <div class="svecha-area">
-            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
-            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
-            <label class="svecha-name-field" hidden>
-              <span class="svecha-name-label">Имя для поминовения</span>
-              <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
-            </label>
-          </div>
           <div class="svecha-btns">
-            <button type="button" class="btn-svecha" data-svecha="svecha_arhangel" data-icon="Икона Архистратига Михаила и Святых Архангелов">🕯 Поставить свечу</button>
             <button type="button" class="btn-svecha-hram" data-icon="Икона Архистратига Михаила и Святых Архангелов">✉ Поставить свечу в храме</button>
           </div>
         </article>
@@ -1903,17 +1602,7 @@ body {
           <h3 class="altar-name">Крест с частицей Животворящего Креста Господня</h3>
           <p class="altar-desc">Частица того Креста, на котором был распят Спаситель, — величайшая христианская святыня. Встроена в поклонный крест нашего храма.</p>
 
-          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
-          <div class="svecha-area">
-            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
-            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
-            <label class="svecha-name-field" hidden>
-              <span class="svecha-name-label">Имя для поминовения</span>
-              <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
-            </label>
-          </div>
           <div class="svecha-btns">
-            <button type="button" class="btn-svecha" data-svecha="svecha_krest" data-icon="Крест с частицей Животворящего Креста Господня">🕯 Поставить свечу</button>
             <button type="button" class="btn-svecha-hram" data-icon="Крест с частицей Животворящего Креста Господня">✉ Поставить свечу в храме</button>
           </div>
         </article>
@@ -1925,17 +1614,7 @@ body {
           <h3 class="altar-name">Камень с кровью мученика Василиска</h3>
           <p class="altar-desc">Камень привезён из Абхазии, с места мученической кончины святого Василиска Команского, пострадавшего за Христа в начале IV века.</p>
 
-          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
-          <div class="svecha-area">
-            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
-            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
-            <label class="svecha-name-field" hidden>
-              <span class="svecha-name-label">Имя для поминовения</span>
-              <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
-            </label>
-          </div>
           <div class="svecha-btns">
-            <button type="button" class="btn-svecha" data-svecha="svecha_vasilisk" data-icon="Камень с кровью мученика Василиска">🕯 Поставить свечу</button>
             <button type="button" class="btn-svecha-hram" data-icon="Камень с кровью мученика Василиска">✉ Поставить свечу в храме</button>
           </div>
         </article>
@@ -1958,17 +1637,7 @@ body {
           <h3 class="altar-name">Икона 14 000 Вифлеемских младенцев</h3>
           <p class="altar-desc">С частицей святых мощей. Младенцы, убиенные царём Иродом, — первые мученики за Христа.</p>
 
-          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
-          <div class="svecha-area">
-            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
-            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
-            <label class="svecha-name-field" hidden>
-              <span class="svecha-name-label">Имя для поминовения</span>
-              <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
-            </label>
-          </div>
           <div class="svecha-btns">
-            <button type="button" class="btn-svecha" data-svecha="svecha_vifleem" data-icon="Икона 14 000 Вифлеемских младенцев">🕯 Поставить свечу</button>
             <button type="button" class="btn-svecha-hram" data-icon="Икона 14 000 Вифлеемских младенцев">✉ Поставить свечу в храме</button>
           </div>
         </article>
@@ -1980,17 +1649,7 @@ body {
           <h3 class="altar-name">Икона великомученицы Анастасии Узорешительницы</h3>
           <p class="altar-desc">С частицей святых мощей. Покровительница заключённых и страждущих, помощница в скорбях.</p>
 
-          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
-          <div class="svecha-area">
-            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
-            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
-            <label class="svecha-name-field" hidden>
-              <span class="svecha-name-label">Имя для поминовения</span>
-              <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
-            </label>
-          </div>
           <div class="svecha-btns">
-            <button type="button" class="btn-svecha" data-svecha="svecha_anastasia" data-icon="Икона великомученицы Анастасии Узорешительницы">🕯 Поставить свечу</button>
             <button type="button" class="btn-svecha-hram" data-icon="Икона великомученицы Анастасии Узорешительницы">✉ Поставить свечу в храме</button>
           </div>
         </article>
@@ -2002,17 +1661,7 @@ body {
           <h3 class="altar-name">Икона священномученика Григория Воинова</h3>
           <p class="altar-desc">Образ настоятеля нашего храма, принявшего мученическую кончину в 1937 году.</p>
 
-          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
-          <div class="svecha-area">
-            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
-            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
-            <label class="svecha-name-field" hidden>
-              <span class="svecha-name-label">Имя для поминовения</span>
-              <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
-            </label>
-          </div>
           <div class="svecha-btns">
-            <button type="button" class="btn-svecha" data-svecha="svecha_grigoriy" data-icon="Икона священномученика Григория Воинова">🕯 Поставить свечу</button>
             <button type="button" class="btn-svecha-hram" data-icon="Икона священномученика Григория Воинова">✉ Поставить свечу в храме</button>
           </div>
         </article>
@@ -2024,17 +1673,7 @@ body {
           <h3 class="altar-name">Икона блаженной Матроны Московской</h3>
           <p class="altar-desc">Одна из самых почитаемых русских святых. Скорая помощница в болезнях, житейских нуждах и скорбях.</p>
 
-          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
-          <div class="svecha-area">
-            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
-            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
-            <label class="svecha-name-field" hidden>
-              <span class="svecha-name-label">Имя для поминовения</span>
-              <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
-            </label>
-          </div>
           <div class="svecha-btns">
-            <button type="button" class="btn-svecha" data-svecha="svecha_matrona" data-icon="Икона блаженной Матроны Московской">🕯 Поставить свечу</button>
             <button type="button" class="btn-svecha-hram" data-icon="Икона блаженной Матроны Московской">✉ Поставить свечу в храме</button>
           </div>
         </article>
@@ -2057,17 +1696,7 @@ body {
           <h3 class="altar-name">Иверская</h3>
           <p class="altar-desc">Благая Вратарница, хранительница дома и обители.</p>
 
-          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
-          <div class="svecha-area">
-            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
-            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
-            <label class="svecha-name-field" hidden>
-              <span class="svecha-name-label">Имя для поминовения</span>
-              <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
-            </label>
-          </div>
           <div class="svecha-btns">
-            <button type="button" class="btn-svecha" data-svecha="svecha_iverskaya" data-icon="Иверская икона Божией Матери">🕯 Поставить свечу</button>
             <button type="button" class="btn-svecha-hram" data-icon="Иверская икона Божией Матери">✉ Поставить свечу в храме</button>
           </div>
         </article>
@@ -2079,17 +1708,7 @@ body {
           <h3 class="altar-name">Боголюбская</h3>
           <p class="altar-desc">Один из древнейших чтимых образов Божией Матери на Руси.</p>
 
-          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
-          <div class="svecha-area">
-            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
-            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
-            <label class="svecha-name-field" hidden>
-              <span class="svecha-name-label">Имя для поминовения</span>
-              <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
-            </label>
-          </div>
           <div class="svecha-btns">
-            <button type="button" class="btn-svecha" data-svecha="svecha_bogolyubskaya" data-icon="Боголюбская икона Божией Матери">🕯 Поставить свечу</button>
             <button type="button" class="btn-svecha-hram" data-icon="Боголюбская икона Божией Матери">✉ Поставить свечу в храме</button>
           </div>
         </article>
@@ -2101,17 +1720,7 @@ body {
           <h3 class="altar-name">Тихвинская</h3>
           <p class="altar-desc">Покровительница северных пределов Русской земли.</p>
 
-          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
-          <div class="svecha-area">
-            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
-            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
-            <label class="svecha-name-field" hidden>
-              <span class="svecha-name-label">Имя для поминовения</span>
-              <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
-            </label>
-          </div>
           <div class="svecha-btns">
-            <button type="button" class="btn-svecha" data-svecha="svecha_tihvinskaya" data-icon="Тихвинская икона Божией Матери">🕯 Поставить свечу</button>
             <button type="button" class="btn-svecha-hram" data-icon="Тихвинская икона Божией Матери">✉ Поставить свечу в храме</button>
           </div>
         </article>
@@ -2123,45 +1732,12 @@ body {
           <h3 class="altar-name">Троеручница</h3>
           <p class="altar-desc">Скорая помощница в болезнях и нуждах.</p>
 
-          <!-- СВЕЧА: огонёк + подпись-статус + поле имени -->
-          <div class="svecha-area">
-            <div class="candle" hidden><span class="flame"></span><span class="candle-body"></span></div>
-            <p class="svecha-status">Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.</p>
-            <label class="svecha-name-field" hidden>
-              <span class="svecha-name-label">Имя для поминовения</span>
-              <input type="text" class="svecha-name-input" placeholder="необязательно" maxlength="40">
-            </label>
-          </div>
           <div class="svecha-btns">
-            <button type="button" class="btn-svecha" data-svecha="svecha_troeruchnitsa" data-icon="Икона Божией Матери «Троеручица»">🕯 Поставить свечу</button>
             <button type="button" class="btn-svecha-hram" data-icon="Икона Божией Матери «Троеручица»">✉ Поставить свечу в храме</button>
           </div>
         </article>
 
       </div>
-    </div>
-  </section>
-
-  <!-- БЛОК: КАНДИЛО (декоративный напольный подсвечник под иконами) -->
-  <!-- На кандиле горят свечи (декор). Клики/формы к нему не привязаны. -->
-  <section class="kandilo-section" id="kandilo">
-    <p class="kandilo-lead">Перед святынями возжигают свечи</p>
-    <div class="kandilo" aria-hidden="true">
-      <div class="kandilo-bowl">
-        <div class="kandilo-rim"></div>
-        <div class="kandilo-cells">
-          <span class="kandilo-cell"><span class="kflame" style="animation-delay:0s"></span></span>
-          <span class="kandilo-cell"><span class="kflame" style="animation-delay:.5s"></span></span>
-          <span class="kandilo-cell"></span>
-          <span class="kandilo-cell"><span class="kflame" style="animation-delay:.9s"></span></span>
-          <span class="kandilo-cell"><span class="kflame" style="animation-delay:.3s"></span></span>
-          <span class="kandilo-cell"></span>
-          <span class="kandilo-cell"><span class="kflame" style="animation-delay:.7s"></span></span>
-        </div>
-      </div>
-      <div class="kandilo-stem"></div>
-      <div class="kandilo-knob"></div>
-      <div class="kandilo-base"></div>
     </div>
   </section>
 
@@ -2427,148 +2003,7 @@ body {
   }
 
 
-/* ═══════════ МЕХАНИКА 1: «Поставить свечу» — стадии горения за реальные сутки ═══════════
-   Свеча живёт реальные 24 часа. Стадия (ярко / догорает / скоро погаснет / погасла)
-   считается по времени зажигания из localStorage при каждой загрузке страницы. */
-  (function () {
-    const HOUR = 60 * 60 * 1000;
-    const DAY  = 24 * HOUR;
-
-    // Падеж слова «час» после «около N»
-    function hourWord(n) {
-      return (n % 10 === 1 && n % 100 !== 11) ? 'часа' : 'часов';
-    }
-
-    function setStatus(card, text) {
-      const status = card.querySelector('.svecha-status');
-      if (status) status.textContent = text;
-    }
-
-    // Текст статуса по стадии
-    function statusText(stage, hoursLeft, name) {
-      name = (name || '').trim();
-      if (stage === 'out') return 'Свеча погасла. Вы можете зажечь её снова';
-      if (stage === 'low') return 'Свеча скоро погаснет';
-      // bright / dim — горящие стадии
-      if (name) return 'Свеча горит за ' + name + '. Будет гореть ещё около ' + hoursLeft + ' ' + hourWord(hoursLeft);
-      return 'Свеча будет гореть ещё около ' + hoursLeft + ' ' + hourWord(hoursLeft);
-    }
-
-    // Свеча погасла: убрать пламя, оставить дымок, сбросить кнопку
-    function showOut(card) {
-      const candle = card.querySelector('.candle');
-      const field  = card.querySelector('.svecha-name-field');
-      const btn    = card.querySelector('.btn-svecha');
-      if (candle) {
-        candle.hidden = false;
-        candle.classList.remove('stage-dim', 'stage-low', 'extinguishing');
-        candle.classList.add('stage-out');
-      }
-      if (field) field.hidden = true;
-      if (btn) { btn.textContent = '🕯 Поставить свечу'; btn.classList.remove('lit'); }
-    }
-
-    // Исходное состояние — свеча не зажигалась
-    function showOff(card) {
-      const candle = card.querySelector('.candle');
-      const field  = card.querySelector('.svecha-name-field');
-      const btn    = card.querySelector('.btn-svecha');
-      if (candle) { candle.hidden = true; candle.classList.remove('stage-dim', 'stage-low', 'stage-out', 'extinguishing'); }
-      if (field) field.hidden = true;
-      if (btn) { btn.textContent = '🕯 Поставить свечу'; btn.classList.remove('lit'); }
-      setStatus(card, 'Свеча горит сутки. Когда погаснет — вы можете зажечь её снова.');
-    }
-
-    // Показать свечу по её реальному возрасту
-    function applyStage(card, rec, key) {
-      const elapsed = Date.now() - rec.t;
-      const name = rec.name || '';
-
-      // Прошли сутки — погасла
-      if (elapsed >= DAY) {
-        showOut(card);
-        setStatus(card, 'Свеча погасла. Вы можете зажечь её снова');
-        try { localStorage.removeItem(key); } catch (e) {}
-        return;
-      }
-
-      const candle = card.querySelector('.candle');
-      const field  = card.querySelector('.svecha-name-field');
-      const input  = card.querySelector('.svecha-name-input');
-      const btn    = card.querySelector('.btn-svecha');
-
-      if (candle) { candle.hidden = false; candle.classList.remove('stage-out', 'stage-dim', 'stage-low', 'extinguishing'); }
-      if (field) field.hidden = false;
-      if (input && input.value !== name) input.value = name;   // не сбиваем курсор при наборе
-      if (btn) { btn.textContent = '🕯 Свеча горит'; btn.classList.add('lit'); }
-
-      const remaining = DAY - elapsed;
-      const hoursLeft = Math.ceil(remaining / HOUR);           // округляем остаток вверх
-
-      let stage;
-      if (elapsed < 12 * HOUR) stage = 'bright';               // 0–12 ч — ярко (100%)
-      else if (elapsed < 22 * HOUR) stage = 'dim';            // 12–22 ч — догорает (70%)
-      else stage = 'low';                                      // 22–24 ч — скоро погаснет (40%)
-      // меньше часа до конца — сразу «скоро погаснет» (без «около 0 часов»)
-      if (stage !== 'low' && remaining < HOUR) stage = 'low';
-
-      if (candle) {
-        if (stage === 'dim') candle.classList.add('stage-dim');
-        else if (stage === 'low') candle.classList.add('stage-low');
-      }
-      setStatus(card, statusText(stage, hoursLeft, name));
-
-      // Плавное гашение, если человек реально на странице в момент 24 часов
-      if (card._svechaTimer) clearTimeout(card._svechaTimer);
-      card._svechaTimer = setTimeout(function () {
-        if (candle && !candle.classList.contains('stage-out')) {
-          candle.classList.add('extinguishing');   // CSS мягко гасит пламя
-          setTimeout(function () {
-            showOut(card);
-            setStatus(card, 'Свеча погасла. Вы можете зажечь её снова');
-            try { localStorage.removeItem(key); } catch (e) {}
-          }, 1600);
-        }
-      }, remaining);
-    }
-
-    document.querySelectorAll('.altar-card').forEach(card => {
-      const btn = card.querySelector('.btn-svecha');
-      if (!btn) return;
-      const key   = btn.getAttribute('data-svecha');
-      const input = card.querySelector('.svecha-name-input');
-
-      // Состояние при загрузке: считаем стадию по времени зажигания
-      let rec = null;
-      try { rec = JSON.parse(localStorage.getItem(key)); } catch (e) { rec = null; }
-      if (rec && rec.t) applyStage(card, rec, key);
-      else showOff(card);
-
-      // Клик «Поставить свечу» — зажигаем заново (стадия «ярко»)
-      btn.addEventListener('click', () => {
-        if (btn.classList.contains('lit')) return;   // уже горит
-        const fresh = { t: Date.now(), name: '' };
-        try { localStorage.setItem(key, JSON.stringify(fresh)); } catch (e) {}
-        applyStage(card, fresh, key);
-        if (input) input.focus();
-      });
-
-      // Ввод имени — сохраняем с тем же временем зажигания и обновляем статус
-      if (input) {
-        input.addEventListener('input', () => {
-          let cur = null;
-          try { cur = JSON.parse(localStorage.getItem(key)); } catch (e) { cur = null; }
-          if (!cur || !cur.t) cur = { t: Date.now() };
-          cur.name = input.value;
-          try { localStorage.setItem(key, JSON.stringify(cur)); } catch (e) {}
-          applyStage(card, cur, key);
-        });
-      }
-    });
-  })();
-
-
-/* ═══════════ МЕХАНИКА 2: «Поставить свечу в храме» — форма-заявка ═══════════ */
+/* ═══════════ «Поставить свечу в храме» — форма-заявка ═══════════ */
   (function () {
     const sModal   = document.getElementById('svechaModal');
     if (!sModal) return;
