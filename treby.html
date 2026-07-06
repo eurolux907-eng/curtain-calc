@@ -655,6 +655,14 @@ select.field-input {
   margin-top: 6px;
 }
 .imena-per-name[hidden] { display: none; }
+/* Подсказка при вставке списка длиннее лимита — обычный читаемый цвет, не золото */
+.imena-overflow {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #2C1A06;
+  margin-top: 6px;
+}
+.imena-overflow[hidden] { display: none; }
 /* Подпись-пояснение под полем */
 .field-hint {
   font-size: 15px;
@@ -1523,6 +1531,9 @@ select.field-input {
             <p class="field-hint">Укажите имена в родительном падеже, как в записках (например: Иоанна, Марии). Только крещёные православные.</p>
             <span class="imena-counter" id="imenaCounter">Имён: 0 из 10</span>
 
+            <!-- Подсказка при вставке списка длиннее лимита (исчезает при след. изменении бланка) -->
+            <p class="imena-overflow" id="imenaOverflow" hidden></p>
+
             <!-- Пометка появляется для «Сорокоуст» и «Поминовение на год» -->
             <p class="imena-per-name" id="imenaPerName" hidden>Пожертвование указано за каждое имя.</p>
           </div>
@@ -1856,6 +1867,53 @@ select.field-input {
   const imenaHidden  = document.getElementById('imenaHidden');
   const imenaCounter = document.getElementById('imenaCounter');
   const imenaPerName = document.getElementById('imenaPerName');
+  const imenaOverflow = document.getElementById('imenaOverflow');
+
+  // Разбор вставленного списка: делим по запятым, точкам с запятой и переносам строк,
+  // обрезаем пробелы по краям, отбрасываем пустые куски.
+  function splitNames(text) {
+    return String(text)
+      .split(/[\n\r,;]+/)
+      .map(s => s.trim())
+      .filter(Boolean);
+  }
+
+  // Ручное изменение линейки: прячем подсказку о переполнении и пересчитываем имена
+  function onLineInput() {
+    imenaOverflow.hidden = true;
+    refreshNames();
+  }
+
+  // Умная вставка списка имён в линейку
+  function onLinePaste(e) {
+    const cd = e.clipboardData || window.clipboardData;
+    if (!cd) return;                                  // нет буфера — обычная вставка
+    const names = splitNames(cd.getData('text'));
+    if (names.length <= 1) return;                    // одно имя без разделителей — как обычно
+    e.preventDefault();
+
+    const inputs = Array.from(zapiskaLines.querySelectorAll('.zapiska-input'));
+    const start = inputs.indexOf(e.currentTarget);
+    let ni = 0;
+    // Первое имя — в линейку, куда вставили
+    e.currentTarget.value = names[ni++];
+    let placed = 1;
+    // Остальные — по следующим СВОБОДНЫМ линейкам по порядку (заполненные не трогаем)
+    for (let idx = start + 1; idx < inputs.length && ni < names.length; idx++) {
+      if (inputs[idx].value.trim() === '') {
+        inputs[idx].value = names[ni++];
+        placed++;
+      }
+    }
+    // Не поместившиеся имена — мягкая подсказка
+    if (ni < names.length) {
+      imenaOverflow.textContent = 'Поместилось имён: ' + placed + '. Остальные можно подать отдельной запиской.';
+      imenaOverflow.hidden = false;
+    } else {
+      imenaOverflow.hidden = true;
+    }
+    refreshNames();   // программная вставка тоже дёргает счётчик и скрытое поле
+  }
 
   // Создаём NAMES_LIMIT строк-линеек (каждая — отдельное поле одного имени)
   for (let i = 1; i <= NAMES_LIMIT; i++) {
@@ -1869,7 +1927,8 @@ select.field-input {
     inp.className = 'zapiska-input';
     inp.setAttribute('autocomplete', 'off');
     inp.maxLength = 40;
-    inp.addEventListener('input', refreshNames);
+    inp.addEventListener('input', onLineInput);
+    inp.addEventListener('paste', onLinePaste);
     row.appendChild(num);
     row.appendChild(inp);
     zapiskaLines.appendChild(row);
