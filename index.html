@@ -763,7 +763,7 @@ body {
   background: rgba(196,149,42,0.25);
 }
 
-/* КАРТОЧКА */
+/* КАРТОЧКА — вся карточка это ссылка на нужную страницу */
 .hc-card {
   width: 100%;
   background: rgba(255,248,224,0.55);
@@ -779,6 +779,8 @@ body {
   backdrop-filter: blur(2px);
   transition: transform 0.22s ease, box-shadow 0.22s ease;
   cursor: pointer;
+  text-decoration: none;   /* карточка-ссылка не подчёркивает заголовок и текст */
+  color: inherit;
 }
 .hc-card:hover {
   transform: translateY(-3px);
@@ -2094,7 +2096,7 @@ body {
     <div class="hero-center" id="help-cards">
 
       <!-- КАРТОЧКА 1: Поставить свечу -->
-      <div class="hc-card" id="card-candle">
+      <a class="hc-card" id="card-candle" href="svyatyni.html">
         <div class="hc-card-icon">
           <!-- Иконка свечи (SVG) -->
           <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2117,14 +2119,14 @@ body {
         </div>
         <div class="hc-card-title">Поставить свечу</div>
         <div class="hc-card-desc">Свечу поставят в храме<br>к выбранной вами иконе</div>
-        <a href="svyatyni.html" class="hc-btn">Поставить свечу</a>
-      </div>
+        <span class="hc-btn">Поставить свечу</span>
+      </a>
 
       <!-- Разделитель между карточками — только тонкая линия -->
       <div class="hc-divider" aria-hidden="true"></div>
 
       <!-- КАРТОЧКА 2: Заказать требы -->
-      <div class="hc-card" id="card-treba">
+      <a class="hc-card" id="card-treba" href="treby.html">
         <div class="hc-card-icon">
           <!-- Иконка свитка/записки (SVG) -->
           <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2146,8 +2148,8 @@ body {
         </div>
         <div class="hc-card-title">Заказать требы</div>
         <div class="hc-card-desc">Молебен, панихида,<br>сорокоуст и другие</div>
-        <a href="treby.html" class="hc-btn">Заказать требу</a>
-      </div>
+        <span class="hc-btn">Заказать требу</span>
+      </a>
 
     </div>
     <!-- /ЦЕНТРАЛЬНЫЙ БЛОК -->
