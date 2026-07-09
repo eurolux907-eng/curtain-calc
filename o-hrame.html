@@ -1459,12 +1459,14 @@ body {
       <h2 class="altars-title">Престолы храма</h2>
       <p class="altars-lead">В храме освящены три престола:</p>
 
+      <p class="zoom-hint">Нажмите на образ, чтобы рассмотреть его крупнее</p>
+
       <!-- Порядок слева направо — как расположены приделы в самом храме -->
       <div class="altars-grid">
 
         <!-- Левый придел -->
         <article class="altar-card">
-          <img class="altar-img" src="iverskaya.jpg" alt="Иверская икона Божией Матери">
+          <img class="altar-img zoomable" src="iverskaya.jpg" alt="Иверская икона Божией Матери">
           <div class="altar-place">Левый придел</div>
           <h3 class="altar-name">Иверская икона Божией Матери</h3>
           <p class="altar-desc">Празднования: 25 февраля, 6 мая и 26 октября.</p>
@@ -1472,7 +1474,7 @@ body {
 
         <!-- Центральный престол (главный) -->
         <article class="altar-card main">
-          <img class="altar-img" src="arhangel-mihail.jpg" alt="Архангел Михаил">
+          <img class="altar-img zoomable" src="arhangel-mihail.jpg" alt="Архангел Михаил">
           <div class="altar-place">Центральный престол (главный)</div>
           <h3 class="altar-name">Архангел Михаил</h3>
           <p class="altar-desc">Главный престол храма. Престольный праздник — Собор Архистратига Михаила, 21 ноября. Также чтится Чудо Архангела Михаила в Хонех — 19 сентября.</p>
@@ -1480,7 +1482,7 @@ body {
 
         <!-- Правый придел -->
         <article class="altar-card">
-          <img class="altar-img" src="leontiy.jpg" alt="Святитель Леонтий Ростовский">
+          <img class="altar-img zoomable" src="leontiy.jpg" alt="Святитель Леонтий Ростовский">
           <div class="altar-place">Правый придел</div>
           <h3 class="altar-name">Святитель Леонтий Ростовский</h3>
           <p class="altar-desc">Придел освящён в 1862 году. Память святителя — 5 июня.</p>
@@ -1500,7 +1502,7 @@ body {
         <div class="abbot-photo">
           <span class="abbot-photo-ph">фото настоятеля</span>
           <!-- сюда будет добавлен файл nastoyatel.jpg; если файла нет — остаётся плейсхолдер выше -->
-          <img src="nastoyatel.jpg" alt="Протоиерей Николай Крюков" onerror="this.remove()">
+          <img class="zoomable" src="nastoyatel.jpg" alt="Протоиерей Николай Крюков" onerror="this.remove()">
         </div>
 
         <div class="abbot-text">
@@ -1579,6 +1581,6 @@ body {
 <div id="site-help"></div>
 
 
-<script src="common.js?v=2"></script>
+<script src="common.js?v=3"></script>
 </body>
 </html>

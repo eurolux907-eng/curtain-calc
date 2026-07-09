@@ -228,6 +228,8 @@
     var openBtn2   = document.getElementById('openDonate2');  // плавающая «Помочь»
 
     function openModal() {
+      /* Открытым может быть что-то одно: убираем просмотр иконы */
+      if (window.closeImageViewer) window.closeImageViewer();
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -293,6 +295,108 @@
       }, { threshold: 0 });
       floatObserver.observe(openBtn1);
     }
+  })();
+
+  /* ── ПРОСМОТР ИКОНЫ КРУПНО (лайтбокс) ──
+     Клик по картинке с классом zoomable открывает её на весь экран.
+     Закрытие: крестик, тап по фону, Escape.
+
+     Подсказку «Нажмите на образ…» (.zoom-hint) страницы содержат в разметке,
+     но если на странице ещё нет ни одной картинки zoomable (стоят пунктирные
+     заглушки под будущие фото) — подсказка убирается, чтобы не обманывать. */
+  (function () {
+    var style = document.createElement('style');
+    style.textContent =
+      '.zoomable { cursor: pointer; }' +
+      '.zoom-hint { font-size: 15px; color: rgba(232,200,96,0.80); text-align: center;' +
+      '  margin: -8px 0 24px; letter-spacing: 0.02em; }' +
+      '.img-viewer { position: fixed; inset: 0; background: rgba(15,13,6,0.92);' +
+      '  display: none; align-items: center; justify-content: center; z-index: 1100; padding: 28px; }' +
+      '.img-viewer.open { display: flex; }' +
+      '.img-viewer img { max-width: 100%; max-height: 100%; object-fit: contain;' +
+      '  border: 1px solid rgba(196,149,42,0.45); border-radius: 4px; }' +
+      '.img-viewer-close { position: absolute; top: 16px; right: 16px; width: 44px; height: 44px;' +
+      '  background: rgba(196,149,42,0.18); border: 1.5px solid rgba(196,149,42,0.55);' +
+      '  border-radius: 50%; color: #E8C860; font-size: 22px; line-height: 1; cursor: pointer;' +
+      '  display: flex; align-items: center; justify-content: center; }' +
+      '.img-viewer-close:hover { background: rgba(196,149,42,0.32); }' +
+      '@media (max-width: 768px) {' +
+      '  .img-viewer { padding: 16px; }' +
+      '  .img-viewer-close { top: 10px; right: 10px; }' +
+      '  .zoom-hint { font-size: 14px; }' +
+      '}';
+    document.head.appendChild(style);
+
+    /* Подсказка нужна, только когда есть что открывать */
+    if (!document.querySelector('.zoomable')) {
+      Array.prototype.forEach.call(document.querySelectorAll('.zoom-hint'), function (h) {
+        h.parentNode.removeChild(h);
+      });
+      return;
+    }
+
+    var viewer = document.createElement('div');
+    viewer.className = 'img-viewer';
+    viewer.id = 'imgViewer';
+    viewer.setAttribute('aria-hidden', 'true');
+    viewer.innerHTML =
+      '<button type="button" class="img-viewer-close" id="imgViewerClose" aria-label="Закрыть просмотр">✕</button>' +
+      '<img id="imgViewerPic" src="" alt="">';
+    document.body.appendChild(viewer);
+
+    var pic = document.getElementById('imgViewerPic');
+
+    /* Вписываем образ в экран. Сканы икон невелики (бывает 247×300),
+       поэтому мелкие увеличиваем, но не больше чем вдвое — иначе размывается. */
+    function fitPicture() {
+      var nw = pic.naturalWidth, nh = pic.naturalHeight;
+      if (!nw || !nh) return;
+      var pad = window.matchMedia('(max-width: 768px)').matches ? 32 : 56;
+      var scale = Math.min((window.innerWidth - pad) / nw, (window.innerHeight - pad) / nh, 2);
+      pic.style.width = Math.round(nw * scale) + 'px';
+      pic.style.height = 'auto';
+    }
+    pic.addEventListener('load', fitPicture);
+    window.addEventListener('resize', function () {
+      if (viewer.classList.contains('open')) fitPicture();
+    });
+
+    function openViewer(img) {
+      /* Открытым может быть что-то одно: убираем окно пожертвования */
+      if (window.closeDonateModal) window.closeDonateModal();
+      pic.style.width = '';
+      pic.style.height = '';
+      pic.src = img.currentSrc || img.src;
+      pic.alt = img.alt || '';
+      viewer.classList.add('open');
+      viewer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      if (pic.complete) fitPicture();
+    }
+    function closeViewer() {
+      if (!viewer.classList.contains('open')) return;
+      viewer.classList.remove('open');
+      viewer.setAttribute('aria-hidden', 'true');
+      pic.src = '';
+      document.body.style.overflow = '';
+    }
+
+    /* Делегирование: картинки могут появиться позже (замена заглушек) */
+    document.addEventListener('click', function (e) {
+      var img = e.target.closest ? e.target.closest('.zoomable') : null;
+      if (!img || viewer.contains(img)) return;
+      openViewer(img);
+    });
+
+    document.getElementById('imgViewerClose').addEventListener('click', closeViewer);
+    viewer.addEventListener('click', function (e) {
+      if (e.target === viewer) closeViewer();   /* тап по затемнённому фону */
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeViewer();
+    });
+
+    window.closeImageViewer = closeViewer;
   })();
 
   /* ── МОБИЛЬНЫЙ СТАНДАРТ ВСПЛЫВАЮЩИХ ФОРМ ──

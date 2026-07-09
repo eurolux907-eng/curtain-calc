@@ -1305,7 +1305,7 @@ body {
 
 /* ═══════════ СТРАНИЦА «СВЯТЫНИ» ═══════════ */
 /* Заглушка под фото иконы — та же пропорция 3/4, что у икон престолов,
-   но с пунктирной золотой рамкой. Легко заменить на <img class="altar-img" src="...">. */
+   но с пунктирной золотой рамкой. Легко заменить на <img class="altar-img zoomable" src="...">. */
 .altar-img-ph {
   border: 2px dashed #C4952A;
   background: #FDF6E8;
@@ -1613,11 +1613,14 @@ body {
     <div class="altars-inner">
       <h2 class="altars-title">Главная святыня</h2>
 
+      <!-- Пока вместо фото стоят заглушки, common.js убирает эту подсказку -->
+      <p class="zoom-hint">Нажмите на образ, чтобы рассмотреть его крупнее</p>
+
       <div class="altars-grid">
 
         <!-- Икона Архистратига Михаила и Святых Архангелов -->
         <article class="altar-card main">
-          <!-- Заменить заглушку на: <img class="altar-img" src="arhangel-mihail-ikona.jpg" alt="Икона Архистратига Михаила и Святых Архангелов"> -->
+          <!-- Заменить заглушку на: <img class="altar-img zoomable" src="arhangel-mihail-ikona.jpg" alt="Икона Архистратига Михаила и Святых Архангелов"> -->
           <div class="altar-img altar-img-ph">фото иконы</div>
           <h3 class="altar-name">Икона Архистратига Михаила и Святых Архангелов</h3>
           <p class="altar-desc">Главная святыня нашего храма. Архистратиг Михаил — вождь небесного воинства, защитник верующих от зла. Храм освящён в честь этого образа.</p>
@@ -1640,7 +1643,7 @@ body {
 
         <!-- Крест с частицей Животворящего Креста Господня -->
         <article class="altar-card">
-          <!-- Заменить заглушку на: <img class="altar-img" src="krest-relikvia.jpg" alt="Крест с частицей Животворящего Креста Господня"> -->
+          <!-- Заменить заглушку на: <img class="altar-img zoomable" src="krest-relikvia.jpg" alt="Крест с частицей Животворящего Креста Господня"> -->
           <div class="altar-img altar-img-ph">фото креста</div>
           <h3 class="altar-name">Крест с частицей Животворящего Креста Господня</h3>
           <p class="altar-desc">Частица того Креста, на котором был распят Спаситель, — величайшая христианская святыня. Встроена в поклонный крест нашего храма.</p>
@@ -1652,7 +1655,7 @@ body {
 
         <!-- Камень с кровью мученика Василиска -->
         <article class="altar-card">
-          <!-- Заменить заглушку на: <img class="altar-img" src="kamen-vasilisk.jpg" alt="Камень с кровью мученика Василиска"> -->
+          <!-- Заменить заглушку на: <img class="altar-img zoomable" src="kamen-vasilisk.jpg" alt="Камень с кровью мученика Василиска"> -->
           <div class="altar-img altar-img-ph">фото камня</div>
           <h3 class="altar-name">Камень с кровью мученика Василиска</h3>
           <p class="altar-desc">Камень привезён из Абхазии, с места мученической кончины святого Василиска Команского, пострадавшего за Христа в начале IV века.</p>
@@ -1675,7 +1678,7 @@ body {
 
         <!-- Икона 14 000 Вифлеемских младенцев -->
         <article class="altar-card">
-          <!-- Заменить заглушку на: <img class="altar-img" src="vifleem.jpg" alt="Икона 14 000 Вифлеемских младенцев"> -->
+          <!-- Заменить заглушку на: <img class="altar-img zoomable" src="vifleem.jpg" alt="Икона 14 000 Вифлеемских младенцев"> -->
           <div class="altar-img altar-img-ph">фото иконы</div>
           <h3 class="altar-name">Икона 14 000 Вифлеемских младенцев</h3>
           <p class="altar-desc">С частицей святых мощей. Младенцы, убиенные царём Иродом, — первые мученики за Христа.</p>
@@ -1687,7 +1690,7 @@ body {
 
         <!-- Икона великомученицы Анастасии Узорешительницы -->
         <article class="altar-card">
-          <!-- Заменить заглушку на: <img class="altar-img" src="anastasia.jpg" alt="Икона великомученицы Анастасии Узорешительницы"> -->
+          <!-- Заменить заглушку на: <img class="altar-img zoomable" src="anastasia.jpg" alt="Икона великомученицы Анастасии Узорешительницы"> -->
           <div class="altar-img altar-img-ph">фото иконы</div>
           <h3 class="altar-name">Икона великомученицы Анастасии Узорешительницы</h3>
           <p class="altar-desc">С частицей святых мощей. Покровительница заключённых и страждущих, помощница в скорбях.</p>
@@ -1699,7 +1702,7 @@ body {
 
         <!-- Икона священномученика Григория Воинова -->
         <article class="altar-card">
-          <!-- Заменить заглушку на: <img class="altar-img" src="grigoriy.jpg" alt="Икона священномученика Григория Воинова"> -->
+          <!-- Заменить заглушку на: <img class="altar-img zoomable" src="grigoriy.jpg" alt="Икона священномученика Григория Воинова"> -->
           <div class="altar-img altar-img-ph">фото иконы</div>
           <h3 class="altar-name">Икона священномученика Григория Воинова</h3>
           <p class="altar-desc">Образ настоятеля нашего храма, принявшего мученическую кончину в 1937 году.</p>
@@ -1711,7 +1714,7 @@ body {
 
         <!-- Икона блаженной Матроны Московской -->
         <article class="altar-card">
-          <!-- Заменить заглушку на: <img class="altar-img" src="matrona-moskovskaya.jpg" alt="Икона блаженной Матроны Московской"> -->
+          <!-- Заменить заглушку на: <img class="altar-img zoomable" src="matrona-moskovskaya.jpg" alt="Икона блаженной Матроны Московской"> -->
           <div class="altar-img altar-img-ph">фото иконы</div>
           <h3 class="altar-name">Икона блаженной Матроны Московской</h3>
           <p class="altar-desc">Одна из самых почитаемых русских святых. Скорая помощница в болезнях, житейских нуждах и скорбях.</p>
@@ -1734,7 +1737,7 @@ body {
 
         <!-- Иверская -->
         <article class="altar-card">
-          <!-- Заменить заглушку на: <img class="altar-img" src="iverskaya.jpg" alt="Иверская икона Божией Матери"> -->
+          <!-- Заменить заглушку на: <img class="altar-img zoomable" src="iverskaya.jpg" alt="Иверская икона Божией Матери"> -->
           <div class="altar-img altar-img-ph">фото иконы</div>
           <h3 class="altar-name">Иверская</h3>
           <p class="altar-desc">Благая Вратарница, хранительница дома и обители.</p>
@@ -1746,7 +1749,7 @@ body {
 
         <!-- Боголюбская -->
         <article class="altar-card">
-          <!-- Заменить заглушку на: <img class="altar-img" src="bogolyubskaya.jpg" alt="Боголюбская икона Божией Матери"> -->
+          <!-- Заменить заглушку на: <img class="altar-img zoomable" src="bogolyubskaya.jpg" alt="Боголюбская икона Божией Матери"> -->
           <div class="altar-img altar-img-ph">фото иконы</div>
           <h3 class="altar-name">Боголюбская</h3>
           <p class="altar-desc">Один из древнейших чтимых образов Божией Матери на Руси.</p>
@@ -1758,7 +1761,7 @@ body {
 
         <!-- Тихвинская -->
         <article class="altar-card">
-          <!-- Заменить заглушку на: <img class="altar-img" src="tihvinskaya.jpg" alt="Тихвинская икона Божией Матери"> -->
+          <!-- Заменить заглушку на: <img class="altar-img zoomable" src="tihvinskaya.jpg" alt="Тихвинская икона Божией Матери"> -->
           <div class="altar-img altar-img-ph">фото иконы</div>
           <h3 class="altar-name">Тихвинская</h3>
           <p class="altar-desc">Покровительница северных пределов Русской земли.</p>
@@ -1770,7 +1773,7 @@ body {
 
         <!-- Троеручница -->
         <article class="altar-card">
-          <!-- Заменить заглушку на: <img class="altar-img" src="troeruchnitsa.jpg" alt="Икона Божией Матери «Троеручица»"> -->
+          <!-- Заменить заглушку на: <img class="altar-img zoomable" src="troeruchnitsa.jpg" alt="Икона Божией Матери «Троеручица»"> -->
           <div class="altar-img altar-img-ph">фото иконы</div>
           <h3 class="altar-name">Троеручница</h3>
           <p class="altar-desc">Скорая помощница в болезнях и нуждах.</p>
@@ -1964,6 +1967,6 @@ body {
 </script>
 
 
-<script src="common.js?v=2"></script>
+<script src="common.js?v=3"></script>
 </body>
 </html>
