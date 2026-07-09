@@ -901,6 +901,96 @@ body {
   .float-btn { font-size: 14px; padding: 13px 20px; bottom: 16px; right: 16px; }
 }
 
+
+/* ═════════════════════════════════════════════════════
+   МОБИЛЬНЫЙ СТАНДАРТ ВСПЛЫВАЮЩИХ ФОРМ
+   Модалка занимает всю видимую высоту экрана: шапка сверху
+   и кнопка отправки снизу закреплены, поля прокручиваются между ними.
+   --modal-h / --modal-top задаёт JS по visualViewport: адресная
+   строка браузера и экранная клавиатура меняют видимую область.
+═════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .modal-overlay {
+    inset: auto;
+    left: 0;
+    right: 0;
+    top: var(--modal-top, 0px);
+    height: 100vh;
+    height: 100dvh;
+    height: var(--modal-h, 100dvh);
+    padding: 0;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .modal-box {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ШАПКА — заголовок и крестик, видны всегда */
+  .modal-title {
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 20px 64px;
+    font-size: 21px;
+    line-height: 1.25;
+    background: #FDF6E8;
+    border-bottom: 1px solid rgba(196,149,42,0.30);
+  }
+  .modal-close {
+    top: 9px;
+    right: 9px;
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+    z-index: 3;
+  }
+
+  /* ТЕЛО — поля прокручиваются внутри модалки */
+  .donate-form {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 20px 18px 0;
+  }
+
+  /* КНОПКА ОТПРАВКИ — закреплена снизу, видна при любой прокрутке.
+     Остаётся внутри <form>, поэтому отправка не ломается.
+     order держит кнопку последней, даже если в разметке за ней идёт сообщение. */
+  .donate-form .btn-donate {
+    position: sticky;
+    bottom: 0;
+    order: 1;
+    z-index: 2;
+    margin: 6px 0 0;
+    box-shadow: 0 -10px 12px 10px #FDF6E8;
+  }
+
+  /* Запас снизу: последнее поле долистывается и не прячется под кнопкой */
+  .donate-form::after {
+    content: '';
+    flex: 0 0 auto;
+    height: 16px;
+  }
+
+  /* Экран благодарности (svyatyni) — тоже в прокручиваемой части */
+  .svecha-thanks {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+}
 </style>
 </head>
 <body>
@@ -1407,5 +1497,57 @@ function allFeasts(year) {
 })();
 </script>
 
+
+<script>
+/* ── МОБИЛЬНЫЙ СТАНДАРТ ВСПЛЫВАЮЩИХ ФОРМ ──
+   1) Высота модалки равна реальной видимой области (адресная строка, клавиатура).
+   2) Поле, в которое тапнули, поднимается в зону над клавиатурой. */
+(function () {
+  var root = document.documentElement;
+  var vv = window.visualViewport;
+
+  function isMobile() {
+    return window.matchMedia('(max-width: 768px)').matches;
+  }
+
+  /* поле под фокусом остаётся видимым, когда клавиатура меняет видимую область */
+  function keepFocusVisible() {
+    var a = document.activeElement;
+    if (!isMobile() || !a || !a.closest || !a.matches('input, textarea, select')) return;
+    if (!a.closest('.modal-overlay.open')) return;
+    a.scrollIntoView({ block: 'center' });
+  }
+
+  function syncViewport() {
+    if (!vv) return;
+    /* клавиатура ужимает visualViewport, адресная строка — обе величины */
+    root.style.setProperty('--modal-h', Math.min(vv.height, window.innerHeight) + 'px');
+    root.style.setProperty('--modal-top', vv.offsetTop + 'px');
+  }
+
+  syncViewport();
+  if (vv) {
+    vv.addEventListener('resize', function () { syncViewport(); keepFocusVisible(); });
+    vv.addEventListener('scroll', syncViewport);
+  }
+  window.addEventListener('resize', syncViewport);
+  window.addEventListener('orientationchange', syncViewport);
+
+  /* модалку могли открыть после смены размеров экрана — пересчитываем при открытии */
+  Array.prototype.forEach.call(document.querySelectorAll('.modal-overlay'), function (m) {
+    new MutationObserver(syncViewport).observe(m, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  document.addEventListener('focusin', function (e) {
+    if (!isMobile() || !e.target.closest) return;
+    var field = e.target.closest('input, textarea, select');
+    if (!field || !field.closest('.modal-overlay.open')) return;
+    /* ждём выезд клавиатуры, затем подводим поле к центру видимой части */
+    setTimeout(function () {
+      field.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }, 300);
+  });
+})();
+</script>
 </body>
 </html>
