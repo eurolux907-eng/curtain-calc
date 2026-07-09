@@ -1089,60 +1089,22 @@ textarea.field-input {
 </head>
 <body>
 
-<!-- ───────── БОКОВОЕ МЕНЮ (как на других страницах) ───────── -->
-<aside class="sidebar">
-  <div class="logo-block">
-    <div class="logo-cross">✝</div>
-    <div class="logo-name">Подворье Патриарха Московского и всея&nbsp;Руси,<br>храм Архангела Михаила</div>
-    <div class="logo-dates">1803–1809 гг.; 1862 г.</div>
-  </div>
+<!-- Меню, мобильное меню и кнопка «Помочь» рисует common.js -->
+<div id="site-menu"></div>
+<noscript>
   <nav>
-    <ul>
-      <li><a href="index.html#screen1">Главная</a></li>
-      <li><a href="o-hrame.html">О храме</a></li>
-      <li><a href="raspisanie.html">Расписание</a></li>
-      <li><a href="svyatyni.html">Святыни</a></li>
-      <li><a href="treby.html">Требы и пожертвования</a></li>
-      <li><a href="tainstva.html">Таинства</a></li>
-      <li class="active"><a href="pomoshch.html">Получить помощь</a></li>
-    </ul>
+    <a href="index.html">Главная</a> ·
+    <a href="o-hrame.html">О храме</a> ·
+    <a href="raspisanie.html">Расписание</a> ·
+    <a href="svyatyni.html">Святыни</a> ·
+    <a href="treby.html">Требы и пожертвования</a> ·
+    <a href="tainstva.html">Таинства</a> ·
+    <a href="pomoshch.html">Получить помощь</a>
   </nav>
-  <div class="sidebar-orn">· · ✝ · ·</div>
-</aside>
+</noscript>
 
-<!-- ───────── МОБИЛЬНАЯ ШАПКА ───────── -->
-<header class="mob-header">
-  <button class="burger-btn" id="burgerBtn" aria-label="Открыть меню">
-    <span></span><span></span><span></span>
-  </button>
-  <div class="mob-logo-c">
-    <div class="mob-logo-name">Храм Архангела Михаила</div>
-  </div>
-  <div class="mob-spacer"></div>
-</header>
+<div id="site-menu-mobile"></div>
 
-<!-- ───────── ВЫДВИЖНОЕ МЕНЮ ───────── -->
-<nav class="mob-drawer" id="mobDrawer">
-  <button class="drawer-close" id="drawerClose" aria-label="Закрыть меню">✕</button>
-  <div class="drawer-logo">
-    <div class="drawer-cross">✝</div>
-    <div class="drawer-name">Подворье Патриарха Московского и всея&nbsp;Руси,<br>храм Архангела Михаила</div>
-    <div class="drawer-dates">1803–1809 гг.; 1862 г.</div>
-  </div>
-  <div class="drawer-nav">
-    <ul>
-      <li><a href="index.html#screen1" class="drawer-link">Главная</a></li>
-      <li><a href="o-hrame.html" class="drawer-link">О храме</a></li>
-      <li><a href="raspisanie.html" class="drawer-link">Расписание</a></li>
-      <li><a href="svyatyni.html" class="drawer-link">Святыни</a></li>
-      <li><a href="treby.html" class="drawer-link">Требы и пожертвования</a></li>
-      <li><a href="tainstva.html" class="drawer-link">Таинства</a></li>
-      <li class="active"><a href="pomoshch.html" class="drawer-link">Получить помощь</a></li>
-    </ul>
-  </div>
-  <div class="drawer-orn">· · ✝ · ·</div>
-</nav>
-<div class="drawer-overlay" id="drawerOverlay"></div>
 
 <!-- ───────── СОДЕРЖИМОЕ СТРАНИЦЫ ───────── -->
 <div class="page-wrap">
@@ -1280,155 +1242,16 @@ textarea.field-input {
 </div>
 
 
-<!-- ───────── ПЛАВАЮЩАЯ КНОПКА «ПОМОЧЬ» (на всех страницах) ───────── -->
-<button type="button" class="float-btn" id="openDonate2">🕯 Помочь</button>
-
-<!-- ═══════════════════════════════════════════════════════
-     ВСПЛЫВАЮЩЕЕ ОКНО — форма пожертвования
-═══════════════════════════════════════════════════════ -->
-<div class="modal-overlay" id="donateModal" aria-hidden="true">
-  <div class="modal-box" role="dialog" aria-label="Помочь храму">
-
-    <!-- Крестик закрытия -->
-    <button class="modal-close" id="modalClose" aria-label="Закрыть окно">✕</button>
-
-    <!-- Заголовок -->
-    <h2 class="modal-title">Помочь храму</h2>
-
-    <!-- ФОРМА (без отправки — заглушка) -->
-    <div class="donate-form">
-
-      <!-- Имя -->
-      <label class="field">
-        <span class="field-label">Ваше имя</span>
-        <input type="text" class="field-input" placeholder="Например, Мария" autocomplete="name">
-      </label>
-
-      <!-- Сумма -->
-      <label class="field">
-        <span class="field-label">Сумма пожертвования</span>
-        <span class="field-money">
-          <input type="number" class="field-input" placeholder="500" min="1" inputmode="numeric">
-          <span class="field-rub">₽</span>
-        </span>
-      </label>
-
-      <!-- Email -->
-      <label class="field">
-        <span class="field-label">Email</span>
-        <input type="email" class="field-input" placeholder="mail@example.com" autocomplete="email">
-      </label>
-
-      <!-- Переключатель Разово / Ежемесячно -->
-      <div class="field">
-        <span class="field-label">Периодичность</span>
-        <div class="toggle-group" role="radiogroup">
-          <button type="button" class="toggle-btn active" data-period="once">Разово</button>
-          <button type="button" class="toggle-btn" data-period="monthly">Ежемесячно</button>
-        </div>
-      </div>
-
-      <!-- Способ оплаты -->
-      <div class="field">
-        <span class="field-label">Способ оплаты</span>
-        <div class="pay-options">
-          <button type="button" class="pay-option active" data-pay="card">
-            <span class="pay-radio"></span>Картой онлайн
-          </button>
-          <button type="button" class="pay-option" data-pay="sbp">
-            <span class="pay-radio"></span>СБП
-          </button>
-          <button type="button" class="pay-option" data-pay="other">
-            <span class="pay-radio"></span>Другие способы
-          </button>
-        </div>
-      </div>
-
-      <!-- Кнопка отправки (заглушка) -->
-      <!-- СЮДА: подключение платёжной системы (эквайринг), реальная оплата добавляется отдельно -->
-      <button type="button" class="btn-donate" id="donateSubmit">Пожертвовать</button>
-
-      <!-- Сообщение после нажатия (скрыто по умолчанию) -->
-      <div class="donate-message" id="donateMessage" hidden>
-        Спасибо! Скоро здесь появится онлайн-оплата.
-      </div>
-
-    </div>
-
-  </div>
-</div>
+<div id="site-help"></div>
 
 
 <script>
-  /* ── ВЫДВИЖНОЕ МЕНЮ ── */
-  const burger  = document.getElementById('burgerBtn');
-  const drawer  = document.getElementById('mobDrawer');
-  const overlay = document.getElementById('drawerOverlay');
-  function openDrawer() {
-    drawer.classList.add('open');
-    overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeDrawer() {
-    drawer.classList.remove('open');
-    overlay.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  burger.addEventListener('click', openDrawer);
-  overlay.addEventListener('click', closeDrawer);
-  const closeBtn = document.getElementById('drawerClose');
-  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-  document.querySelectorAll('.drawer-link').forEach(link => {
-    link.addEventListener('click', closeDrawer);
-  });
-
-  /* ── ПОПАП ПОЖЕРТВОВАНИЯ ── */
-  const modal       = document.getElementById('donateModal');
-  const modalClose  = document.getElementById('modalClose');
-  const openBtn2    = document.getElementById('openDonate2');  // плавающая «Помочь»
-
-  function openModal() {
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal() {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-  if (openBtn2) openBtn2.addEventListener('click', openModal);
-  if (modalClose) modalClose.addEventListener('click', closeModal);
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-  });
-
-  // Переключатель Разово / Ежемесячно
-  document.querySelectorAll('.toggle-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-  // Выбор способа оплаты
-  document.querySelectorAll('.pay-option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      document.querySelectorAll('.pay-option').forEach(o => o.classList.remove('active'));
-      opt.classList.add('active');
-    });
-  });
-  // Кнопка «Пожертвовать» — заглушка
-  const donateSubmit  = document.getElementById('donateSubmit');
-  const donateMessage = document.getElementById('donateMessage');
-  if (donateSubmit) {
-    donateSubmit.addEventListener('click', () => {
-      donateMessage.hidden = false;
-    });
-  }
-  // Кнопка «Поддержать храм» на экране благодарности открывает то же окно пожертвования
+  // Кнопка «Поддержать храм» на экране благодарности открывает то же окно пожертвования.
+  // Само окно и функция открытия живут в common.js.
   const thanksSupport = document.getElementById('thanksSupport');
-  if (thanksSupport) thanksSupport.addEventListener('click', openModal);
+  if (thanksSupport) thanksSupport.addEventListener('click', function () {
+    if (window.openDonateModal) window.openDonateModal();
+  });
 
   /* ── ФОРМА ОБРАЩЕНИЯ + ВАЛИДАЦИЯ + ОТПРАВКА ЧЕРЕЗ FORMSPREE ── */
   const form     = document.getElementById('helpForm');
@@ -1504,56 +1327,6 @@ textarea.field-input {
 </script>
 
 
-<script>
-/* ── МОБИЛЬНЫЙ СТАНДАРТ ВСПЛЫВАЮЩИХ ФОРМ ──
-   1) Высота модалки равна реальной видимой области (адресная строка, клавиатура).
-   2) Поле, в которое тапнули, поднимается в зону над клавиатурой. */
-(function () {
-  var root = document.documentElement;
-  var vv = window.visualViewport;
-
-  function isMobile() {
-    return window.matchMedia('(max-width: 768px)').matches;
-  }
-
-  /* поле под фокусом остаётся видимым, когда клавиатура меняет видимую область */
-  function keepFocusVisible() {
-    var a = document.activeElement;
-    if (!isMobile() || !a || !a.closest || !a.matches('input, textarea, select')) return;
-    if (!a.closest('.modal-overlay.open')) return;
-    a.scrollIntoView({ block: 'center' });
-  }
-
-  function syncViewport() {
-    if (!vv) return;
-    /* клавиатура ужимает visualViewport, адресная строка — обе величины */
-    root.style.setProperty('--modal-h', Math.min(vv.height, window.innerHeight) + 'px');
-    root.style.setProperty('--modal-top', vv.offsetTop + 'px');
-  }
-
-  syncViewport();
-  if (vv) {
-    vv.addEventListener('resize', function () { syncViewport(); keepFocusVisible(); });
-    vv.addEventListener('scroll', syncViewport);
-  }
-  window.addEventListener('resize', syncViewport);
-  window.addEventListener('orientationchange', syncViewport);
-
-  /* модалку могли открыть после смены размеров экрана — пересчитываем при открытии */
-  Array.prototype.forEach.call(document.querySelectorAll('.modal-overlay'), function (m) {
-    new MutationObserver(syncViewport).observe(m, { attributes: true, attributeFilter: ['class'] });
-  });
-
-  document.addEventListener('focusin', function (e) {
-    if (!isMobile() || !e.target.closest) return;
-    var field = e.target.closest('input, textarea, select');
-    if (!field || !field.closest('.modal-overlay.open')) return;
-    /* ждём выезд клавиатуры, затем подводим поле к центру видимой части */
-    setTimeout(function () {
-      field.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    }, 300);
-  });
-})();
-</script>
+<script src="common.js?v=1"></script>
 </body>
 </html>
