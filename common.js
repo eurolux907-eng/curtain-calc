@@ -35,7 +35,8 @@
     { href: 'svyatyni.html',  text: 'Святыни' },
     { href: 'treby.html',     text: 'Требы и пожертвования' },
     { href: 'tainstva.html',  text: 'Таинства' },
-    { href: 'pomoshch.html',  text: 'Получить помощь' }
+    { href: 'pomoshch.html',  text: 'Получить помощь' },
+    { href: 'kak-nas-naiti.html', text: 'Как нас найти' }
   ];
 
   var LOGO_NAME  = 'Подворье Патриарха Московского и всея&nbsp;Руси,<br>храм Архангела Михаила';

@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Таинства — Храм Архангела Михаила</title>
+<title>Как нас найти — Храм Архангела Михаила</title>
 <style>
-
 
 /* ─────────────────────────────────────────────
    СБРОС И БАЗОВЫЕ ПРАВИЛА
@@ -38,6 +37,8 @@ body {
   z-index: 100;
   overflow-y: auto;
 }
+
+/* Внешняя золотая рамка */
 .sidebar::before {
   content: "";
   position: fixed;
@@ -48,6 +49,7 @@ body {
   pointer-events: none;
   z-index: 101;
 }
+/* Внутренняя рамка */
 .sidebar::after {
   content: "";
   position: fixed;
@@ -58,6 +60,8 @@ body {
   pointer-events: none;
   z-index: 101;
 }
+
+/* ЛОГОТИП В МЕНЮ */
 .logo-block {
   display: flex;
   flex-direction: column;
@@ -68,7 +72,11 @@ body {
   position: relative;
   z-index: 102;
 }
-.logo-cross { font-size: 22px; color: #C4952A; margin-bottom: 7px; }
+.logo-cross {
+  font-size: 22px;
+  color: #C4952A;
+  margin-bottom: 7px;
+}
 .logo-name {
   font-family: Georgia, serif;
   font-size: 13px;
@@ -77,6 +85,7 @@ body {
   line-height: 1.4;
   letter-spacing: 0.02em;
 }
+/* Даты постройки — деликатная подпись под названием */
 .logo-dates {
   font-size: 10.5px;
   color: rgba(232,200,96,0.60);
@@ -91,6 +100,8 @@ body {
   text-transform: uppercase;
   margin-top: 5px;
 }
+
+/* НАВИГАЦИЯ */
 .sidebar nav {
   flex: 1;
   position: relative;
@@ -128,6 +139,8 @@ body {
   color: #C4952A;
   font-size: 16px;
 }
+
+/* Нижний орнамент меню */
 .sidebar-orn {
   position: relative;
   z-index: 102;
@@ -218,6 +231,7 @@ body {
   overflow-y: auto;
 }
 .mob-drawer.open { transform: translateX(0); }
+
 .mob-drawer::before {
   content: "";
   position: absolute;
@@ -232,6 +246,7 @@ body {
   border: 1px solid rgba(196,149,42,0.18);
   pointer-events: none;
 }
+
 .drawer-logo {
   display: flex;
   flex-direction: column;
@@ -252,6 +267,7 @@ body {
   letter-spacing: 0.02em;
   padding: 0 6px;
 }
+/* Даты в выдвижном меню */
 .drawer-dates {
   font-size: 10.5px;
   color: rgba(232,200,96,0.55);
@@ -291,6 +307,7 @@ body {
   color: #E8C860;
   border: 1px solid rgba(196,149,42,0.32);
 }
+/* Крестик закрытия мобильного меню */
 .drawer-close {
   position: absolute;
   top: 16px;
@@ -310,7 +327,10 @@ body {
   z-index: 10;
   transition: background 0.18s;
 }
-.drawer-close:hover { background: rgba(196,149,42,0.28); }
+.drawer-close:hover {
+  background: rgba(196,149,42,0.28);
+}
+
 .drawer-orn {
   text-align: center;
   color: rgba(196,149,42,0.38);
@@ -322,6 +342,8 @@ body {
   position: relative;
   z-index: 1;
 }
+
+/* Затемнение за drawer */
 .drawer-overlay {
   display: none;
   position: fixed;
@@ -331,23 +353,22 @@ body {
 }
 .drawer-overlay.open { display: block; }
 
-
-/* ─────────────────────────────────────────────
-   СОДЕРЖИМОЕ СТРАНИЦЫ
-───────────────────────────────────────────── */
 .page-wrap {
   background: #F9F0DF;
   min-height: 100vh;
 }
-/* Шапка страницы — охристая, в стиле главной */
+/* Шапка страницы — охристая, в стиле первого экрана главной */
 .page-header {
   position: relative;
   padding: 60px 64px 40px;
   text-align: center;
+  /* Тёплый охристый градиент — как на главной */
   background: radial-gradient(ellipse at 50% 38%, #FFF8E0 0%, #EED5A0 48%, #D4B560 100%);
+  /* Золотой кант снизу — фирменная деталь сайта */
   border-bottom: 2px solid #C4952A;
   box-shadow: inset 0 -6px 0 rgba(232,200,96,0.35), 0 3px 14px rgba(154,107,15,0.18);
 }
+/* Сетка-клеточки на охре (как на главной) */
 .page-header::before {
   content: '';
   position: absolute;
@@ -373,212 +394,67 @@ body {
   letter-spacing: 0.04em;
   margin-top: 12px;
 }
+
+/* Основная часть страницы */
+.page-main {
+  padding: 48px 64px 80px;
+}
+
 /* Колонка чтения — ограничена по ширине для комфорта */
 .read-col {
   max-width: 760px;
   margin: 0 auto;
 }
 
-/* ── ГЛАВНЫЙ ОБРАЗ (фото настоятеля) ── */
-.hero {
-  padding: 48px 64px 8px;
-}
-.hero-fig {
-  max-width: 640px;
-  margin: 0 auto;
-}
-/* Рамка фото — пергамент, золотая рамка; если файла нет, виден плейсхолдер */
-.hero-frame {
-  position: relative;
-  width: 100%;
-  /* Без фиксированной высоты/пропорции — рамка подстраивается под фото.
-     min-height нужен только чтобы заглушка «фото» была видна, если файла нет. */
-  min-height: 220px;
-  background: #FDF6E8;        /* пергаментный цвет карточек — поля при contain сольются с фоном */
-  border: 1px solid rgba(196,149,42,0.55);
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(154,107,15,0.18);
-  overflow: hidden;
-}
-.hero-ph {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9C9070;
-  font-size: 16px;
-  letter-spacing: 0.04em;
-}
-/* Фото показывается ЦЕЛИКОМ, ничего не обрезая (голова видна полностью).
-   В обычном потоке (position: relative) изображение само задаёт высоту рамки —
-   пустых полей сверху и снизу не остаётся. */
-.hero-frame img {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 85vh;          /* предохранитель для очень вытянутого вертикального фото */
-  object-fit: contain;       /* если упрётся в max-height — поля будут пергаментными */
-  margin: 0 auto;
-}
-/* Подпись под фото — обычный читаемый цвет, не золото */
-.hero-cap {
-  margin-top: 16px;
-  text-align: center;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #5C3A08;
-  font-style: italic;
+/* ── Мобильный: шапка страницы и боковые отступы 16px ── */
+@media (max-width: 768px) {
+  .page-header {
+    padding: 44px 16px 28px;
+  }
+  .page-title { font-size: 34px; }
+  .page-subtitle { font-size: 15px; }
+  .page-main { padding: 32px 16px 56px; }
 }
 
-/* ── ВСТУПЛЕНИЕ ── */
-.sac-intro {
-  padding: 36px 64px 8px;
+@media (max-width: 768px) {
+  /* ── БАЗОВОЕ ── */
+  body { margin-left: 0; }
+  .sidebar { display: none; }
+  .mob-header { display: flex; }
+  .mob-drawer { display: flex; }
+  /* ── ШАПКА ── */
+  .mob-header {
+    padding: 16px 20px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+  .burger-btn {
+    width: 48px;
+    height: 48px;
+    gap: 7px;
+    padding: 6px;
+  }
+  .burger-btn span { height: 2.5px; }
+  .mob-logo-name {
+    font-size: 16px;
+    letter-spacing: 0.04em;
+  }
+  .mob-logo-city {
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    color: rgba(232,200,96,0.75);
+    margin-top: 2px;
+  }
+  .mob-spacer { width: 48px; }
+  /* ── ЗАДАЧА 4: МЕНЮ — 20px, удобные зоны касания ── */
+  .drawer-nav ul li a {
+    font-size: 20px;
+    padding: 14px 12px;
+    color: rgba(232,200,96,0.92);
+  }
 }
-.sac-intro-title {
-  font-family: Georgia, serif;
-  font-size: 30px;
-  font-weight: 400;
-  color: #8A6012;            /* золотой заголовок (тёмный оттенок для контраста на пергаменте) */
-  text-align: center;
-  margin-bottom: 20px;
-  letter-spacing: 0.02em;
-}
-.sac-intro-text {
-  font-size: 19px;
-  line-height: 1.85;
-  color: #2C1A06;            /* обычный тёмный читаемый текст */
-  text-align: center;
-}
-
-/* ── ТРИ КАРТОЧКИ ТАИНСТВ — тёмно-синяя секция, пергаментные карточки ── */
-.sacraments {
-  background: #0F1A30;
-  border-top: 2px solid #C4952A;
-  padding: 64px 56px 72px;
-}
-.sacraments-inner {
-  max-width: 1060px;
-  margin: 0 auto;
-}
-.sacraments-title {
-  font-family: Georgia, serif;
-  font-size: 34px;
-  font-weight: 400;
-  color: #E8C860;
-  text-align: center;
-  letter-spacing: 0.02em;
-  margin-bottom: 42px;
-}
-.sac-grid {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 28px;
-}
-.sac-card {
-  flex: 1 1 0;
-  max-width: 340px;
-  background: #FDF6E8;
-  border: 1px solid rgba(196,149,42,0.45);
-  border-radius: 10px;
-  padding: 28px 26px 30px;
-  display: flex;
-  flex-direction: column;
-}
-/* Название таинства — золотой заголовок с засечками */
-.sac-name {
-  font-family: Georgia, serif;
-  font-size: 24px;
-  font-weight: 400;
-  color: #8A6012;
-  text-align: center;
-  line-height: 1.3;
-  margin-bottom: 16px;
-}
-/* Описание — обычный тёмный читаемый текст */
-.sac-desc {
-  font-size: 17px;
-  line-height: 1.7;
-  color: #2C1A06;
-  margin-bottom: 18px;
-}
-/* Нижний блок: цена-акцент + где совершается */
-.sac-meta {
-  margin-top: auto;
-  padding-top: 16px;
-  border-top: 1px solid rgba(196,149,42,0.25);
-}
-.sac-price {
-  font-size: 17px;
-  color: #2C1A06;
-  margin-bottom: 8px;
-}
-/* Сумма — короткий золотой акцент */
-.price-amt {
-  color: #8A6012;
-  font-weight: 700;
-  white-space: nowrap;
-}
-.sac-where {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #5C3A08;
-}
-.sac-where a {
-  color: #8A6012;
-  font-weight: 600;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.sac-where a:hover { text-decoration: underline; }
-
-/* ── БЛОК «ОГЛАСИТЕЛЬНЫЕ БЕСЕДЫ» — тёмно-синяя секция, пергаментная карточка ── */
-.besedy {
-  background: #0F1A30;
-  border-top: 2px solid #C4952A;
-  padding: 56px 56px 72px;
-}
-.besedy-inner {
-  max-width: 760px;
-  margin: 0 auto;
-}
-.besedy-title {
-  font-family: Georgia, serif;
-  font-size: 34px;
-  font-weight: 400;
-  color: #E8C860;
-  text-align: center;
-  letter-spacing: 0.02em;
-  margin-bottom: 32px;
-}
-.besedy-card {
-  background: #FDF6E8;
-  border: 1px solid rgba(196,149,42,0.45);
-  border-radius: 12px;
-  padding: 32px 34px 34px;
-}
-/* Текст бесед — обычный тёмный читаемый цвет */
-.besedy-text {
-  font-size: 18px;
-  line-height: 1.8;
-  color: #2C1A06;
-  margin-bottom: 18px;
-}
-.besedy-text:last-child { margin-bottom: 0; }
-.besedy-text a {
-  color: #8A6012;
-  font-weight: 600;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.besedy-text a:hover { text-decoration: underline; }
-
-
-/* ─────────────────────────────────────────────
-   ПЛАВАЮЩАЯ КНОПКА + ПОПАП ПОЖЕРТВОВАНИЯ
-───────────────────────────────────────────── */
+/* ── Плавающая кнопка + форма-попап (как на главной) ── */
 .float-btn {
   position: fixed;
   bottom: 28px;
@@ -598,12 +474,24 @@ body {
   display: flex;
   align-items: center;
   gap: 7px;
+  /* Плавное растворение (0.45s) при появлении большой кнопки */
   transition: opacity 0.45s ease, transform 0.45s ease, box-shadow 0.18s;
+}
+.float-btn.float-hidden {
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
 }
 .float-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 26px rgba(154,107,15,0.55);
 }
+.float-btn {
+    font-size: 14px;
+    padding: 13px 20px;
+    bottom: 16px;
+    right: 16px;
+  }
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -615,7 +503,12 @@ body {
   padding: 40px 20px;
   overflow-y: auto;
 }
-.modal-overlay.open { display: flex; }
+.modal-overlay.open {
+  display: flex;
+}
+.modal-overlay {
+    padding: 20px 12px;
+  }
 .modal-box {
   position: relative;
   width: 100%;
@@ -627,6 +520,10 @@ body {
   box-shadow: 0 12px 48px rgba(0,0,0,0.40);
   margin: auto;
 }
+.modal-box {
+    padding: 36px 22px 28px;
+    border-radius: 12px;
+  }
 .modal-close {
   position: absolute;
   top: 16px;
@@ -645,7 +542,14 @@ body {
   justify-content: center;
   transition: background 0.18s;
 }
-.modal-close:hover { background: rgba(196,149,42,0.24); }
+.modal-close:hover {
+  background: rgba(196,149,42,0.24);
+}
+.modal-close {
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+  }
 .modal-title {
   font-family: Georgia, serif;
   font-size: 28px;
@@ -655,6 +559,10 @@ body {
   margin-bottom: 28px;
   letter-spacing: 0.02em;
 }
+.modal-title {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
 .donate-form {
   display: flex;
   flex-direction: column;
@@ -683,13 +591,20 @@ body {
   outline: none;
   transition: border-color 0.18s, box-shadow 0.18s;
 }
-.field-input::placeholder { color: rgba(92,58,8,0.40); }
+.field-input::placeholder {
+  color: rgba(92,58,8,0.40);
+}
 .field-input:focus {
   border-color: #C4952A;
   box-shadow: 0 0 0 3px rgba(196,149,42,0.15);
 }
-.field-money { position: relative; display: block; }
-.field-money .field-input { padding-right: 40px; }
+.field-money {
+  position: relative;
+  display: block;
+}
+.field-money .field-input {
+  padding-right: 40px;
+}
 .field-rub {
   position: absolute;
   right: 16px;
@@ -705,6 +620,64 @@ body {
   margin: 0;
 }
 .field-input[type=number] { -moz-appearance: textfield; }
+.field-input {
+    font-size: 17px;
+    padding: 14px;
+  }
+.field-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #5C3A08;
+  letter-spacing: 0.02em;
+}
+.field-input {
+  width: 100%;
+  font-size: 18px;
+  font-family: inherit;
+  color: #1C0D06;
+  background: #FFFDF7;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 6px;
+  padding: 13px 14px;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.field-input::placeholder {
+  color: rgba(92,58,8,0.40);
+}
+.field-input:focus {
+  border-color: #C4952A;
+  box-shadow: 0 0 0 3px rgba(196,149,42,0.15);
+}
+.field-input {
+  padding-right: 40px;
+}
+.field-input[type=number]::-webkit-inner-spin-button,
+.field-input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.field-input[type=number] { -moz-appearance: textfield; }
+.field-input {
+    font-size: 17px;
+    padding: 14px;
+  }
+.field-money {
+  position: relative;
+  display: block;
+}
+.field-money .field-input {
+  padding-right: 40px;
+}
+.field-rub {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 19px;
+  color: #9A6B0F;
+  pointer-events: none;
+}
 .toggle-group {
   display: flex;
   gap: 0;
@@ -723,11 +696,19 @@ body {
   cursor: pointer;
   transition: background 0.18s, color 0.18s;
 }
-.toggle-btn + .toggle-btn { border-left: 1px solid rgba(196,149,42,0.45); }
+.toggle-btn + .toggle-btn {
+  border-left: 1px solid rgba(196,149,42,0.45);
+}
 .toggle-btn.active {
   background: #0F1A30;
   color: #E8C860;
   font-weight: 600;
+}
+.toggle-btn { font-size: 16px; padding: 14px 8px; }
+.pay-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 .pay-options {
   display: flex;
@@ -749,12 +730,16 @@ body {
   text-align: left;
   transition: border-color 0.18s, background 0.18s;
 }
-.pay-option:hover { background: rgba(196,149,42,0.06); }
+.pay-option:hover {
+  background: rgba(196,149,42,0.06);
+}
 .pay-option.active {
   border-color: #C4952A;
   background: rgba(196,149,42,0.10);
 }
-.pay-option.active .pay-radio { border-color: #C4952A; }
+.pay-option.active .pay-radio {
+  border-color: #C4952A;
+}
 .pay-option.active .pay-radio::after {
   content: '';
   position: absolute;
@@ -762,6 +747,7 @@ body {
   background: #C4952A;
   border-radius: 50%;
 }
+.pay-option { font-size: 16px; padding: 15px 14px; }
 .pay-radio {
   width: 20px;
   height: 20px;
@@ -770,6 +756,16 @@ body {
   flex-shrink: 0;
   position: relative;
   transition: border-color 0.18s;
+}
+.pay-radio {
+  border-color: #C4952A;
+}
+.pay-radio::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: #C4952A;
+  border-radius: 50%;
 }
 .btn-donate {
   margin-top: 8px;
@@ -791,6 +787,7 @@ body {
   background: #d0a03a;
   transform: translateY(-1px);
 }
+.btn-donate { font-size: 18px; padding: 16px; }
 .donate-message {
   text-align: center;
   font-size: 16px;
@@ -801,66 +798,6 @@ body {
   padding: 14px;
   margin-top: 4px;
 }
-
-
-/* ─────────────────────────────────────────────
-   МОБИЛЬНЫЙ
-───────────────────────────────────────────── */
-@media (max-width: 768px) {
-  /* ── БАЗОВОЕ ── */
-  body { margin-left: 0; }
-  .sidebar { display: none; }
-  .mob-header { display: flex; }
-  .mob-drawer { display: flex; }
-  .mob-header {
-    padding: 16px 20px 14px;
-    position: sticky;
-    top: 0;
-    z-index: 200;
-  }
-  .burger-btn { width: 48px; height: 48px; gap: 7px; padding: 6px; }
-  .burger-btn span { height: 2.5px; }
-  .mob-logo-name { font-size: 16px; letter-spacing: 0.04em; }
-  .mob-logo-city {
-    font-size: 11px;
-    letter-spacing: 0.10em;
-    color: rgba(232,200,96,0.75);
-    margin-top: 2px;
-  }
-  .mob-spacer { width: 48px; }
-  .drawer-nav ul li a { font-size: 20px; padding: 14px 12px; color: rgba(232,200,96,0.92); }
-
-  /* ── КОНТЕНТ ── */
-  .page-header { padding: 44px 20px 28px; }
-  .page-title { font-size: 34px; }
-  .page-subtitle { font-size: 15px; }
-
-  .hero { padding: 32px 20px 4px; }
-  .hero-cap { font-size: 15px; }
-
-  .sac-intro { padding: 28px 20px 4px; }
-  .sac-intro-title { font-size: 26px; }
-  .sac-intro-text { font-size: 18px; line-height: 1.8; }
-
-  .sacraments { padding: 44px 20px 52px; }
-  .sacraments-title { font-size: 28px; margin-bottom: 30px; }
-  .sac-grid { flex-direction: column; align-items: center; gap: 22px; }
-  .sac-card { max-width: 440px; width: 100%; }
-  .sac-name { font-size: 22px; }
-
-  .besedy { padding: 44px 20px 52px; }
-  .besedy-title { font-size: 28px; margin-bottom: 26px; }
-  .besedy-card { padding: 24px 20px 26px; }
-  .besedy-text { font-size: 17px; line-height: 1.75; }
-
-  /* ── ПОПАП ── */
-  .modal-overlay { padding: 20px 12px; }
-  .modal-box { padding: 36px 22px 28px; }
-  .modal-close { width: 48px; height: 48px; font-size: 24px; }
-  .modal-title { font-size: 24px; margin-bottom: 24px; }
-  .float-btn { font-size: 14px; padding: 13px 20px; bottom: 16px; right: 16px; }
-}
-
 
 /* ═════════════════════════════════════════════════════
    МОБИЛЬНЫЙ СТАНДАРТ ВСПЛЫВАЮЩИХ ФОРМ
@@ -951,6 +888,178 @@ body {
     overflow-y: auto;
   }
 }
+
+/* ═══════════ СТРАНИЦА «КАК НАС НАЙТИ» ═══════════ */
+
+/* Блоки страницы — одинаковый воздух между ними */
+.find-block {
+  margin-bottom: 56px;
+}
+.find-block:last-child {
+  margin-bottom: 0;
+}
+
+/* Заголовок блока — золото только здесь */
+.find-title {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: #8A6012;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(196,149,42,0.30);
+  letter-spacing: 0.01em;
+}
+
+/* Адрес — крупно и контрастно */
+.address {
+  font-size: 24px;
+  line-height: 1.6;
+  color: #1C0D06;
+  margin-bottom: 24px;
+}
+
+/* Телефон — крупная ссылка «нажми и звони» */
+.phone-link {
+  display: inline-block;
+  font-size: 30px;
+  font-weight: 600;
+  color: #1C0D06;
+  text-decoration: none;
+  border-bottom: 2px solid #C4952A;
+  padding-bottom: 2px;
+  letter-spacing: 0.02em;
+}
+.phone-link:hover {
+  color: #8A6012;
+}
+.phone-hint {
+  font-size: 16px;
+  color: #5C3A08;
+  margin-top: 10px;
+  letter-spacing: 0.02em;
+}
+
+/* Рисунок храма */
+.hram-figure {
+  margin: 0;
+  text-align: center;
+}
+.hram-figure img {
+  width: 100%;
+  max-width: 620px;
+  height: auto;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 6px;
+  box-shadow: 0 4px 18px rgba(154,107,15,0.14);
+}
+.hram-figure figcaption {
+  font-size: 16px;
+  color: #5C3A08;
+  margin-top: 12px;
+  letter-spacing: 0.03em;
+}
+
+/* Карта */
+.map-frame {
+  width: 100%;
+  height: 400px;
+  border: 1px solid rgba(196,149,42,0.45);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(154,107,15,0.14);
+}
+.map-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Кнопки маршрутов */
+.route-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+}
+.btn-route {
+  flex: 1;
+  display: block;
+  text-align: center;
+  font-size: 19px;
+  color: #1C0D06;
+  text-decoration: none;
+  background: rgba(196,149,42,0.12);
+  border: 1.5px solid rgba(196,149,42,0.45);
+  border-radius: 6px;
+  padding: 18px 16px;
+  letter-spacing: 0.02em;
+}
+.btn-route:hover {
+  background: rgba(196,149,42,0.22);
+}
+.route-note {
+  font-size: 15px;
+  color: #5C3A08;
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* Текст блока «без машины» */
+.find-text {
+  font-size: 19px;
+  line-height: 1.85;
+  color: #2C1A06;
+}
+/* Телефон внутри абзаца — крупный, но не спорит с адресным блоком */
+.find-text .phone-link {
+  font-size: 22px;
+}
+
+/* Кнопка «Мы ВКонтакте» */
+.btn-vk {
+  display: inline-block;
+  font-size: 19px;
+  color: #1C0D06;
+  text-decoration: none;
+  background: rgba(196,149,42,0.12);
+  border: 1.5px solid rgba(196,149,42,0.45);
+  border-radius: 6px;
+  padding: 16px 32px;
+  letter-spacing: 0.02em;
+}
+.btn-vk:hover {
+  background: rgba(196,149,42,0.22);
+}
+
+/* Строка про расписание */
+.schedule-line {
+  font-size: 19px;
+  line-height: 1.7;
+  color: #2C1A06;
+}
+.schedule-line a {
+  color: #8A6012;
+  font-weight: 600;
+}
+
+/* ── Мобильный для страницы ── */
+@media (max-width: 768px) {
+  .find-block { margin-bottom: 44px; }
+  .find-title { font-size: 23px; }
+  .address { font-size: 21px; }
+  /* Телефон — тап-зона не меньше 44px, чтобы пожилой палец попадал легко */
+  .phone-link { font-size: 26px; padding: 8px 0; }
+  .map-frame { height: 300px; }
+  /* Кнопки маршрутов — в столбик, крупные зоны касания */
+  .route-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .btn-route { font-size: 18px; padding: 18px 14px; }
+  .btn-vk { display: block; text-align: center; font-size: 18px; }
+  .find-text, .schedule-line { font-size: 18px; }
+}
 </style>
 </head>
 <body>
@@ -973,92 +1082,78 @@ body {
 <div id="site-menu-mobile"></div>
 
 
-<!-- ───────── СОДЕРЖИМОЕ СТРАНИЦЫ ───────── -->
 <div class="page-wrap">
 
-  <!-- ШАПКА -->
   <header class="page-header">
-    <h1 class="page-title">Таинства</h1>
+    <h1 class="page-title">Как нас найти</h1>
     <div class="page-subtitle">Храм святого Архистратига Божия Михаила</div>
   </header>
 
-  <!-- ГЛАВНЫЙ ОБРАЗ: фото настоятеля -->
-  <section class="hero">
-    <figure class="hero-fig">
-      <div class="hero-frame">
-        <span class="hero-ph">фото</span>
-        <!-- Файл kreschenie-nastoyatel.jpg добавляется в репозиторий отдельно; если его нет — остаётся плейсхолдер -->
-        <img src="kreschenie-nastoyatel.jpg" alt="Настоятель храма протоиерей Николай Крюков совершает таинство Крещения" onerror="this.remove()">
-      </div>
-      <figcaption class="hero-cap">Настоятель храма протоиерей Николай Крюков совершает таинство Крещения</figcaption>
-    </figure>
-  </section>
-
-  <!-- ВСТУПЛЕНИЕ -->
-  <section class="sac-intro">
+  <main class="page-main">
     <div class="read-col">
-      <h2 class="sac-intro-title">Таинства</h2>
-      <p class="sac-intro-text">Таинства Православной Церкви совершаются в нашем храме. Для записи и уточнения дня обращайтесь по телефону храма.</p>
+
+      <!-- АДРЕС И ТЕЛЕФОН -->
+      <section class="find-block">
+        <h2 class="find-title">Адрес и телефон</h2>
+        <p class="address">Московская область, г. Кубинка,<br>Можайское шоссе, 89А</p>
+        <a class="phone-link" href="tel:+79685931443">8-968-593-14-33</a>
+        <div class="phone-hint">Нажмите, чтобы позвонить</div>
+      </section>
+
+      <!-- РИСУНОК ХРАМА -->
+      <section class="find-block">
+        <figure class="hram-figure">
+          <img src="hram-risunok.jpg" alt="Карандашный рисунок храма Архангела Михаила">
+          <figcaption>Храм Архангела Михаила</figcaption>
+        </figure>
+      </section>
+
+      <!-- КАРТА И МАРШРУТЫ -->
+      <section class="find-block">
+        <h2 class="find-title">Мы на карте</h2>
+        <div class="map-frame">
+          <!-- Координаты храма (Можайское шоссе, 89А): широта 55.576778, долгота 36.715978.
+               Формат ll/pt даёт явную красную метку — поиск по тексту метку не рисует. -->
+          <iframe
+            src="https://yandex.ru/map-widget/v1/?ll=36.715978,55.576778&z=16&pt=36.715978,55.576778,pm2rdm"
+            title="Храм Архангела Михаила на карте"
+            allowfullscreen="true"
+            loading="lazy"></iframe>
+        </div>
+
+        <div class="route-buttons">
+          <a class="btn-route" target="_blank" rel="noopener noreferrer"
+             href="https://yandex.ru/maps/?rtext=~Кубинка,%20Можайское%20шоссе,%2089А&rtt=auto">Маршрут в Яндекс.Картах</a>
+          <a class="btn-route" target="_blank" rel="noopener noreferrer"
+             href="https://www.google.com/maps/dir/?api=1&destination=Кубинка,+Можайское+шоссе,+89А">Маршрут в Google Maps</a>
+        </div>
+        <div class="route-note">На телефоне маршрут откроется в приложении карт</div>
+      </section>
+
+      <!-- КАК ДОБРАТЬСЯ БЕЗ МАШИНЫ -->
+      <section class="find-block">
+        <h2 class="find-title">Как добраться без машины</h2>
+        <!-- REPLACE_TRANSPORT: сюда транспорт после ответа старосты -->
+        <p class="find-text">Информация уточняется. Позвоните нам — подскажем дорогу:
+          <a class="phone-link" href="tel:+79685931443">8-968-593-14-33</a></p>
+      </section>
+
+      <!-- ВКОНТАКТЕ -->
+      <section class="find-block">
+        <a class="btn-vk" target="_blank" rel="noopener noreferrer" href="https://vk.com/hramkubinka">Мы ВКонтакте</a>
+      </section>
+
+      <!-- РАСПИСАНИЕ -->
+      <section class="find-block">
+        <p class="schedule-line">Когда храм открыт — смотрите <a href="raspisanie.html">расписание богослужений</a></p>
+      </section>
+
     </div>
-  </section>
-
-  <!-- ТРИ КАРТОЧКИ ТАИНСТВ -->
-  <section class="sacraments" id="sacraments">
-    <div class="sacraments-inner">
-      <h2 class="sacraments-title">Таинства храма</h2>
-
-      <div class="sac-grid">
-
-        <!-- Крещение -->
-        <article class="sac-card">
-          <h3 class="sac-name">Крещение</h3>
-          <p class="sac-desc">Таинство, в котором человек через троекратное погружение в воду рождается в жизнь духовную и становится членом Церкви. При крещении младенца необходимы восприемники (крёстные) — крещёные православные христиане.</p>
-          <div class="sac-meta">
-            <p class="sac-price">Пожертвование: <span class="price-amt">10 ₽</span></p>
-            <p class="sac-where">Совершается в храме, по записи.<br>Телефон: <a href="tel:89685931433">8-968-593-14-33</a></p>
-          </div>
-        </article>
-
-        <!-- Венчание -->
-        <article class="sac-card">
-          <h3 class="sac-name">Венчание</h3>
-          <p class="sac-desc">Таинство брака, в котором супругам, дающим обеты верности, подаётся благодать Божия для единодушия, рождения и христианского воспитания детей. Венчание совершается над крещёными православными.</p>
-          <div class="sac-meta">
-            <p class="sac-price">Пожертвование: <span class="price-amt">10 ₽</span></p>
-            <p class="sac-where">Совершается в храме, по записи.<br>Телефон: <a href="tel:89685931433">8-968-593-14-33</a></p>
-          </div>
-        </article>
-
-        <!-- Отпевание -->
-        <article class="sac-card">
-          <h3 class="sac-name">Отпевание</h3>
-          <p class="sac-desc">Заупокойное богослужение, чин христианского погребения усопшего, в котором Церковь молится о прощении грехов и упокоении его души в Царствии Небесном.</p>
-          <div class="sac-meta">
-            <p class="sac-price">Пожертвование: <span class="price-amt">10 ₽</span></p>
-            <p class="sac-where">Совершается в храме, по записи.<br>Телефон: <a href="tel:89685931433">8-968-593-14-33</a></p>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ОГЛАСИТЕЛЬНЫЕ БЕСЕДЫ -->
-  <section class="besedy" id="besedy">
-    <div class="besedy-inner">
-      <h2 class="besedy-title">Огласительные беседы</h2>
-      <div class="besedy-card">
-        <p class="besedy-text">Дорогие братья и сёстры! В нашем храме катехизатор проводит огласительные беседы перед таинствами Крещения и Венчания. Восприемники (крёстные) и желающие принять таинство проходят эти беседы обязательно.</p>
-        <p class="besedy-text">Встречи проходят в здании воскресной школы по субботам и воскресеньям. Предварительная запись — за церковной лавкой или по телефону <a href="tel:89685931433">8-968-593-14-33</a>.</p>
-      </div>
-    </div>
-  </section>
+  </main>
 
 </div>
 
-
 <div id="site-help"></div>
-
 
 <script src="common.js?v=2"></script>
 </body>
