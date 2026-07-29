@@ -481,6 +481,33 @@ body {
   border-color: rgba(15,26,48,0.42);
 }
 
+/* ── ТЕЛЕФОН И АДРЕС ХРАМА (в hero) ── */
+.hero-contact {
+  margin-top: 22px;
+  text-align: center;
+}
+.hero-phone {
+  display: inline-block;
+  font-family: Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #8A6012;          /* золото — короткий акцент */
+  text-decoration: none;
+  white-space: nowrap;
+}
+.hero-phone:hover { text-decoration: underline; }
+.hero-address {
+  margin-top: 6px;
+  font-size: 15px;
+  color: #3A1F04;          /* читаемый тёмный, не золото */
+  letter-spacing: 0.02em;
+}
+@media (max-width: 640px) {
+  .hero-phone { font-size: 23px; }
+  .hero-address { font-size: 14px; }
+}
+
 /* ── ЗОЛОТОЙ ОКЛАД (Вариант 2) ── */
 .icon-area {
   display: flex;
@@ -781,6 +808,7 @@ body {
   cursor: pointer;
   text-decoration: none;   /* карточка-ссылка не подчёркивает заголовок и текст */
   color: inherit;
+  font-family: inherit;    /* карточка-кнопка (Помочь храму) наследует шрифт, а не браузерный default */
 }
 .hc-card:hover {
   transform: translateY(-3px);
@@ -2125,37 +2153,34 @@ body {
 
       <!-- КНОПКА РАСПИСАНИЯ — под рисунком храма -->
       <a href="raspisanie.html" class="btn-sched">Расписание богослужений</a>
+
+      <!-- ТЕЛЕФОН И АДРЕС ХРАМА -->
+      <div class="hero-contact">
+        <a class="hero-phone" href="tel:+79685931433">8-968-593-14-33</a>
+        <div class="hero-address">г. Кубинка, Можайское шоссе, 89А</div>
+      </div>
     </div>
 
     <!-- ЦЕНТРАЛЬНЫЙ БЛОК: свеча и требы (якорь для кнопки «Помочь храму») -->
     <div class="hero-center" id="help-cards">
 
-      <!-- КАРТОЧКА 1: Поставить свечу -->
-      <a class="hc-card" id="card-candle" href="svyatyni.html">
+      <!-- КАРТОЧКА 1: Помочь храму (открывает модалку помощи из common.js) -->
+      <button type="button" class="hc-card" id="card-help">
         <div class="hc-card-icon">
-          <!-- Иконка свечи (SVG) -->
+          <!-- Иконка «лепта в ладонях» (SVG) -->
           <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- пламя -->
-            <ellipse cx="18" cy="6" rx="3.5" ry="5" fill="#E8A020" opacity="0.92"/>
-            <ellipse cx="18" cy="5.5" rx="2" ry="3.2" fill="#FFF0A0" opacity="0.85"/>
-            <!-- тело свечи -->
-            <rect x="14" y="10" width="8" height="20" rx="2" fill="#C4952A" opacity="0.18"/>
-            <rect x="14.5" y="10" width="7" height="19.5" rx="1.5" fill="#EED5A0"/>
-            <rect x="14.5" y="10" width="7" height="3" rx="1.5" fill="#D4B560"/>
-            <!-- фитиль -->
-            <line x1="18" y1="10" x2="18" y2="7" stroke="#5A3010" stroke-width="1.2" stroke-linecap="round"/>
-            <!-- подтёки воска -->
-            <path d="M15.5 22 Q14.5 24 15 26" stroke="#D4B560" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6"/>
-            <!-- блик -->
-            <rect x="16" y="12" width="1.5" height="6" rx="0.75" fill="white" opacity="0.35"/>
-            <!-- подставка -->
-            <rect x="12" y="29" width="12" height="3" rx="1.5" fill="#C4952A" opacity="0.55"/>
+            <!-- сердце — лепта, забота -->
+            <path d="M18 13.4c-1.7-3.3-6.6-3-6.6 1 0 2.9 3.5 5.3 6.6 7.5 3.1-2.2 6.6-4.6 6.6-7.5 0-4-4.9-4.3-6.6-1Z" fill="#E8A020" opacity="0.9"/>
+            <path d="M18 15c-0.9-1.9-3.9-1.8-3.9 0.6 0 1.7 2.1 3.2 3.9 4.5 1.8-1.3 3.9-2.8 3.9-4.5 0-2.4-3-2.5-3.9-0.6Z" fill="#FFF0A0" opacity="0.55"/>
+            <!-- ладони, держащие снизу -->
+            <path d="M8 24c2-1 4-1.5 6-1.2 1.3 0.2 2.7 0.2 4 0 2-0.3 4 0.2 6 1.2" stroke="#C4952A" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+            <path d="M10 27c2.4-1.2 5-1.8 8-1.8s5.6 0.6 8 1.8" stroke="#9A6B0F" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.6"/>
           </svg>
         </div>
-        <div class="hc-card-title">Поставить свечу</div>
-        <div class="hc-card-desc">Свечу поставят в храме<br>к выбранной вами иконе</div>
-        <span class="hc-btn">Поставить свечу</span>
-      </a>
+        <div class="hc-card-title">Помочь храму</div>
+        <div class="hc-card-desc">Пожертвование на храм —<br>любая лепта важна</div>
+        <span class="hc-btn">Помочь храму</span>
+      </button>
 
       <!-- Разделитель между карточками — только тонкая линия -->
       <div class="hc-divider" aria-hidden="true"></div>
@@ -2450,5 +2475,17 @@ body {
 
 
 <script src="common.js?v=4"></script>
+<script>
+  /* Карточка «Помочь храму» на первом экране открывает ту же модалку,
+     что и плавающая кнопка «Помочь» (окно задаёт common.js). */
+  (function () {
+    var cardHelp = document.getElementById('card-help');
+    if (cardHelp) {
+      cardHelp.addEventListener('click', function () {
+        if (window.openDonateModal) window.openDonateModal();
+      });
+    }
+  })();
+</script>
 </body>
 </html>
