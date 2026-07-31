@@ -27,10 +27,6 @@
    в подключении во ВСЕХ 10 html-файлах, иначе у посетителей
    останется старая версия из кэша браузера:
        <script src="common.js?v=4"></script>   →   ?v=5, ?v=6 и так далее
-
-   Страница voprosy-otvety.html намеренно отсутствует и в массиве MENU,
-   и в noscript-списках (скрыта до одобрения настоятелем) — открыть её
-   можно только по прямой ссылке, ни один пункт меню на ней не подсвечен.
 ═══════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -43,6 +39,7 @@
     { href: 'svyatyni.html',  text: 'Святыни' },
     { href: 'treby.html',     text: 'Требы и пожертвования' },
     { href: 'tainstva.html',  text: 'Таинства' },
+    { href: 'voprosy-otvety.html', text: 'Вопросы и ответы' },
     { href: 'pomoshch.html',  text: 'Получить помощь' },
     { href: 'kak-nas-naiti.html', text: 'Как нас найти' }
   ];
@@ -52,7 +49,7 @@
 
   /* ── АКТИВНЫЙ ПУНКТ ──
      Главная активна на «/» и на «/index.html».
-     Страницы вне меню (voprosy-otvety.html) не подсвечивают ничего. */
+     Страницы вне меню (например, page-template.html) не подсвечивают ничего. */
   function currentFile() {
     var path = window.location.pathname;
     var file = path.substring(path.lastIndexOf('/') + 1);
